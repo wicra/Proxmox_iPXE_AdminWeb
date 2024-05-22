@@ -18,6 +18,7 @@
     </head>
 
     <body>
-        
+        <h1>Bienvenue sur l'interface Admin de conf</h1>
+        <a href="site/interface/connection/formulaire_connection.php">me connecter</a>
     </body>
 </html>
