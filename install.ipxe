@@ -1,13 +1,24 @@
 #!ipxe
 
-# Vérification de l'adresse MAC
-# du machine qui demande et demande
-# au scrip php de derifier
+#####################################
+# /etc/dhcp/dhcpd_attribution.sh #
+####################################
 
-set mac ${net0/mac}
-chain http://<ip_server>/check_mac.php?mac=${mac}
 
-:install
-kernel http://<ip_server>/proxmox/linux26
-initrd http://<ip_server>/proxmox/initrd.img
-boot
+dhcp
+set serverip http://10.10.62.210
+set pveversion 8.1-1
+
+set opts "vga=791 video=vesafb:ywrap,mtrr ramdisk_size=16777216 rw quiet initrd=initrd"
+menu Please choose an operating system to boot
+    item normal Install Proxmox
+    
+choose --default normal --timeout 5000 target && goto ${target}
+:normal
+#    set kernel "${serverip}/proxmox/linux26 ${opts} splash=silent"
+
+set kernel ${serverip}/proxmox/linux26
+    goto init
+:init
+initrd ${serverip}/proxmox/initrd
+chain ${kernel}

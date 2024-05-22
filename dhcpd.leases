@@ -1,0 +1,92 @@
+
+#####################################
+#    /var/bin/dhcp/dhcpd.leases     #
+####################################
+
+
+# The format of this file is documented in the dhcpd.leases(5) manual page.
+# This lease file was written by isc-dhcp-4.4.3-P1
+
+# authoring-byte-order entry is generated, DO NOT DELETE
+authoring-byte-order little-endian;
+
+lease 10.10.62.160 {
+  starts 5 2024/02/09 10:06:24;
+  ends 5 2024/02/09 12:06:24;
+  tstp 5 2024/02/09 12:06:24;
+  cltt 5 2024/02/09 10:32:43;
+  binding state free;
+  hardware ethernet 04:d9:c8:6b:80:fc;
+  uid "\001\004\331\310k\200\374";
+  set vendor-class-identifier = "PXEClient:Arch:00007:UNDI:003010";
+}
+lease 10.10.62.161 {
+  starts 5 2024/02/09 13:50:52;
+  ends 5 2024/02/09 15:50:52;
+  tstp 5 2024/02/09 15:50:52;
+  cltt 5 2024/02/09 13:50:52;
+  binding state free;
+  hardware ethernet 04:d9:c8:6b:80:fc;
+  set vendor-class-identifier = "PXEClient:Arch:00007:UNDI:003016";
+}
+lease 10.10.62.162 {
+  starts 5 2024/04/05 06:21:11;
+  ends 5 2024/04/05 08:21:11;
+  tstp 5 2024/04/05 08:21:11;
+  cltt 5 2024/04/05 06:21:11;
+  binding state free;
+  hardware ethernet 04:d9:c8:6c:55:dd;
+  uid "\377\310lU\335\000\001\000\001-F\340\336\004\331\310lU\335";
+}
+lease 10.10.62.163 {
+  starts 2 2024/05/21 10:37:11;
+  ends 2 2024/05/21 12:37:11;
+  tstp 2 2024/05/21 12:37:11;
+  cltt 2 2024/05/21 10:37:11;
+  binding state free;
+  hardware ethernet bc:24:11:fd:cb:47;
+  uid "\001\274$\021\375\313G";
+  set vendor-class-identifier = "MSFT 5.0";
+}
+lease 10.10.62.164 {
+  starts 3 2024/05/22 08:30:52;
+  ends 3 2024/05/22 10:30:52;
+  cltt 3 2024/05/22 08:30:52;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 04:d9:c8:6c:55:dd;
+  set vendor-class-identifier = "PXEClient:Arch:00007:UNDI:003016";
+}
+lease 10.10.62.164 {
+  starts 3 2024/05/22 08:30:59;
+  ends 3 2024/05/22 10:30:59;
+  cltt 3 2024/05/22 08:30:59;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 04:d9:c8:6c:55:dd;
+  uid "\001\004\331\310lU\335";
+  set vendor-class-identifier = "PXEClient:Arch:00007:UNDI:003010";
+}
+lease 10.10.62.165 {
+  starts 3 2024/05/22 08:31:37;
+  ends 3 2024/05/22 10:31:37;
+  cltt 3 2024/05/22 08:31:37;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 04:d9:c8:6c:55:dd;
+}
+lease 10.10.62.163 {
+  starts 3 2024/05/22 08:35:28;
+  ends 3 2024/05/22 10:35:28;
+  cltt 3 2024/05/22 08:35:28;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet bc:24:11:fd:cb:47;
+  uid "\001\274$\021\375\313G";
+  set vendor-class-identifier = "MSFT 5.0";
+  client-hostname "oooh";
+}
