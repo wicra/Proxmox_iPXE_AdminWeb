@@ -1,0 +1,13 @@
+#!ipxe
+
+# Vérification de l'adresse MAC
+# du machine qui demande et demande
+# au scrip php de derifier
+
+set mac ${net0/mac}
+chain http://<ip_server>/check_mac.php?mac=${mac}
+
+:install
+kernel http://<ip_server>/proxmox/linux26
+initrd http://<ip_server>/proxmox/initrd.img
+boot

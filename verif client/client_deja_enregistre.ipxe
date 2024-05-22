@@ -1,0 +1,3 @@
+#!ipxe
+
+echo Machine already received the image.
