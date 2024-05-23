@@ -54,11 +54,12 @@
                             <td class=\"col_ip_fixe\">
                                 <i class=\"fa-solid fa-gears\"></i>
                                 <div class=\"formulaire_ip_conteneur\">
-                                    <div class=\"ip_check\">
+                                    <form action=\"\" class=\"ip_check\">
+
                                         <input  class=\"formulaire_ip\" type=\"text\" id=\"formulaire_ip\" name=\"formulaire_ip\" placeholder=\"Nouvelle IP\" />
                                         <input type=\"checkbox\" class=\"ui-checkbox\">
                                         <i class=\"fa-solid fa-xmark\"></i>
-                                    </div>
+                                    </form>
                                 </div>
                             </td>
                         </tr>";
@@ -84,7 +85,7 @@
             $icon.hide();
         });
 
-        $('.close-form').click(function(event) {
+        $('.fa-xmark').click(function(event) {
             event.preventDefault();
             var $closeIcon = $(this);
             var $formContainer = $closeIcon.closest('.formulaire_ip_conteneur');
@@ -93,6 +94,7 @@
             $icon.show();
         });
     });
+
 
 
     $('.ui-checkbox').click(function(event) {
@@ -105,7 +107,7 @@
             if (isChecked && newIp) {
                 $.ajax({
                     type: "POST",
-                    url: "update_dhcp.php",
+                    url: "conf_ip_dhcp.php",
                     data: { host_name: hostName, mac_address: macAddress, new_ip: newIp },
                     success: function(response) {
                         alert(response);
@@ -119,7 +121,6 @@
     
 
 </script>
-
 
 
 <style>

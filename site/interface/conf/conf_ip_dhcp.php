@@ -6,8 +6,9 @@ if (isset($_POST['host_name']) && isset($_POST['mac_address']) && isset($_POST['
     $new_ip = $_POST['new_ip'];
 
     // Chemin vers le fichier de configuration DHCP
-    $file_path = '/etc/dhcp/dhcpd.conf';
-
+    //$file_path = '/etc/dhcp/dhcpd.conf';
+    $file_path = '../../dhcp/dhcpd.conf';
+    
     // Lire le fichier de configuration
     $config = file_get_contents($file_path);
 
