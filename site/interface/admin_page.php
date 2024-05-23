@@ -94,6 +94,30 @@
         });
     });
 
+
+    $('.ui-checkbox').click(function(event) {
+            event.preventDefault();
+            var hostName = $(this).data('host-name');
+            var macAddress = $(this).data('mac');
+            var newIp = $('#formulaire_ip_' + hostName).val();
+            var isChecked = $('#checkbox_' + hostName).is(':checked');
+
+            if (isChecked && newIp) {
+                $.ajax({
+                    type: "POST",
+                    url: "update_dhcp.php",
+                    data: { host_name: hostName, mac_address: macAddress, new_ip: newIp },
+                    success: function(response) {
+                        alert(response);
+                        location.reload(); // Recharge la page pour afficher les nouvelles modifications
+                    }
+                });
+            } else {
+                alert("Veuillez remplir une nouvelle IP et cocher la case.");
+            }
+    });
+    
+
 </script>
 
 
