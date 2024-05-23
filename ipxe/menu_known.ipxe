@@ -4,7 +4,7 @@
 menu Options de démarrage
 item --key r reinstall Réinstaller l'image
 item --key c continue Continuer le démarrage avec le disque local
-item --timeout 5000 fallback Continuer automatiquement dans 5 secondes
+item timeout 5000 fallback Continuer automatiquement dans 5 secondes
 
 choose --default continue --timeout 5000 selected && goto ${selected}
 

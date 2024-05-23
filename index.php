@@ -22,15 +22,20 @@
         <div class="bienvenue">
             <h1 class="bienvenue_titre">Bienvenue sur l'interface Admin de conf</h1>
 
-            
-            <form  class="formulaire" action="">
-                <input  class="formulaire_login" type="text" id="username" name="username" placeholder="Login" />
-                <input  class="formulaire_password" type="password" id="pass" name="password" placeholder="Password" minlength="8" required />
-            </form>
-            
+            <div class="formulaire_conteneur">
+                <form  class="formulaire" action="">
+                    <div class="login_password">
+                        <input  class="formulaire_login" type="text" id="username" name="username" placeholder="Login" />
+                        <input  class="formulaire_password" type="password" id="pass" name="password" placeholder="Password" minlength="8" required />
+                    </div>
 
-          
-
+                    <button>
+                        <span>Connection</span>
+                    </button>
+                </form>                 
+            </div>
+               
+  
 
             <a id="afficherFormulaire" href="site/interface/connection/formulaire_connection.php">me connecter</a>
         </div>
@@ -38,9 +43,9 @@
         <script>
         $(document).ready(function() {
             $('#afficherFormulaire').click(function(event) {
-                event.preventDefault(); // Empêche le comportement par défaut du lien
-                $('.formulaire').show(); // Affiche le formulaire
-                $(this).hide(); // Masque le lien
+                event.preventDefault(); 
+                $('.formulaire_conteneur').show();
+                $(this).hide(); 
             });
         });
     </script>
