@@ -16,7 +16,7 @@
     <body>
         <?php
 
-        $file_path = '../../dhcp/dhcpd.conf';
+        $file_path = '../../dhcp/dhcpd_hosts.conf';
 
         $config = file_get_contents($file_path);
 
