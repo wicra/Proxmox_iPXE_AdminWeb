@@ -29,7 +29,7 @@
                         <input  class="formulaire_password" type="password" id="pass" name="password" placeholder="Password" minlength="8" required />
                     </div>
 
-                    <button>
+                    <button class="connection_bouton">
                         <span>Connection</span>
                     </button>
                 </form>                 

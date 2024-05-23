@@ -1,35 +1,29 @@
 <?php
-// Vérifier si les données POST existent
-if (isset($_POST['host_name']) && isset($_POST['mac_address']) && isset($_POST['new_ip'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer les données transmises via POST
     $host_name = $_POST['host_name'];
     $mac_address = $_POST['mac_address'];
     $new_ip = $_POST['new_ip'];
 
     // Chemin vers le fichier de configuration DHCP
-    //$file_path = '/etc/dhcp/dhcpd.conf';
-    $file_path = '../../dhcp/dhcpd.conf';
-    
-    // Lire le fichier de configuration
+    $file_path = '../../../dhcp/dhcpd.conf';
+
+    // Lire le contenu du fichier
     $config = file_get_contents($file_path);
 
-    if ($config === false) {
-        die("Impossible de lire le fichier de configuration.");
+    // Remplacer l'adresse IP existante avec la nouvelle adresse IP
+    $config = preg_replace('/host\s+' . $host_name . '\s*{[^}]*hardware\s+ethernet\s+' . $mac_address . ';[^}]*fixed-address\s+[0-9.]+;[^}]*}/mi', 'host ' . $host_name . ' {' . PHP_EOL . '    hardware ethernet ' . $mac_address . ';' . PHP_EOL . '    fixed-address ' . $new_ip . ';' . PHP_EOL . '}', $config);
+
+    // Écrire les modifications dans le fichier
+    $result = file_put_contents($file_path, $config);
+
+    // Vérifier si l'écriture a réussi
+    if ($result !== false) {
+        echo "L'adresse IP a été modifiée avec succès.";
+    } else {
+        echo "Une erreur s'est produite lors de la modification de l'adresse IP.";
     }
-
-    // Expression régulière pour trouver et remplacer l'adresse IP fixe
-    $pattern = '/(host\s+' . preg_quote($host_name) . '\s*\{[^}]*hardware\s+ethernet\s+' . preg_quote($mac_address) . ';[^}]*fixed-address\s+)[0-9.]+(;[^}]*\})/mi';
-    $replacement = '${1}' . $new_ip . '${2}';
-
-    // Remplacer l'adresse IP fixe
-    $new_config = preg_replace($pattern, $replacement, $config);
-
-    // Écrire le nouveau fichier de configuration
-    if (file_put_contents($file_path, $new_config) === false) {
-        die("Impossible d'écrire dans le fichier de configuration.");
-    }
-
-    echo "Adresse IP fixe mise à jour avec succès.";
 } else {
-    echo "Données manquantes.";
+    echo "Méthode non autorisée.";
 }
 ?>

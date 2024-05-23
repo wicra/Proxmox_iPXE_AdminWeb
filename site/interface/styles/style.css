@@ -85,7 +85,7 @@ body{
 
 
 /*BUTTON*/
-button {
+.connection_bouton {
     all: unset;
     position: relative;
     height: 4em;
@@ -103,7 +103,7 @@ button {
     cursor: pointer;
   }
   
-  button::before {
+  .connection_bouton::before {
     content: "";
     position: absolute;
     top: 3px;
@@ -119,14 +119,14 @@ button {
     border-top: 1px solid #0009;
   }
   
-  button span {
+  .connection_bouton span {
     font-size: 1.5rem;
     color: white;
     position: relative;
     margin-top: -8px;
   }
 
-  button:active {
+  .connection_bouton:active {
     transform: translateY(5px);
     transition: 200ms;
   }
