@@ -11,6 +11,7 @@
         <!-- ICON -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <?php
@@ -69,15 +70,19 @@
     ?>
 
 
+
 <script>
     $(document).ready(function() {
         $('.fa-gears').click(function(event) {
-            event.preventDefault(); 
-            $('.formulaire_ip_conteneur').show();
-            $(this).hide(); 
+            event.preventDefault();
+            var $icon = $(this);
+            var $formContainer = $icon.next('.formulaire_ip_conteneur');
+            $formContainer.show();
+            $icon.hide();
         });
     });
 </script>
+
 
 
 <style>
