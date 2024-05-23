@@ -1,15 +1,11 @@
 #!/bin/bash
 
 # Fichier de log DHCP
-LOG_FILE="/var/log/syslog"
+#LEASES_FILE="/var/lib/dhcp/dhcpd.leases"
+LEASES_FILE="dhcpd.leases"
 
-# Fichier de configuration DHCP
-DHCP_CONF="/etc/dhcp/dhcpd.conf"
-
-# Extraction des adresses MAC des logs
-grep "DHCPDISCOVER" $LOG_FILE | awk '{print $10}' | sort | uniq > /tmp/mac_addresses.txt
-
-
+# Extraction des adresses MAC des leases DHCP
+grep "hardware ethernet" $LEASES_FILE | awk '{print $3}' | sort | uniq > /tmp/mac_addresses.txt
 
 # Déclarer un tableau pour suivre les adresses IP attribuées
 declare -A assigned_ips
@@ -29,8 +25,8 @@ generate_unique_ip() {
 
 # Ajout des adresses MAC au fichier de configuration DHCP
 while read -r mac; do
-    # Récupérer le nom d'hôte associé à l'adresse MAC
-    hostname=$(grep $mac $LOG_FILE | awk '{print $8}')
+    # Récupérer le nom d'hôte associé à l'adresse MAC depuis le leases DHCP
+    hostname=$(grep -B 5 "$mac" $LEASES_FILE | grep "client-hostname" | awk '{print $2}')
     if [ -z "$hostname" ]; then
         echo "Aucun nom d'hôte trouvé pour l'adresse MAC $mac, attribution d'un nom aléatoire"
         # Générer un nom d'hôte aléatoire
