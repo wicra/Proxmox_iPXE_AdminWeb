@@ -29,14 +29,20 @@
             </form>
             
 
-            <script>
-                document.getElementById()
-            </script>
+          
 
 
-            <a class="bienvenue_bouton" href="site/interface/connection/formulaire_connection.php">me connecter</a>
+            <a id="afficherFormulaire" href="site/interface/connection/formulaire_connection.php">me connecter</a>
         </div>
         
-        
+        <script>
+        $(document).ready(function() {
+            $('#afficherFormulaire').click(function(event) {
+                event.preventDefault(); // Empêche le comportement par défaut du lien
+                $('.formulaire').show(); // Affiche le formulaire
+                $(this).hide(); // Masque le lien
+            });
+        });
+    </script>
     </body>
 </html>
