@@ -130,3 +130,33 @@ button {
     transform: translateY(5px);
     transition: 200ms;
   }
+
+
+
+/*TABLEAU D'HOTE*/
+.titre_tableau{
+    font-size: 50px;
+    text-transform: uppercase;
+
+}
+
+.tableau{
+    border: solid var(--CouleurFont);
+}
+.col_name{
+    padding: 1vh 2vw;
+    text-align: center;
+    font-size: 39px;
+    
+}
+
+.col_mac{
+    padding: 1vh 2vw;
+    text-align: center;
+    font-size: 39px;
+}
+.col_ip_fixe{
+    padding: 1vh 2vw;
+    text-align: center;
+    font-size: 39px;
+}
