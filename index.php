@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
         <!-- CSS -->
-        <link rel="stylesheet" href="site/interface/styles/style.css">
+        <link rel="stylesheet" href="./site/interface/styles/style.css">
 
         <!-- FONT -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,25 @@
     </head>
 
     <body>
-        <h1>Bienvenue sur l'interface Admin de conf</h1>
-        <a href="site/interface/connection/formulaire_connection.php">me connecter</a>
+
+        <div class="bienvenue">
+            <h1 class="bienvenue_titre">Bienvenue sur l'interface Admin de conf</h1>
+
+            
+            <form  class="formulaire" action="">
+                <input  class="formulaire_login" type="text" id="username" name="username" placeholder="Login" />
+                <input  class="formulaire_password" type="password" id="pass" name="password" placeholder="Password" minlength="8" required />
+            </form>
+            
+
+            <script>
+                document.getElementById()
+            </script>
+
+
+            <a class="bienvenue_bouton" href="site/interface/connection/formulaire_connection.php">me connecter</a>
+        </div>
+        
+        
     </body>
 </html>
