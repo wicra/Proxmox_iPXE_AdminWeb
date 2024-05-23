@@ -1,93 +1,42 @@
 <?php
-// Fonction pour lire et parser le fichier dhcp.conf
-function lireEtParserDhcpConf($filepath) {
-    $pcsConnus = [];
-    if (file_exists($filepath)) {
-        $lines = file($filepath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        $currentHost = null;
+// Chemin vers le fichier de configuration DHCP
+$file_path = '/etc/dhcp/dhcpd.conf';
 
-        foreach ($lines as $line) {
-            $line = trim($line);
+// Lire le fichier de configuration
+$config = file_get_contents($file_path);
 
-            // Détection de la section d'un hôte
-            if (preg_match('/^host\s+(\w+)\s*{/', $line, $matches)) {
-                $currentHost = ['name' => $matches[1], 'mac' => '', 'ip' => ''];
-            }
-
-            // Extraction des adresses MAC et IP
-            if ($currentHost) {
-                if (preg_match('/hardware\s+ethernet\s+([\dA-Fa-f:]+);/', $line, $matches)) {
-                    $currentHost['mac'] = $matches[1];
-                }
-                if (preg_match('/fixed-address\s+([\d.]+);/', $line, $matches)) {
-                    $currentHost['ip'] = $matches[1];
-                }
-                // Fin de la section d'un hôte
-                if (strpos($line, '}') !== false) {
-                    $pcsConnus[] = $currentHost;
-                    $currentHost = null;
-                }
-            }
-        }
-    } else {
-        echo "Le fichier $filepath n'a pas été trouvé.";
-    }
-
-    return $pcsConnus;
+if ($config === false) {
+    die("Impossible de lire le fichier de configuration.");
 }
 
-// Chemin vers le fichier dhcp.conf
-$fichierDhcp = '/etc/dhcp/dhcpd.conf';
+// Expression régulière pour extraire les informations des hôtes
+$pattern = '/host\s+(\w+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
 
-// Lire et parser le fichier dhcp.conf
-$pcsConnus = lireEtParserDhcpConf($fichierDhcp);
-?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>PCs Connus - dhcp.conf</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<body>
-    <h1>PCs Connus</h1>
-    <table>
-        <thead>
+// Trouver tous les hôtes correspondants
+if (preg_match_all($pattern, $config, $matches, PREG_SET_ORDER)) {
+    echo "<h1>Liste des hôtes DHCP</h1>";
+    echo "<table border='1'>
             <tr>
-                <th>Nom</th>
-                <th>Adresse IP</th>
+                <th>Nom de l'hôte</th>
                 <th>Adresse MAC</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($pcsConnus)): ?>
-                <?php foreach ($pcsConnus as $pc): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($pc['name']); ?></td>
-                        <td><?php echo htmlspecialchars($pc['ip']); ?></td>
-                        <td><?php echo htmlspecialchars($pc['mac']); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="3">Aucun PC connu trouvé.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-</body>
-</html>
+                <th>Adresse IP fixe</th>
+            </tr>";
+    
+    // Parcourir chaque hôte trouvé
+    foreach ($matches as $match) {
+        $host_name = $match[1];
+        $hardware_ethernet = $match[2];
+        $fixed_address = $match[3];
+        
+        echo "<tr>
+                <td>{$host_name}</td>
+                <td>{$hardware_ethernet}</td>
+                <td>{$fixed_address}</td>
+              </tr>";
+    }
+    
+    echo "</table>";
+} else {
+    echo "Aucun hôte trouvé dans le fichier de configuration.";
+}
+?>

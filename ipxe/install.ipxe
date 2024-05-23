@@ -1,7 +1,7 @@
 #!ipxe
 
 #####################################
-# /etc/dhcp/dhcpd_attribution.sh #
+# /var/www/html/install.ipxe #
 ####################################
 
 
