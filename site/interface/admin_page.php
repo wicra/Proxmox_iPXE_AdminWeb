@@ -83,8 +83,16 @@
             $formContainer.show();
             $icon.hide();
         });
-    });
 
+        $('.close-form').click(function(event) {
+            event.preventDefault();
+            var $closeIcon = $(this);
+            var $formContainer = $closeIcon.closest('.formulaire_ip_conteneur');
+            var $icon = $formContainer.prev('.fa-gears');
+            $formContainer.hide();
+            $icon.show();
+        });
+    });
 
 </script>
 
