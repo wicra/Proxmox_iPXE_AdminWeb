@@ -54,8 +54,11 @@
                             <td class=\"col_ip_fixe\">
                                 <i class=\"fa-solid fa-gears\"></i>
                                 <div class=\"formulaire_ip_conteneur\">
-                                    <input  class=\"formulaire_ip\" type=\"text\" id=\"formulaire_ip\" name=\"formulaire_ip\" placeholder=\"Nouvelle IP\" />
-                                    <input type=\"checkbox\" class=\"ui-checkbox\">
+                                    <div class=\"ip_check\">
+                                        <input  class=\"formulaire_ip\" type=\"text\" id=\"formulaire_ip\" name=\"formulaire_ip\" placeholder=\"Nouvelle IP\" />
+                                        <input type=\"checkbox\" class=\"ui-checkbox\">
+                                        <i class=\"fa-solid fa-xmark\"></i>
+                                    </div>
                                 </div>
                             </td>
                         </tr>";
@@ -81,6 +84,8 @@
             $icon.hide();
         });
     });
+
+
 </script>
 
 
@@ -140,6 +145,13 @@ th{
     font-size: 35px;
 }
 
+
+.ip_check{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2vw;
+}
 
 .formulaire_ip_conteneur{
     display:none;
