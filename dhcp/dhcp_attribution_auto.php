@@ -8,6 +8,26 @@ $DHCP_CONF = "dhcpd_hosts.conf";
 // Date à partir de laquelle commencer à traiter (au format Y/m/d H:i:s)
 $start_date = strtotime("2024/01/05 00:00:00");
 
+
+
+
+// Récupérer la date de début du formulaire
+if (isset($_POST['start_date'])) {
+    $start_date = $_POST['start_date'];
+} else {
+    die("Erreur : La date de début n'a pas été fournie.\n");
+}
+
+// Convertir la date de début en timestamp
+$start_timestamp = strtotime($start_date);
+if ($start_timestamp === false) {
+    die("Erreur : La date de début est invalide.\n");
+}
+
+
+
+
+
 // Vérification de l'existence des fichiers
 if (!file_exists($LEASES_FILE)) {
     die("Erreur : Le fichier $LEASES_FILE n'existe pas.\n");
@@ -120,3 +140,21 @@ fclose($file_handle);
 echo count($recent_connections) . " entrées ajoutées au fichier $DHCP_CONF.\n";
 ?>
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>Changer la date et exécuter le script</h1>
+    <form action="execute.php" method="post">
+        <label for="start_date">Date de début (YYYY/MM/DD HH:MM:SS) :</label>
+        <input type="text" id="start_date" name="start_date" required>
+        <button type="submit">Lancer le script</button>
+    </form>
+</body>
+</html>
