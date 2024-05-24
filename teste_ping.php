@@ -1,13 +1,15 @@
 <?php
     // Adresse IP du PC à vérifier
     $ip_address = "192.168.1.100";
+    $port = 80; // Port HTTP par défaut
 
-    // Exécute la commande ping
-    exec("ping -c 1 $ip_address", $output, $result);
+    // Tentative de connexion au PC
+    $connection = @fsockopen($ip_address, $port, $errno, $errstr, 2); // Timeout de 2 secondes
 
-    // Vérifie le résultat du ping
-    if ($result == 0) {
+    // Vérifie si la connexion a réussi
+    if ($connection) {
         echo "<p>L'adresse IP $ip_address est active.</p>";
+        fclose($connection);
     } else {
         echo "<p>L'adresse IP $ip_address est inactive.</p>";
     }
