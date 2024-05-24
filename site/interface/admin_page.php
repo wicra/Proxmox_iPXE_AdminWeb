@@ -15,43 +15,15 @@
     </head>
     <body>
 
-    <div class="formulaire_date_conteneur">
-        <h1 class="formulaire_date_titre">Changer la date et exécuter le script</h1>
-        <form class="formulaire_date" action="../../dhcp/dhcp_attribution_auto.php" method="post">
-            <label for="start_date">Date de début (YYYY/MM/DD) :</label>
-            <input type="text" id="start_date" name="start_date" required>
-            <button type="submit">Lancer le script</button>
-        </form>        
-    </div>  
-    <style>
-        body{
-            padding: 8vh 5vw;
-        }
-        .formulaire_date_conteneur{
-            display:flex;
-            flex-direction: column;
-            text-transform: uppercase;
-            /* justify-content:center;
-            align-items:center; */
-        }
+        <div class="formulaire_date_conteneur">
+            <h1 class="formulaire_date_titre">Changer la date et exécuter le script</h1>
+            <form class="formulaire_date" action="../../dhcp/dhcp_attribution_auto.php" method="post">
+                <label for="start_date">Date de début (YYYY/MM/DD) :</label>
+                <input type="text" id="start_date" name="start_date" required>
+                <button type="submit">Lancer le script</button>
+            </form>        
+        </div>  
 
-        .formulaire_date{
-            gap: 4vw;
-            display: flex;
-            align-items: center;
-        }
-
-        .formulaire_date_titre{
-            font-size: 80px;
-            text-transform: uppercase;
-            padding: 5vh 0 0vh 0;
-        }
-
-        .formulaire_date label{
-            text-align: center;
-            font-size: 35px;
-        }
-    </style>  
         <?php
         // FORMULAIRE DE DATE DE DEBUT DE TRAITEMENT
 
@@ -74,6 +46,7 @@
                     <table border='1'>
                         <tr class=\"tableau\">
                             <th class=\"col_name\" >Nom de l'hôte</th>
+                            <th class=\"col_etat\">Etat</th>
                             <th class=\"col_os\">Hist OS</th>
                             <th class=\"col_mac\">@ MAC</th>
                             <th class=\"col_ip_fixe\">@ IP fixe</th>
@@ -86,10 +59,9 @@
                 $fixed_address = $match[3];
 
                 echo "<tr class=\"tableau\" >
-                        <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i>{$host_name}</td>
-                        <td class=\"col_os\">
-                            <i class=\"fa-brands fa-windows\"></i>
-                        </td>
+                        <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i><a href=\"https://{$fixed_address}:8006\">{$host_name}</a></td>
+                        <td class=\"col_etat\">actif</td>
+                        <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
                         <td class=\"col_mac\">{$hardware_ethernet}</td>
                         <td class=\"col_ip_fixe\">{$fixed_address}</td>
                         <td class=\"col_ip_fixe\">
@@ -113,7 +85,7 @@
             echo "Aucun hôte trouvé dans le fichier de configuration.";
         }
         ?>
-
+        
         <script>
 
             // AFFICHAGE FORMULAIRE DE CHANGEMENT IP
@@ -158,12 +130,41 @@
         </script>
 
         <style>
+
+
+        body{
+            padding: 8vh 5vw;
+        }
+
+        /* FOMUAIRE DATE */
+        .formulaire_date_conteneur{
+            display:flex;
+            flex-direction: column;
+            text-transform: uppercase;
+        }
+
+        .formulaire_date{
+            gap: 4vw;
+            display: flex;
+            align-items: center;
+        }
+
+        .formulaire_date_titre{
+            font-size: 80px;
+            text-transform: uppercase;
+            padding: 5vh 0 0vh 0;
+        }
+
+        .formulaire_date label{
+            text-align: center;
+            font-size: 35px;
+        }
+ 
         /*TABLEAU D'HOTE*/
         .tableau_conteneur{
             display: flex;
             flex-direction: column;
-            /* justify-content:center;
-            align-items:center; */
+
         }
 
         th{
@@ -188,13 +189,17 @@
             display: flex;
         }
 
+        .col_name a{
+            color:var(--CouleurSecondaire);
+        }
+
         .col_name i{
             padding: 1vh 2vw;
             text-align: center;
             font-size: 35px;
         }
 
-        .col_mac,.col_ip_fixe,.col_modif_ip,.col_os{
+        .col_mac,.col_ip_fixe,.col_modif_ip,.col_os,.col_etat{
             padding: 1vh 2vw;
             text-align: center;
             font-size: 35px;

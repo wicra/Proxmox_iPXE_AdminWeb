@@ -2,7 +2,7 @@
 @font-face
 {
     font-family: 'Micro5';
-    src: url('../fonts/Micro5-Regular.ttf');
+    src: url('../fonts/BarlowCondensed-Regular.ttf');
 }
 
 @font-face
@@ -14,7 +14,7 @@
 :root {
     --CouleurFont:white;
     --CouleurPrimaire: black;
-    --CouleurSecondaire: #A6A6A6;
+    --CouleurSecondaire: #a53d3d;
 	--FontPrimaire: 'Micro5'; 
 	--FontSeconfaire: 'Rajdhani', sans-serif;
     --FontOccasionnelle:'Sedgwick Ave', cursive;
