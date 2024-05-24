@@ -14,8 +14,50 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
-        <?php
 
+    <div class="formulaire_date_conteneur">
+        <h1 class="formulaire_date_titre">Changer la date et exécuter le script</h1>
+        <form class="formulaire_date" action="../../dhcp/dhcp_attribution_auto.php" method="post">
+            <label for="start_date">Date de début (YYYY/MM/DD) :</label>
+            <input type="text" id="start_date" name="start_date" required>
+            <button type="submit">Lancer le script</button>
+        </form>        
+    </div>  
+    <style>
+        body{
+            padding: 8vh 5vw;
+        }
+        .formulaire_date_conteneur{
+            display:flex;
+            flex-direction: column;
+            text-transform: uppercase;
+            /* justify-content:center;
+            align-items:center; */
+        }
+
+        .formulaire_date{
+            gap: 4vw;
+            display: flex;
+            align-items: center;
+        }
+
+        .formulaire_date_titre{
+            font-size: 80px;
+            text-transform: uppercase;
+            padding: 5vh 0 0vh 0;
+        }
+
+        .formulaire_date label{
+            text-align: center;
+            font-size: 35px;
+        }
+    </style>  
+        <?php
+        // FORMULAIRE DE DATE DE DEBUT DE TRAITEMENT
+
+
+
+        // TABLEAU D'AFFICHAGE DES HOSTS
         $file_path = '../../dhcp/dhcpd_hosts.conf';
 
         $config = file_get_contents($file_path);
@@ -73,6 +115,8 @@
         ?>
 
         <script>
+
+            // AFFICHAGE FORMULAIRE DE CHANGEMENT IP
             $(document).ready(function() {
                 $('.fa-gears').click(function(event) {
                     event.preventDefault();
@@ -82,6 +126,7 @@
                     $icon.hide();
                 });
 
+                // MASQUAGE FORMULAIRE DE CHANGEMENT IP
                 $('.fa-xmark').click(function(event) {
                     event.preventDefault();
                     var $closeIcon = $(this);
@@ -117,8 +162,8 @@
         .tableau_conteneur{
             display: flex;
             flex-direction: column;
-            justify-content:center;
-            align-items:center;
+            /* justify-content:center;
+            align-items:center; */
         }
 
         th{
@@ -128,6 +173,7 @@
         .titre_tableau{ 
             font-size: 80px;
             text-transform: uppercase;
+            padding: 5vh 0 0vh 0;
         }
 
         .tableau{
@@ -135,7 +181,7 @@
         }
 
         .col_name{
-            justify-content: center;
+            justify-content: flex-start;
             padding: 1vh 2vw;
             font-size: 35px;
             align-items: center;

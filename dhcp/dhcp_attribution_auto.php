@@ -6,7 +6,7 @@ $LEASES_FILE = "dhcpd.leases";
 $DHCP_CONF = "dhcpd_hosts.conf";
 
 // Date à partir de laquelle commencer à traiter (au format Y/m/d H:i:s)
-$start_date = strtotime("2024/01/05 00:00:00");
+//$start_date = strtotime("2024/01/05 00:00:00");
 
 
 
@@ -149,12 +149,7 @@ echo count($recent_connections) . " entrées ajoutées au fichier $DHCP_CONF.\n"
     <title>Document</title>
 </head>
 <body>
-    
-    <h1>Changer la date et exécuter le script</h1>
-    <form action="execute.php" method="post">
-        <label for="start_date">Date de début (YYYY/MM/DD HH:MM:SS) :</label>
-        <input type="text" id="start_date" name="start_date" required>
-        <button type="submit">Lancer le script</button>
-    </form>
+
+
 </body>
 </html>
