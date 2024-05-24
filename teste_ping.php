@@ -67,27 +67,31 @@
         
                 // Vérifier l'état de l'adresse IP
                 $pc_state = pingIP($fixed_address);
-        
-                echo "<tr class=\"tableau\" >
-                        <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i><a href=\"https://{$fixed_address}:8006\">{$host_name}</a></td>
-                        <td class=\"col_etat\">$pc_state</td>
-                        <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
-                        <td class=\"col_mac\">{$hardware_ethernet}</td>
-                        <td class=\"col_ip_fixe\">{$fixed_address}</td>
-                        <td class=\"col_ip_fixe\">
-                            <i class=\"fa-solid fa-gears\"></i>
-                            <div class=\"formulaire_ip_conteneur\">
-                                <form class=\"ip_change_form\">
-                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                    <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
-                                    <button type=\"submit\">Modifier</button>
-                                    <i class=\"fa-solid fa-xmark\"></i>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>";
-            }
+    
+                // Créer le lien en fonction de l'état du PC
+                $link = ($pc_state == "actif") ? "https://{$fixed_address}:8006" : "#";
+
+                    echo "<tr class=\"tableau\" >
+                            <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i><a href=\"$link\">{$host_name}</a></td>
+                            <td class=\"col_etat\">$pc_state</td>
+                            <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
+                            <td class=\"col_mac\">{$hardware_ethernet}</td>
+                            <td class=\"col_ip_fixe\">{$fixed_address}</td>
+                            <td class=\"col_ip_fixe\">
+                                <i class=\"fa-solid fa-gears\"></i>
+                                <div class=\"formulaire_ip_conteneur\">
+                                    <form class=\"ip_change_form\">
+                                        <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                        <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                        <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
+                                        <button type=\"submit\">Modifier</button>
+                                        <i class=\"fa-solid fa-xmark\"></i>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>";
+                }
+    
         
             echo "</table>
                 </div>";
