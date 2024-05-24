@@ -29,7 +29,6 @@
 
 
 
-        // TABLEAU D'AFFICHAGE DES HOSTS
         // Fonction pour exécuter un ping vers une adresse IP et renvoyer l'état
         function pingIP($ip_address) {
             exec("ping -c 1 $ip_address", $output, $result);

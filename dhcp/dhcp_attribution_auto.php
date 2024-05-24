@@ -5,29 +5,6 @@ $LEASES_FILE = "dhcpd.leases";
 // Fichier de configuration DHCP
 $DHCP_CONF = "dhcpd_hosts.conf";
 
-// Date à partir de laquelle commencer à traiter (au format Y/m/d H:i:s)
-//$start_date = strtotime("2024/01/05 00:00:00");
-
-
-
-
-// Récupérer la date de début du formulaire
-if (isset($_POST['start_date'])) {
-    $start_date = $_POST['start_date'];
-} else {
-    die("Erreur : La date de début n'a pas été fournie.\n");
-}
-
-// Convertir la date de début en timestamp
-$start_timestamp = strtotime($start_date);
-if ($start_timestamp === false) {
-    die("Erreur : La date de début est invalide.\n");
-}
-
-
-
-
-
 // Vérification de l'existence des fichiers
 if (!file_exists($LEASES_FILE)) {
     die("Erreur : Le fichier $LEASES_FILE n'existe pas.\n");
@@ -50,8 +27,17 @@ preg_match_all('/lease ([0-9.]+) {([^}]*)}/s', $leases_content, $matches);
 // Tableau pour stocker la connexion la plus récente pour chaque adresse MAC
 $recent_connections = [];
 
-// Tableau pour stocker les adresses MAC pour lesquelles une configuration a déjà été ajoutée
-$added_macs = [];
+// Lire le contenu du fichier de configuration DHCP
+$dhcp_conf_content = file_get_contents($DHCP_CONF);
+
+// Vérifier si la lecture du fichier a réussi
+if ($dhcp_conf_content === false) {
+    die("Erreur : Impossible de lire le fichier $DHCP_CONF.\n");
+}
+
+// Extraire les adresses MAC déjà présentes dans le fichier de configuration
+preg_match_all('/hardware ethernet ([0-9a-f:]+);/i', $dhcp_conf_content, $existing_mac_matches);
+$existing_macs = $existing_mac_matches[1];
 
 // Boucler à travers les baux DHCP pour chaque adresse MAC
 foreach ($matches[1] as $index => $ip_address) {
@@ -61,33 +47,32 @@ foreach ($matches[1] as $index => $ip_address) {
     preg_match('/starts \d+ (\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2});/', $lease_info, $start_matches);
     $start_time = strtotime($start_matches[1]);
 
-    // Vérifier si la date de début est postérieure à la date spécifiée
-    if ($start_time >= $start_date) {
-        // Extraire l'adresse MAC
-        preg_match('/hardware ethernet (.*?);/', $lease_info, $mac_matches);
-        $mac_address = $mac_matches[1];
+    // Extraire l'adresse MAC
+    preg_match('/hardware ethernet (.*?);/', $lease_info, $mac_matches);
+    $mac_address = $mac_matches[1];
 
-        // Extraire le nom d'hôte
-        preg_match('/client-hostname "(.*?)";/', $lease_info, $hostname_matches);
-        $hostname = isset($hostname_matches[1]) ? $hostname_matches[1] : "";
+    // Ignorer cette adresse MAC si elle est déjà présente dans le fichier de configuration
+    if (in_array($mac_address, $existing_macs)) {
+        continue;
+    }
 
-        // Si aucun nom d'hôte n'est trouvé, attribuer un nom générique
-        if (empty($hostname)) {
-            $hostname = "machine_" . substr(str_replace(":", "", $mac_address), -6);
-        }
+    // Extraire le nom d'hôte
+    preg_match('/client-hostname "(.*?)";/', $lease_info, $hostname_matches);
+    $hostname = isset($hostname_matches[1]) ? $hostname_matches[1] : "";
 
-        // Vérifier si cette adresse MAC a déjà été ajoutée
-        if (!in_array($mac_address, $added_macs)) {
-            // Vérifier si cette connexion est plus récente que celle précédemment enregistrée pour cette adresse MAC
-            if (!isset($recent_connections[$mac_address]) || $start_time > $recent_connections[$mac_address]['start_time']) {
-                // Enregistrer cette connexion comme la plus récente
-                $recent_connections[$mac_address] = [
-                    'ip_address' => $ip_address,
-                    'start_time' => $start_time,
-                    'hostname' => $hostname
-                ];
-            }
-        }
+    // Si aucun nom d'hôte n'est trouvé, attribuer un nom générique
+    if (empty($hostname)) {
+        $hostname = "machine_" . substr(str_replace(":", "", $mac_address), -6);
+    }
+
+    // Vérifier si cette connexion est plus récente que celle précédemment enregistrée pour cette adresse MAC
+    if (!isset($recent_connections[$mac_address]) || $start_time > $recent_connections[$mac_address]['start_time']) {
+        // Enregistrer cette connexion comme la plus récente
+        $recent_connections[$mac_address] = [
+            'ip_address' => $ip_address,
+            'start_time' => $start_time,
+            'hostname' => $hostname
+        ];
     }
 }
 
@@ -139,17 +124,3 @@ fclose($file_handle);
 // Afficher le nombre d'entrées ajoutées au fichier de configuration DHCP
 echo count($recent_connections) . " entrées ajoutées au fichier $DHCP_CONF.\n";
 ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
-
-</body>
-</html>
