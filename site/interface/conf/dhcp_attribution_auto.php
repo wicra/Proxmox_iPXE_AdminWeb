@@ -1,9 +1,9 @@
 <?php
 
 // Fichier de log DHCP/var/lib/dhcp/
-$LEASES_FILE = "dhcpd.leases";
+$LEASES_FILE = "../../../dhcp/dhcpd.leases";
 // Fichier de configuration DHCP
-$DHCP_CONF = "dhcpd_hosts.conf";
+$DHCP_CONF = "../../../dhcp/dhcpd_hosts.conf";
 
 // Vérification de l'existence des fichiers
 if (!file_exists($LEASES_FILE)) {
@@ -94,28 +94,32 @@ foreach ($recent_connections as $mac_address => $connection) {
     fwrite($file_handle, "    fixed-address $ip_address;\n");
     // Ajouter la configuration PXE Boot
     fwrite($file_handle, "    # PXE Boot\n");
-    fwrite($file_handle, "    if option arch = 00:07 or option arch = 00:09 {\n");
-    fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
-    fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
-    fwrite($file_handle, "        } else {\n");
-    fwrite($file_handle, "            filename \"ipxe/ipxe.efi\";\n");
-    fwrite($file_handle, "        }\n");
-    fwrite($file_handle, "    }\n");
-    fwrite($file_handle, "    else if option arch = 00:06 {\n");
-    fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
-    fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
-    fwrite($file_handle, "        } else {\n");
-    fwrite($file_handle, "            filename \"ipxe/ipxe32.efi\";\n");
-    fwrite($file_handle, "        }\n");
-    fwrite($file_handle, "    }\n");
-    fwrite($file_handle, "    else {\n");
-    fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
-    fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
-    fwrite($file_handle, "        } else {\n");
-    fwrite($file_handle, "            filename \"undionly.kpxe\";\n");
-    fwrite($file_handle, "        }\n");
-    fwrite($file_handle, "    }\n");
-    fwrite($file_handle, "}\n\n");
+    fwrite($file_handle, "    include(\"condition_pxe_boot.conf\");\n");
+    fwrite($file_handle, "};\n");
+
+    // fwrite($file_handle, "    # PXE Boot\n");
+    // fwrite($file_handle, "    if option arch = 00:07 or option arch = 00:09 {\n");
+    // fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
+    // fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
+    // fwrite($file_handle, "        } else {\n");
+    // fwrite($file_handle, "            filename \"ipxe/ipxe.efi\";\n");
+    // fwrite($file_handle, "        }\n");
+    // fwrite($file_handle, "    }\n");
+    // fwrite($file_handle, "    else if option arch = 00:06 {\n");
+    // fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
+    // fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
+    // fwrite($file_handle, "        } else {\n");
+    // fwrite($file_handle, "            filename \"ipxe/ipxe32.efi\";\n");
+    // fwrite($file_handle, "        }\n");
+    // fwrite($file_handle, "    }\n");
+    // fwrite($file_handle, "    else {\n");
+    // fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
+    // fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
+    // fwrite($file_handle, "        } else {\n");
+    // fwrite($file_handle, "            filename \"undionly.kpxe\";\n");
+    // fwrite($file_handle, "        }\n");
+    // fwrite($file_handle, "    }\n");
+    // fwrite($file_handle, "}\n\n");
 }
 
 // Fermer le fichier de configuration DHCP
