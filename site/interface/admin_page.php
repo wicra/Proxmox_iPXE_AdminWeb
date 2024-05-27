@@ -133,6 +133,27 @@ if(isset($_POST['deconnection'])){
                         }
                     }
                 }
+
+                                // Exécution du script shell
+                                exec('shell/ipScan.sh', $output, $return_var);
+                                if ($return_var !== 0) {
+                                    die("Erreur lors de l'exécution du script ipScan.sh");
+                                }
+                
+                                $file = fopen("ipScan.txt", "r");
+                                if (!$file) {
+                                    die("Impossible d'ouvrir le fichier ipScan.txt");
+                                }
+                
+                                $ip_addresses = [];
+                                while (($line = fgets($file)) !== false) {
+                                    $ip_addresses[] = trim($line);
+                                }
+                                fclose($file);
+                
+                                function pingIP($ip_address, $ip_addresses, $actif, $eteint) {
+                                    return in_array($ip_address, $ip_addresses) ? $actif : $eteint;
+                                }
                 // function pingIP($ip_address,$actif ,$eteint) {
                 //     exec("ping -c 1 $ip_address", $output, $result);
                     
