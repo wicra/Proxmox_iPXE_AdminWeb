@@ -88,6 +88,8 @@ if(isset($_POST['deconnection'])){
         <div id="emoji-container"></div>   
 
         <?php
+
+
             // TABLEAU D'AFFICHAGE DES HOSTS
             $file_path = '../../dhcp/dhcpd_hosts.conf';
 
@@ -114,30 +116,41 @@ if(isset($_POST['deconnection'])){
 
 
                 //Fonction pour exécuter un ping vers une adresse IP et renvoyer l'état
-                function pingIP($ip_address,$actif ,$eteint) {
-                    exec("ping -c 1 $ip_address", $output, $result);
-                    
-                    if($result == 0){
-                        
-                        return $actif ;
-                    }else{
-                        
-                        return $eteint;
+                 
+                exec('shell/ipScan.sh');
+                $file = fopen("ipScan.txt");
+
+                function verifEtat($file,$ip_address,$actif ,$eteint){
+                    foreach($file as $ligne)
+                    {
+                        if($ligne == $ip_address){
+                            $pc_state = $actif;
+                            break;
+                        }
+                        else{
+                            $pc_state = $eteint;
+                            break;
+                        }
                     }
-                    
-                    
                 }
+                // function pingIP($ip_address,$actif ,$eteint) {
+                //     exec("ping -c 1 $ip_address", $output, $result);
+                    
+                //     if($result == 0){
+                //         return $actif ;
+                //     }else{
+                //         return $eteint;
+                //     }
+                // }
+
                 foreach ($matches as $match) {
                     $host_name = $match[1];
                     $hardware_ethernet = $match[2];
                     $fixed_address = $match[3];
 
-                    
-            
                     $actif="<i class=\"fa-solid fa-circle-check\"></i>";
                     $eteint="<i class=\"fa-solid fa-plug\"></i>";
 
-                    
                     $pc_state = pingIP($fixed_address,$actif,$eteint);
 
                     //LIEN PROXMOX EN LIGNE STYLE
@@ -146,11 +159,9 @@ if(isset($_POST['deconnection'])){
                     }else{
                         $eteint_color ="color : var(--CouleurSecondaire);";
                     }
-
                     
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
-
 
                     echo "<tr class=\"tableau\" >
                             <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i>$link{$host_name}$link_close</td>
