@@ -109,7 +109,8 @@ if(isset($_POST['deconnection'])){
                 die("Impossible de lire le fichier de configuration.");
             }
 
-            $pattern = '/host\s+(\w+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
+            //$pattern = '/host\s+(\w+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
+
             $pattern = '/host\s+([a-zA-Z0-9_-]+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
 
             if (preg_match_all($pattern, $config, $matches, PREG_SET_ORDER)) {
@@ -128,7 +129,7 @@ if(isset($_POST['deconnection'])){
 
                 //Fonction pour exécuter un ping vers une adresse IP et renvoyer l'état
                  
-                //exec('../shell/ipScan.sh');//Changer le propriétaire du dossier projet
+                //shell_exec('../shell/ipScan.sh');//Changer le propriétaire du dossier projet
                 $file = file("../shell/ipScan.txt");
 
                 function verifEtat($file,$ip_address,$actif ,$eteint){
