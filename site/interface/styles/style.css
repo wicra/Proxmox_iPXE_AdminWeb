@@ -218,14 +218,22 @@ body{
 .tableau_conteneur{
     display: flex;
     flex-direction: column;
-
+    overflow-y: auto;
+    position: relative;
+    max-height: 500px;
 }
 
-
+table{
+    width: 100%;
+    border-collapse: collapse; 
+}
 
 th{
     text-transform:uppercase;
     background-color: var(--Couleur5) ;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .tableau{
@@ -235,9 +243,6 @@ th{
 
 .col_name a{
     color: var(--Couleur5);
-    /* <?php echo $eteint;
-        echo $eteint_color;
-    ?> */
 }
 
 .col_name i{
@@ -245,7 +250,6 @@ th{
     text-align: center;
     font-size: 35px;
     color: var(--CouleurFont);
-    /* <?php echo $eteint_color; ?> */
 }
 
 .col_header_name,.col_header_mac,.col_header_ip_fixe,.col_header_modif_ip,.col_header_os,.col_header_etat{
