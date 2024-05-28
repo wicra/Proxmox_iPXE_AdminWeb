@@ -171,6 +171,16 @@ body{
     gap: 5vw;
 }
 
+.nav_refresh{
+    background-color: #d68b45d0;
+    cursor: pointer;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border:  none;
+}
+.nav_refresh i{
+    font-size: 35px;
+}
 
 .nav_user{
     display: flex;

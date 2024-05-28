@@ -65,6 +65,20 @@ if(isset($_POST['deconnection'])){
                     </button>
                 </form>       
                 
+                <form method='post' action="">
+                    <button class="nav_refresh" name= 'refresh'>
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <?php
+                        if(isset($_POST['refresh'])){
+                            header("Refresh:0");
+                        }
+                    ?>                    
+                </form>
+
+                
+                
+
                 <?php
                     include('connection/connection_db.php');
                         // Assurez-vous que $_SESSION["username"] est protégé contre les injections SQL
@@ -75,6 +89,7 @@ if(isset($_POST['deconnection'])){
                         if ($result) {
                             echo "
                                 <div class=\"nav_user\">
+                                    
                                     <i class=\"fa-solid fa-user-tie\"></i>
                                     <h1 class=\"nav\">$user_connect</h1>
                                 </div>                            
@@ -105,86 +120,55 @@ if(isset($_POST['deconnection'])){
                 echo "<div class=\"tableau_conteneur\">
                         
                         <table >
-                            <tr class=\"tableau\">
-                                <th class=\"col_header_name\" >hôte</th>
-                                <th class=\"col_header_etat\">Etat</th>
-                                <th class=\"col_header_os\">OS</th>
-                                <th class=\"col_header_mac\">@ MAC</th>
-                                <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
-                                <th class=\"col_header_modif_ip\">@ IP_conf</th>
-                            </tr>";
+                            <thead>
+                                <tr class=\"tableau\">
+                                    <th class=\"col_header_name\" >hôte</th>
+                                    <th class=\"col_header_etat\">Etat</th>
+                                    <th class=\"col_header_os\">OS</th>
+                                    <th class=\"col_header_mac\">@ MAC</th>
+                                    <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
+                                    <th class=\"col_header_modif_ip\">@ IP_conf</th>
+                                </tr>
+                                
+                                </thead>";
 
 
-                //Fonction pour exécuter un ping vers une adresse IP et renvoyer l'état
-                 
-                exec('shell/ipScan.sh');
-                $file = fopen("ipScan.txt");
+                //Fonction pour verifier l'etat d'une machine 
+                //exec('../shell/ipScan.sh');
+                $file = file("../shell/ipScan.txt");
 
                 function verifEtat($file,$ip_address,$actif ,$eteint){
+                    $pc_state = $eteint;
                     foreach($file as $ligne)
-                    {
-                        if($ligne == $ip_address){
+                    {   
+                        $ligne = trim($ligne);
+                        if($ligne == trim($ip_address)){
                             $pc_state = $actif;
                             break;
                         }
-                        else{
-                            $pc_state = $eteint;
-                            break;
-                        }
                     }
+                    return $pc_state;
                 }
 
-                                // Exécution du script shell
-                                exec('shell/ipScan.sh', $output, $return_var);
-                                if ($return_var !== 0) {
-                                    die("Erreur lors de l'exécution du script ipScan.sh");
-                                }
-                
-                                $file = fopen("ipScan.txt", "r");
-                                if (!$file) {
-                                    die("Impossible d'ouvrir le fichier ipScan.txt");
-                                }
-                
-                                $ip_addresses = [];
-                                while (($line = fgets($file)) !== false) {
-                                    $ip_addresses[] = trim($line);
-                                }
-                                fclose($file);
-                
-                                function pingIP($ip_address, $ip_addresses, $actif, $eteint) {
-                                    return in_array($ip_address, $ip_addresses) ? $actif : $eteint;
-                                }
-                // function pingIP($ip_address,$actif ,$eteint) {
-                //     exec("ping -c 1 $ip_address", $output, $result);
-                    
-                //     if($result == 0){
-                //         return $actif ;
-                //     }else{
-                //         return $eteint;
-                //     }
-                // }
+
+
 
                 foreach ($matches as $match) {
                     $host_name = $match[1];
                     $hardware_ethernet = $match[2];
                     $fixed_address = $match[3];
 
-                    $actif="<i class=\"fa-solid fa-circle-check\"></i>";
-                    $eteint="<i class=\"fa-solid fa-plug\"></i>";
+                    $actif="<i style=\"color : var(--Couleur4);\" class=\"fa-solid fa-circle-check\"></i>";
+                    $eteint="<i style=\"color : var(--CouleurSecondaire);\" class=\"fa-solid fa-plug\"></i>";
 
-                    $pc_state = pingIP($fixed_address,$actif,$eteint);
+                    $pc_state = verifEtat($file, $fixed_address,$actif,$eteint);
 
-                    //LIEN PROXMOX EN LIGNE STYLE
-                    if($pc_state == $actif){
-                        $eteint_color ="color : var(--Couleur4);";
-                    }else{
-                        $eteint_color ="color : var(--CouleurSecondaire);";
-                    }
-                    
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
 
-                    echo "<tr class=\"tableau\" >
+                    echo "
+                    
+                        <tr class=\"tableau\" >
                             <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i>$link{$host_name}$link_close</td>
                             <td class=\"col_etat\">$pc_state</td>
                             <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
@@ -277,9 +261,9 @@ if(isset($_POST['deconnection'])){
                                 // Ajouter la classe pour l'animation
                                 $('.emoji-container').addClass('animate');
                                 // Actualiser la page après 2 secondes
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 2000);
+                                // setTimeout(function() {
+                                //     location.reload();
+                                // }, 2000);
                             },
                             error: function(xhr, status, error) {
                                 // Gérer les erreurs
@@ -292,11 +276,5 @@ if(isset($_POST['deconnection'])){
             });
         </script>
 
-        <style>
-            /* ICON STATUS */
-            .fa-plug, .fa-circle-check{
-                <?php echo $eteint_color; ?>
-            }
-        </style>
     </body>
 </html>
