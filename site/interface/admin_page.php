@@ -110,6 +110,7 @@ if(isset($_POST['deconnection'])){
             }
 
             $pattern = '/host\s+(\w+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
+            $pattern = '/host\s+([a-zA-Z0-9_-]+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
 
             if (preg_match_all($pattern, $config, $matches, PREG_SET_ORDER)) {
                 echo "<div class=\"tableau_conteneur\">
