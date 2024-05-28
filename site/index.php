@@ -9,12 +9,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
         <!-- CSS -->
-        <link rel="stylesheet" href="site/interface/styles/style.css">
+        <link rel="stylesheet" href="interface/styles/style.css">
     </head>
 
     <body>
         <?php
-            include('site/interface/connection/connection_db.php');
+            include('interface/connection/connection_db.php');
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -32,7 +32,7 @@
                     $_SESSION['login'] = $login ;
                     $_SESSION['password'] = $password ;
                     
-                    header("location: site/interface/admin_page.php");
+                    header("location: interface/admin_page.php");
                     exit(); 
                 } else {
                     header("location: index.php");
@@ -63,7 +63,7 @@
                 </form>                 
             </div>
 
-            <a id="afficherFormulaire" href="site/interface/connection/formulaire_connection.php">me connecter</a>
+            <a id="afficherFormulaire" href="interface/connection/formulaire_connection.php">me connecter</a>
         </div>
         
         <script>

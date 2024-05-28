@@ -7,18 +7,15 @@
 session_start();
 // Verif si user connecter si la variable $_SESSION comptien le username 
 if(!isset($_SESSION["login"])){
-    header("location: ../../index.php");
+    header("location: ../index.php");
 exit(); 
 }
 
 // déconnection
 if(isset($_POST['deconnection'])){
     session_destroy();
-    header('location: ../../index.php');
+    header('location: ../index.php');
 }
-
-
-
 
 ?>
 
@@ -43,17 +40,19 @@ if(isset($_POST['deconnection'])){
     </head>
 
     <body>
+
+    
+        
+
+
+       
         <div class="execute_scrip_conteneur">
             <h1 class="execute_titre">déploiement d'images</h1>
 
             <div class="nav_barre">
-                <form id="execute_script_bouton" class="execute" action="conf/dhcp_attribution_auto.php" method="post">
-                    <button class="nav_button_attribution" type="submit">
-                    
-                        Attribution ip
-                    </button>
-                </form>  
 
+                <button class="nav_button_attribution" id="nav_button_attribution" type="submit"  name="historique_dhcp">Attribution ip</button>
+                  
                 <form action="" method="post">
                     <button class="nav_refresh" name="refresh">
                         <i class="fa-solid fa-rotate-right"></i>
@@ -90,13 +89,17 @@ if(isset($_POST['deconnection'])){
                 ?>
             </div>
         </div>  
-
+        
         <!-- CONTENEUR ANIMATION -->
         <div id="emoji-container"></div>   
 
+        <!-- Ajout du  tableau contenant l'historique DHCP -->
+        <?php include("dhcpd_attribution_auto.php");?>
+      
+
+
+
         <?php
-
-
             // TABLEAU D'AFFICHAGE DES HOSTS
             $file_path = '../../dhcp/dhcpd_hosts.conf';
 
@@ -124,7 +127,7 @@ if(isset($_POST['deconnection'])){
 
                 //Fonction pour exécuter un ping vers une adresse IP et renvoyer l'état
                  
-                //exec('../shell/ipScan.sh');
+                //exec('../shell/ipScan.sh');//Changer le propriétaire du dossier projet
                 $file = file("../shell/ipScan.txt");
 
                 function verifEtat($file,$ip_address,$actif ,$eteint){
@@ -192,26 +195,39 @@ if(isset($_POST['deconnection'])){
 
 
         <script>
+            //MASQUER LE TABLEAU HISTORIQUE OU NON
+            let bouton = document.getElementById("nav_button_attribution");
+            let tableau = document.getElementById("tableau_historique_dhcp");
+            bouton.addEventListener("click", () => {
+            if(getComputedStyle(tableau).display != "none"){
+                tableau.style.display = "none";
+            } else {
+                tableau.style.display = "table";
+            }
+            })
+
+
+
             //SCRIP D'EXECUTION ATTRIBUTION IP AJAX
-            $(document).ready(function() {
-                $('#execute_script_bouton').submit(function(event) {
-                    event.preventDefault();
-                    $.ajax({
-                        type: 'POST',
-                        url: $(this).attr('action'),
-                        data: $(this).serialize(),
-                        success: function(response) {
-                            console.log(response);
-                            // Recharger la page pour afficher les mises à jour
-                            window.location.reload();
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                            alert("Une erreur s'est produite lors de l'exécution du script DHCP.");
-                        }
-                    });
-                });
-            });
+            // $(document).ready(function() {
+            //     $('#execute_script_bouton').submit(function(event) {
+            //         event.preventDefault();
+            //         $.ajax({
+            //             type: 'POST',
+            //             url: $(this).attr('action'),
+            //             data: $(this).serialize(),
+            //             success: function(response) {
+            //                 console.log(response);
+            //                 // Recharger la page pour afficher les mises à jour
+            //                 window.location.reload();
+            //             },
+            //             error: function(xhr, status, error) {
+            //                 console.error(error);
+            //                 alert("Une erreur s'est produite lors de l'exécution du script DHCP.");
+            //             }
+            //         });
+            //     });
+            // });
 
             // AFFICHAGE FORMULAIRE DE CHANGEMENT IP
             $(document).ready(function() {

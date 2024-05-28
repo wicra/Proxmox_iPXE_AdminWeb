@@ -1,8 +1,8 @@
 <?php
 // Fichier de log DHCP/var/lib/dhcp/
-$LEASES_FILE = "../../../dhcp/dhcpd.leases";
+$LEASES_FILE = "dhcp/dhcpd.leases";
 // Fichier de configuration DHCP
-$DHCP_CONF = "../../../dhcp/dhcpd_hosts.conf";
+$DHCP_CONF = "dhcp/dhcpd_hosts.conf";
 
 // Vérification de l'existence des fichiers
 if (!file_exists($LEASES_FILE)) {

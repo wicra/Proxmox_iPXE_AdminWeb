@@ -1,12 +1,12 @@
 <?php
 // Fichier de log DHCP/var/lib/dhcp/
-$LEASES_FILE = "../../../dhcp/dhcpd.leases";
+$LEASES_FILE = "../../dhcp/dhcpd.leases";
 // Fichier de configuration DHCP
-$DHCP_CONF = "../../../dhcp/dhcpd_hosts.conf";
+$DHCP_CONF = "../../dhcp/dhcpd_hosts.conf";
 
 // Plage d'adresses IP (à adapter selon votre réseau)
-$IP_RANGE_START = '192.168.1.100';
-$IP_RANGE_END = '192.168.1.200';
+$IP_RANGE_START = '10.10.62.10';
+$IP_RANGE_END = '10.10.62.150';
 
 // Vérification de l'existence des fichiers
 if (!file_exists($LEASES_FILE)) {
@@ -123,8 +123,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
                 fwrite($file_handle, "    # PXE Boot\n");
                 fwrite($file_handle, "    include(\"condition_pxe_boot.conf\");\n");
                 fwrite($file_handle, "};\n");
+
+                // fwrite($file_handle, "    if option arch = 00:07 or option arch = 00:09 {\n");
+                // fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
+                // fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
+                // fwrite($file_handle, "        } else {\n");
+                // fwrite($file_handle, "            filename \"ipxe/ipxe.efi\";\n");
+                // fwrite($file_handle, "        }\n");
+                // fwrite($file_handle, "    }\n");
+                // fwrite($file_handle, "    else if option arch = 00:06 {\n");
+                // fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
+                // fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
+                // fwrite($file_handle, "        } else {\n");
+                // fwrite($file_handle, "            filename \"ipxe/ipxe32.efi\";\n");
+                // fwrite($file_handle, "        }\n");
+                // fwrite($file_handle, "    }\n");
+                // fwrite($file_handle, "    else {\n");
+                // fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");
+                // fwrite($file_handle, "            filename \"http://10.10.62.210/menu_known2.ipxe\";\n");
+                // fwrite($file_handle, "        } else {\n");
+                // fwrite($file_handle, "            filename \"undionly.kpxe\";\n");
+                // fwrite($file_handle, "        }\n");
+                // fwrite($file_handle, "    }\n");
+                // fwrite($file_handle, "}\n\n");
+
                 fclose($file_handle);
-                echo "IP $ip_address attribuée pour $hostname ($mac_address) avec succès.<br>";
+                // echo "IP $ip_address attribuée pour le client $hostname : $mac_address avec succès.<br>";
                 // Ajouter l'IP à la liste des IPs existantes
                 $existing_ips[] = $ip_address;
                 // Retirer l'entrée des connexions récentes pour ne pas l'afficher de nouveau
@@ -135,40 +159,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
         }
     }
 }
+
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>DHCP Lease Viewer</title>
-</head>
-<body>
-    <h1>DHCP Lease Viewer</h1>
-    <table border="1">
-        <thead>
+
+<table class="tableau_historique_dhcp" id="tableau_historique_dhcp">
+    <thead>
+        <tr>
+            <th class="tab_historique_header_nom">Nom d'hôte</th>
+            <th class="tab_historique_header_mac">Adresse MAC</th>
+            <th class="tab_historique_header_bouton">Attribuer une IP</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($recent_connections as $mac_address => $connection): ?>
             <tr>
-                <th>Nom d'hôte</th>
-                <th>Adresse MAC</th>
-                <th>Adresse IP</th>
-                <th>Attribuer une IP</th>
+                <td class="tab_historique_nom"><?= htmlspecialchars($connection['hostname']) ?></td>
+                <td class="tab_historique_mac"><?= htmlspecialchars($mac_address) ?></td>
+                
+                <td class="tab_historique_bouton">
+                    <form  method="POST">
+                        <input type="hidden" name="mac_address" value="<?= htmlspecialchars($mac_address) ?>">
+                        <button  type="submit">Attribuer IP</button>
+                    </form>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($recent_connections as $mac_address => $connection): ?>
-                <tr>
-                    <td><?= htmlspecialchars($connection['hostname']) ?></td>
-                    <td><?= htmlspecialchars($mac_address) ?></td>
-                    <td><?= htmlspecialchars($connection['ip_address']) ?></td>
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="mac_address" value="<?= htmlspecialchars($mac_address) ?>">
-                            <button type="submit">Attribuer IP</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</body>
-</html>
+        <?php endforeach; ?>
+    </tbody>
+</table>
