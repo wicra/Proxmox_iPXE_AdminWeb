@@ -48,35 +48,28 @@ if(isset($_POST['deconnection'])){
 
             <div class="nav_barre">
                 <form id="execute_script_bouton" class="execute" action="conf/dhcp_attribution_auto.php" method="post">
-                    <button class="button" type="submit" style="padding: 1.2rem 2rem;border-radius: 0.5rem;border: 0;background-color: var(--Couleur5);font-size: 35px;   font-family: var(--FontSeconfaire);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                            <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25
-                            0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"></path>
-                            <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0
-                            0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"></path>
-                        </svg>
+                    <button class="nav_button_attribution" type="submit">
+                    
                         Attribution ip
                     </button>
                 </form>  
 
-                <form  method='POST'>
-                    <button type="submit" class="button_deconnection"  name='deconnection' >
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
-                </form>       
-                
-                <form method='post' action="">
-                    <button class="nav_refresh" name= 'refresh'>
+                <form action="" method="post">
+                    <button class="nav_refresh" name="refresh">
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
                     <?php
                         if(isset($_POST['refresh'])){
                             header("Refresh:0");
                         }
-                    ?>                    
+                    ?>
                 </form>
 
-                
+                <form  method='POST'>
+                    <button type="submit" class="button_deconnection"  name='deconnection' >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </form>       
                 
 
                 <?php
@@ -89,9 +82,8 @@ if(isset($_POST['deconnection'])){
                         if ($result) {
                             echo "
                                 <div class=\"nav_user\">
-                                    
                                     <i class=\"fa-solid fa-user-tie\"></i>
-                                    <h1 class=\"nav\">$user_connect</h1>
+                                    <h1 class=\"nav_user_connect\">$user_connect</h1>
                                 </div>                            
                             " ;
                         };
@@ -120,27 +112,25 @@ if(isset($_POST['deconnection'])){
                 echo "<div class=\"tableau_conteneur\">
                         
                         <table >
-                            <thead>
-                                <tr class=\"tableau\">
-                                    <th class=\"col_header_name\" >hôte</th>
-                                    <th class=\"col_header_etat\">Etat</th>
-                                    <th class=\"col_header_os\">OS</th>
-                                    <th class=\"col_header_mac\">@ MAC</th>
-                                    <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
-                                    <th class=\"col_header_modif_ip\">@ IP_conf</th>
-                                </tr>
-                                
-                                </thead>";
+                            <tr class=\"tableau\">
+                                <th class=\"col_header_name\" >hôte</th>
+                                <th class=\"col_header_etat\">Etat</th>
+                                <th class=\"col_header_os\">OS</th>
+                                <th class=\"col_header_mac\">@ MAC</th>
+                                <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
+                                <th class=\"col_header_modif_ip\">@ IP_conf</th>
+                            </tr>";
 
 
-                //Fonction pour verifier l'etat d'une machine 
+                //Fonction pour exécuter un ping vers une adresse IP et renvoyer l'état
+                 
                 //exec('../shell/ipScan.sh');
                 $file = file("../shell/ipScan.txt");
 
                 function verifEtat($file,$ip_address,$actif ,$eteint){
                     $pc_state = $eteint;
                     foreach($file as $ligne)
-                    {   
+                    {
                         $ligne = trim($ligne);
                         if($ligne == trim($ip_address)){
                             $pc_state = $actif;
@@ -152,23 +142,20 @@ if(isset($_POST['deconnection'])){
 
 
 
-
                 foreach ($matches as $match) {
                     $host_name = $match[1];
                     $hardware_ethernet = $match[2];
                     $fixed_address = $match[3];
 
-                    $actif="<i style=\"color : var(--Couleur4);\" class=\"fa-solid fa-circle-check\"></i>";
-                    $eteint="<i style=\"color : var(--CouleurSecondaire);\" class=\"fa-solid fa-plug\"></i>";
+                    $actif="<i style = \"color : var(--Couleur4);\" class=\"fa-solid fa-circle-check\"></i>";
+                    $eteint="<i style = \"color : var(--CouleurSecondaire);\" class=\"fa-solid fa-plug\"></i>";
 
-                    $pc_state = verifEtat($file, $fixed_address,$actif,$eteint);
-
+                    $pc_state = verifEtat($file ,$fixed_address,$actif,$eteint);
+                    
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
 
-                    echo "
-                    
-                        <tr class=\"tableau\" >
+                    echo "<tr class=\"tableau\" >
                             <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i>$link{$host_name}$link_close</td>
                             <td class=\"col_etat\">$pc_state</td>
                             <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
@@ -261,9 +248,9 @@ if(isset($_POST['deconnection'])){
                                 // Ajouter la classe pour l'animation
                                 $('.emoji-container').addClass('animate');
                                 // Actualiser la page après 2 secondes
-                                // setTimeout(function() {
-                                //     location.reload();
-                                // }, 2000);
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             },
                             error: function(xhr, status, error) {
                                 // Gérer les erreurs
@@ -275,6 +262,7 @@ if(isset($_POST['deconnection'])){
                 });
             });
         </script>
+
 
     </body>
 </html>

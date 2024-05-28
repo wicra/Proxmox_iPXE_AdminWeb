@@ -1,236 +1,185 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=, initial-scale=1.0">
-        <title>Document</title>
-        <link rel="stylesheet" href="styles/style.css">
-        <!-- ICON -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    </head>
-    <body>
-
-        <div class="formulaire_date_conteneur">
-            <h1 class="formulaire_date_titre">Changer la date et exécuter le script</h1>
-            <form class="formulaire_date" action="../../dhcp/dhcp_attribution_auto.php" method="post">
-                <label for="start_date">Date de début (YYYY/MM/DD) :</label>
-                <input type="text" id="start_date" name="start_date" required>
-                <button type="submit">Lancer le script</button>
-            </form>        
-        </div>  
-
-        <?php
-        // FORMULAIRE DE DATE DE DEBUT DE TRAITEMENT
-
-
-
-        // Fonction pour exécuter un ping vers une adresse IP et renvoyer l'état
-        function pingIP($ip_address) {
-            exec("ping -c 1 $ip_address", $output, $result);
-            return ($result == 0) ? "actif" : "inactif";
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des PCs</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
         }
-        
-        // TABLEAU D'AFFICHAGE DES HOSTS
-        $file_path = '../../dhcp/dhcpd_hosts.conf';
-        
-        $config = file_get_contents($file_path);
-        
-        if ($config === false) {
-            die("Impossible de lire le fichier de configuration.");
+        .tableau_conteneur {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
         }
-        
-        $pattern = '/host\s+(\w+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
-        
-        if (preg_match_all($pattern, $config, $matches, PREG_SET_ORDER)) {
-            echo "<div class=\"tableau_conteneur\">
-                    <h1 class=\"titre_tableau\">Liste des hôtes DHCP</h1>
-                    <table border='1'>
-                        <tr class=\"tableau\">
-                            <th class=\"col_name\" >Nom de l'hôte</th>
-                            <th class=\"col_etat\">Etat</th>
-                            <th class=\"col_os\">Hist OS</th>
-                            <th class=\"col_mac\">@ MAC</th>
-                            <th class=\"col_ip_fixe\">@ IP fixe</th>
-                            <th class=\"col_modif_ip\">@ IP conf</th>
-                        </tr>";
-        
-            foreach ($matches as $match) {
-                $host_name = $match[1];
-                $hardware_ethernet = $match[2];
-                $fixed_address = $match[3];
-        
-                // Vérifier l'état de l'adresse IP
-                $pc_state = pingIP($fixed_address);
-    
-                // Créer le lien en fonction de l'état du PC
-                $link = ($pc_state == "actif") ? "https://{$fixed_address}:8006" : "#";
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #f1f1f1;
+            z-index: 1;
+        }
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="tableau_conteneur">
+        <table>
+            <thead>
+                <tr>
+                    <th>hôte</th>
+                    <th>Etat</th>
+                    <th>OS</th>
+                    <th>@ MAC</th>
+                    <th>@ IP_fixe</th>
+                    <th>@ IP_conf</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Fichier de log DHCP/var/lib/dhcp/
+                $LEASES_FILE = "../../../dhcp/dhcpd.leases";
+                // Fichier de configuration DHCP
+                $DHCP_CONF = "../../../dhcp/dhcpd_hosts.conf";
 
-                    echo "<tr class=\"tableau\" >
-                            <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i><a href=\"$link\">{$host_name}</a></td>
-                            <td class=\"col_etat\">$pc_state</td>
-                            <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
-                            <td class=\"col_mac\">{$hardware_ethernet}</td>
-                            <td class=\"col_ip_fixe\">{$fixed_address}</td>
-                            <td class=\"col_ip_fixe\">
-                                <i class=\"fa-solid fa-gears\"></i>
-                                <div class=\"formulaire_ip_conteneur\">
-                                    <form class=\"ip_change_form\">
-                                        <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                        <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                        <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
-                                        <button type=\"submit\">Modifier</button>
-                                        <i class=\"fa-solid fa-xmark\"></i>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>";
+                // Vérification de l'existence des fichiers
+                if (!file_exists($LEASES_FILE)) {
+                    die("Erreur : Le fichier $LEASES_FILE n'existe pas.\n");
                 }
-    
-        
-            echo "</table>
-                </div>";
-        } else {
-            echo "Aucun hôte trouvé dans le fichier de configuration.";
-        }
-        ?>
-        
-        
-        <script>
+                if (!file_exists($DHCP_CONF)) {
+                    die("Erreur : Le fichier $DHCP_CONF n'existe pas.\n");
+                }
 
-            // AFFICHAGE FORMULAIRE DE CHANGEMENT IP
-            $(document).ready(function() {
-                $('.fa-gears').click(function(event) {
-                    event.preventDefault();
-                    var $icon = $(this);
-                    var $formContainer = $icon.next('.formulaire_ip_conteneur');
-                    $formContainer.show();
-                    $icon.hide();
-                });
+                // Lire le contenu du fichier de bail DHCP
+                $leases_content = file_get_contents($LEASES_FILE);
 
-                // MASQUAGE FORMULAIRE DE CHANGEMENT IP
-                $('.fa-xmark').click(function(event) {
-                    event.preventDefault();
-                    var $closeIcon = $(this);
-                    var $formContainer = $closeIcon.closest('.formulaire_ip_conteneur');
-                    var $icon = $formContainer.prev('.fa-gears');
-                    $formContainer.hide();
-                    $icon.show();
-                });
+                // Vérifier si la lecture du fichier a réussi
+                if ($leases_content === false) {
+                    die("Erreur : Impossible de lire le fichier $LEASES_FILE.\n");
+                }
 
-                // Gestion de la soumission du formulaire
-                $('.ip_change_form').submit(function(event) {
-                    event.preventDefault();
-                    var formData = $(this).serialize();
-                    $.ajax({
-                        type: "POST",
-                        url: "conf/conf_ip_dhcp.php",
-                        data: formData,
-                        success: function(response) {
-                            alert(response);
-                            location.reload();
-                        },
-                        error: function(xhr, status, error) {
-                            alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
-                            console.error(error);
-                        }
-                    });
-                });
-            });
-        </script>
+                // Analyser les baux DHCP par adresse MAC
+                preg_match_all('/lease ([0-9.]+) {([^}]*)}/s', $leases_content, $matches);
 
-        <style>
+                // Tableau pour stocker la connexion la plus récente pour chaque adresse MAC
+                $recent_connections = [];
 
+                // Lire le contenu du fichier de configuration DHCP
+                $dhcp_conf_content = file_get_contents($DHCP_CONF);
 
-        body{
-            padding: 8vh 5vw;
-        }
+                // Vérifier si la lecture du fichier a réussi
+                if ($dhcp_conf_content === false) {
+                    die("Erreur : Impossible de lire le fichier $DHCP_CONF.\n");
+                }
 
-        /* FOMUAIRE DATE */
-        .formulaire_date_conteneur{
-            display:flex;
-            flex-direction: column;
-            text-transform: uppercase;
-        }
+                // Extraire les adresses MAC déjà présentes dans le fichier de configuration
+                preg_match_all('/hardware ethernet ([0-9a-f:]+);/i', $dhcp_conf_content, $existing_mac_matches);
+                $existing_macs = $existing_mac_matches[1];
 
-        .formulaire_date{
-            gap: 4vw;
-            display: flex;
-            align-items: center;
-        }
+                // Boucler à travers les baux DHCP pour chaque adresse MAC
+                foreach ($matches[1] as $index => $ip_address) {
+                    $lease_info = $matches[2][$index];
 
-        .formulaire_date_titre{
-            font-size: 80px;
-            text-transform: uppercase;
-            padding: 5vh 0 0vh 0;
-        }
+                    // Extraire la date de début du bail
+                    preg_match('/starts \d+ (\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2});/', $lease_info, $start_matches);
+                    $start_time = strtotime($start_matches[1]);
 
-        .formulaire_date label{
-            text-align: center;
-            font-size: 35px;
-        }
- 
-        /*TABLEAU D'HOTE*/
-        .tableau_conteneur{
-            display: flex;
-            flex-direction: column;
+                    // Extraire l'adresse MAC
+                    preg_match('/hardware ethernet (.*?);/', $lease_info, $mac_matches);
+                    $mac_address = $mac_matches[1];
 
-        }
+                    // Ignorer cette adresse MAC si elle est déjà présente dans le fichier de configuration
+                    if (in_array($mac_address, $existing_macs)) {
+                        continue;
+                    }
 
-        th{
-            text-transform:uppercase;
-        }
+                    // Extraire le nom d'hôte
+                    preg_match('/client-hostname "(.*?)";/', $lease_info, $hostname_matches);
+                    $hostname = isset($hostname_matches[1]) ? $hostname_matches[1] : "";
 
-        .titre_tableau{ 
-            font-size: 80px;
-            text-transform: uppercase;
-            padding: 5vh 0 0vh 0;
-        }
+                    // Si aucun nom d'hôte n'est trouvé, attribuer un nom générique
+                    if (empty($hostname)) {
+                        $hostname = "machine_" . substr(str_replace(":", "", $mac_address), -6);
+                    }
 
-        .tableau{
-            border: solid var(--CouleurFont);
-        }
+                    // Vérifier si cette connexion est plus récente que celle précédemment enregistrée pour cette adresse MAC
+                    if (!isset($recent_connections[$mac_address]) || $start_time > $recent_connections[$mac_address]['start_time']) {
+                        // Enregistrer cette connexion comme la plus récente
+                        $recent_connections[$mac_address] = [
+                            'ip_address' => $ip_address,
+                            'start_time' => $start_time,
+                            'hostname' => $hostname
+                        ];
+                    }
+                }
 
-        .col_name{
-            justify-content: flex-start;
-            padding: 1vh 2vw;
-            font-size: 35px;
-            align-items: center;
-            display: flex;
+                // Afficher les entrées dans le tableau
+                foreach ($recent_connections as $mac_address => $connection) {
+                    $ip_address = $connection['ip_address'];
+                    $hostname = $connection['hostname'];
+                    echo "<tr>
+                            <td>{$hostname}</td>
+                            <td><i class=\"fa-solid fa-circle-check\"></i></td>
+                            <td><i class=\"fa-brands fa-windows\"></i></td>
+                            <td>{$mac_address}</td>
+                            <td>{$ip_address}</td>
+                            <td>
+                                <form method=\"POST\" action=\"\">
+                                    <input type=\"hidden\" name=\"hostname\" value=\"{$hostname}\">
+                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$mac_address}\">
+                                    <input type=\"hidden\" name=\"ip_address\" value=\"{$ip_address}\">
+                                    <button type=\"submit\" name=\"add_entry\">Ajouter</button>
+                                </form>
+                            </td>
+                          </tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+    <?php
+    // Ajouter l'entrée au fichier de configuration DHCP si le bouton est cliqué
+    if (isset($_POST['add_entry'])) {
+        $hostname = $_POST['hostname'];
+        $mac_address = $_POST['mac_address'];
+        $ip_address = $_POST['ip_address'];
+
+        // Ouvrir le fichier de configuration DHCP en écriture
+        $file_handle = fopen($DHCP_CONF, 'a');
+        if ($file_handle === false) {
+            die("Erreur : Impossible d'ouvrir le fichier $DHCP_CONF pour écriture.\n");
         }
 
-        .col_name a{
-            color:var(--CouleurSecondaire);
-        }
+        // Écrire l'entrée dans le fichier de configuration DHCP
+        fwrite($file_handle, "host $hostname {\n");
+        fwrite($file_handle, "    hardware ethernet $mac_address;\n");
+        fwrite($file_handle, "    fixed-address $ip_address;\n");
+        // Ajouter la configuration PXE Boot
+        fwrite($file_handle, "    # PXE Boot\n");
+        fwrite($file_handle, "    include(\"condition_pxe_boot.conf\");\n");
+        fwrite($file_handle, "};\n");
 
-        .col_name i{
-            padding: 1vh 2vw;
-            text-align: center;
-            font-size: 35px;
-        }
+        // Fermer le fichier de configuration DHCP
+        fclose($file_handle);
 
-        .col_mac,.col_ip_fixe,.col_modif_ip,.col_os,.col_etat{
-            padding: 1vh 2vw;
-            text-align: center;
-            font-size: 35px;
-        }
-
-
-        .ip_change_form{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 2vw;
-        }
-
-        .formulaire_ip_conteneur{
-            display:none;
-        }
-
-        </style>
-     </body>
+        // Redirection pour éviter les resoumissions de formulaire
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
+    }
+    ?>
+</body>
 </html>

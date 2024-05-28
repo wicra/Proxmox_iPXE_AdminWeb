@@ -159,7 +159,7 @@ body{
 
 
 .execute_titre{
-    font-size: 65px;
+    font-size: 35px;
     text-transform: uppercase;
     font-family: var(--FontSeconfaire);
 }
@@ -168,18 +168,27 @@ body{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 5vw;
+    gap: 2vw;
 }
 
-.nav_refresh{
-    background-color: #d68b45d0;
+.nav_button_attribution{
+    background-color: var(--Couleur5);
+    border: none;
     cursor: pointer;
-    padding: 1.5rem;
+    padding: 1vh 1vw;
     border-radius: 0.5rem;
-    border:  none;
+    color: var(--CouleurFont);
+}
+.nav_refresh{
+    background-color: var(--Couleur5);
+    border: none;
+    cursor: pointer;
+    padding: 1vh 1vw;
+    border-radius: 0.5rem;
+    color: var(--CouleurFont);
 }
 .nav_refresh i{
-    font-size: 35px;
+    font-size: 20px;
 }
 
 .nav_user{
@@ -189,7 +198,8 @@ body{
     color: var(--CouleurFont);
     background-color: var(--Couleur5);
     font-family: var(--FontSeconfaire);
-    padding: 0 2rem;
+    padding: 1vh 1vw;
+    font-size: 20px;
     border-radius: 0.5rem;
     gap: 1vw;
 }
@@ -198,13 +208,18 @@ body{
     cursor: pointer;
 }
 .nav_user i{
-    font-size: 35px;
+    font-size: 20px;
+    margin: 0;
+}
+.nav_user_connect{
+    font-size: 20px;
+    margin: 0;
 }
 .button_deconnection{
-    padding: 1.2rem 2rem;
+    padding: 1vh 1vw;
     border-radius: 0.5rem;
     border: 0 ;
-    font-size: 35px;
+    font-size: 20px;
     border-radius: 0.5rem;
     color: var(--CouleurFont);
     background-color: var(--Couleur5);
@@ -225,7 +240,7 @@ body{
 
 table{
     width: 100%;
-    border-collapse: collapse; 
+
 }
 
 th{
@@ -248,14 +263,14 @@ th{
 .col_name i{
     padding: 1vh 2vw;
     text-align: center;
-    font-size: 35px;
+    font-size: 20px;
     color: var(--CouleurFont);
 }
 
 .col_header_name,.col_header_mac,.col_header_ip_fixe,.col_header_modif_ip,.col_header_os,.col_header_etat{
-    padding: 5vh 1vw;
+    padding: 2vh 0vw;
     text-align: center;
-    font-size: 35px;
+    font-size: 20px;
     font-family: var(--FontSeconfaire);
 }        
 
@@ -266,9 +281,9 @@ th{
 }
 
 .col_name,.col_mac,.col_ip_fixe,.col_modif_ip,.col_os,.col_etat{
-    padding: 3vh 1vw;
+    padding: 2vh 1vw;
     text-align: center;
-    font-size: 35px;
+    font-size: 20px;
 }
 
 
@@ -276,7 +291,7 @@ th{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1vw;
+    gap: 0vw;
 }
 
 .formulaire_ip_conteneur{
@@ -284,7 +299,7 @@ th{
 }
 
 .formulaire_ip {
-    padding: 1.2rem 2rem;
+    padding: 1vh 1vw;
     border-radius: 0.5rem;
     border:none;
 }
@@ -297,12 +312,8 @@ th{
     font-family: var(--FontPrimaire);
     font-weight: 500;
     border-radius: 0.5rem;
-    font-size: 1rem;
-    line-height: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 0.7rem;
-    padding-bottom: 0.7rem;
+    font-size: 15px;
+    padding: 1vh 1vw;
     cursor: pointer;
     text-align: center;
     margin-right: 0.5rem;
