@@ -1,141 +1,252 @@
 <?php
-// Fichier de log DHCP/var/lib/dhcp/
-$LEASES_FILE = "dhcp/dhcpd.leases";
-// Fichier de configuration DHCP
-$DHCP_CONF = "dhcp/dhcpd_hosts.conf";
-
-// Vérification de l'existence des fichiers
-if (!file_exists($LEASES_FILE)) {
-    die("Erreur : Le fichier $LEASES_FILE n'existe pas.\n");
-}
-if (!file_exists($DHCP_CONF)) {
-    die("Erreur : Le fichier $DHCP_CONF n'existe pas.\n");
+/////////////////////////////////////////////////////////
+//                        SESSION                     //
+/////////////////////////////////////////////////////////
+session_start();
+// Verif si user connecter si la variable $_SESSION comptien le username 
+if(!isset($_SESSION["login"])){
+    header("location: ../index.php");
+exit(); 
 }
 
-// Lire le contenu du fichier de bail DHCP
-$leases_content = file_get_contents($LEASES_FILE);
-
-// Vérifier si la lecture du fichier a réussi
-if ($leases_content === false) {
-    die("Erreur : Impossible de lire le fichier $LEASES_FILE.\n");
+// déconnection
+if(isset($_POST['deconnection'])){
+    session_destroy();
+    header('location: ../index.php');
 }
-
-// Analyser les baux DHCP par adresse MAC
-preg_match_all('/lease ([0-9.]+) {([^}]*)}/s', $leases_content, $matches);
-
-// Tableau pour stocker la connexion la plus récente pour chaque adresse MAC
-$recent_connections = [];
-
-// Lire le contenu du fichier de configuration DHCP
-$dhcp_conf_content = file_get_contents($DHCP_CONF);
-
-// Vérifier si la lecture du fichier a réussi
-if ($dhcp_conf_content === false) {
-    die("Erreur : Impossible de lire le fichier $DHCP_CONF.\n");
-}
-
-// Extraire les adresses MAC déjà présentes dans le fichier de configuration
-preg_match_all('/hardware ethernet ([0-9a-f:]+);/i', $dhcp_conf_content, $existing_mac_matches);
-$existing_macs = $existing_mac_matches[1];
-
-// Boucler à travers les baux DHCP pour chaque adresse MAC
-foreach ($matches[1] as $index => $ip_address) {
-    $lease_info = $matches[2][$index];
-
-    // Extraire la date de début du bail
-    preg_match('/starts \d+ (\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2});/', $lease_info, $start_matches);
-    $start_time = strtotime($start_matches[1]);
-
-    // Extraire l'adresse MAC
-    preg_match('/hardware ethernet (.*?);/', $lease_info, $mac_matches);
-    $mac_address = $mac_matches[1];
-
-    // Ignorer cette adresse MAC si elle est déjà présente dans le fichier de configuration
-    if (in_array($mac_address, $existing_macs)) {
-        continue;
-    }
-
-    // Extraire le nom d'hôte
-    preg_match('/client-hostname "(.*?)";/', $lease_info, $hostname_matches);
-    $hostname = isset($hostname_matches[1]) ? $hostname_matches[1] : "";
-
-    // Si aucun nom d'hôte n'est trouvé, attribuer un nom générique
-    if (empty($hostname)) {
-        $hostname = "machine_" . substr(str_replace(":", "", $mac_address), -6);
-    }
-
-    // Vérifier si cette connexion est plus récente que celle précédemment enregistrée pour cette adresse MAC
-    if (!isset($recent_connections[$mac_address]) || $start_time > $recent_connections[$mac_address]['start_time']) {
-        // Enregistrer cette connexion comme la plus récente
-        $recent_connections[$mac_address] = [
-            'ip_address' => $ip_address,
-            'start_time' => $start_time,
-            'hostname' => $hostname
-        ];
-    }
-}
-
-// Si le formulaire est soumis pour attribuer une IP
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
-    $mac_address = $_POST['mac_address'];
-    if (isset($recent_connections[$mac_address])) {
-        $connection = $recent_connections[$mac_address];
-        $hostname = $connection['hostname'];
-        $ip_address = $connection['ip_address'];
-
-        // Ajouter l'entrée au fichier de configuration DHCP
-        $file_handle = fopen($DHCP_CONF, 'a');
-        if ($file_handle !== false) {
-            fwrite($file_handle, "host $hostname {\n");
-            fwrite($file_handle, "    hardware ethernet $mac_address;\n");
-            fwrite($file_handle, "    fixed-address $ip_address;\n");
-            fwrite($file_handle, "    # PXE Boot\n");
-            fwrite($file_handle, "    include(\"condition_pxe_boot.conf\");\n");
-            fwrite($file_handle, "};\n");
-            fclose($file_handle);
-            echo "IP attribuée pour $hostname ($mac_address) avec succès.<br>";
-            // Retirer l'entrée des connexions récentes pour ne pas l'afficher de nouveau
-            unset($recent_connections[$mac_address]);
-        } else {
-            echo "Erreur : Impossible d'ouvrir le fichier $DHCP_CONF pour écriture.\n";
-        }
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>DHCP Lease Viewer</title>
-</head>
-<body>
-    <h1>DHCP Lease Viewer</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Nom d'hôte</th>
-                <th>Adresse MAC</th>
-                <th>Adresse IP</th>
-                <th>Attribuer une IP</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($recent_connections as $mac_address => $connection): ?>
-                <tr>
-                    <td><?= htmlspecialchars($connection['hostname']) ?></td>
-                    <td><?= htmlspecialchars($mac_address) ?></td>
-                    <td><?= htmlspecialchars($connection['ip_address']) ?></td>
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="mac_address" value="<?= htmlspecialchars($mac_address) ?>">
-                            <button type="submit">Attribuer IP</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=, initial-scale=1.0">
+        <title>Interface Conf</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- ICON -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="styles/style.css">
+    </head>
+
+    <body>
+        <!-- NAV BARRE -->
+        <div class="execute_scrip_conteneur">
+            <h1 class="execute_titre">déploiement d'images</h1>
+
+            <div class="nav_barre">
+                <!-- ATTRIBUTION MASQUAGE/ AFFICHAGE TABLEAU -->
+                <button class="nav_button_attribution" id="nav_button_attribution" type="submit"  name="historique_dhcp">Attribution ip</button>
+                
+                <!-- REFRESH PAGE -->
+                <form action="" method="post">
+                    <button class="nav_refresh" name="refresh">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <?php
+                        if(isset($_POST['refresh'])){
+                            header("Refresh:0");
+                        }
+                    ?>
+                </form>
+
+                <!-- DECONNECTION -->
+                <form  method='POST'>
+                    <button type="submit" class="button_deconnection"  name='deconnection' >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </form>       
+                
+                <!-- USER CONNECTE -->
+                <?php
+                    include('connection/connection_db.php');
+                
+                    $username = mysqli_real_escape_string($conn, $_SESSION["login"]);
+                    $requete = "SELECT login = '$username' FROM users_admin  ";
+                    $result = mysqli_query($conn, $requete);
+                    $user_connect = $_SESSION["login"];
+                    if ($result) {
+                        echo "
+                            <div class=\"nav_user\">
+                                <i class=\"fa-solid fa-user-tie\"></i>
+                                <h1 class=\"nav_user_connect\">$user_connect</h1>
+                            </div>                            
+                        " ;
+                    };
+                ?>
+            </div>
+        </div>  
+        
+        <!-- CONTENEUR ANIMATION MODIF IP REUSSI -->
+        <div id="emoji-container"></div>   
+
+        <!-- AJOUT TABLEAU HISTORIQUE DHCP -->
+        <?php include("dhcpd_attribution_auto.php");?>
+
+        <?php
+            /////////////////////////////////////////////////////////
+            //            TABLEAU D'AFFICHAGE DES HOSTS           //
+            /////////////////////////////////////////////////////////
+            $file_path = '../../dhcp/dhcpd_hosts.conf';
+            $config = file_get_contents($file_path);
+
+            if ($config === false) {
+                die("Impossible de lire le fichier de configuration.");
+            }
+
+            //recupère le nom, mac, ip
+            $pattern = '/host\s+([a-zA-Z0-9_-]+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
+
+            if (preg_match_all($pattern, $config, $matches, PREG_SET_ORDER)) {
+                echo "<div class=\"tableau_conteneur\">
+                        <table id=\"hosts_table\">
+                            <tr class=\"tableau\">
+                                <th class=\"col_header_name\">hôte</th>
+                                <th class=\"col_header_etat\">Etat</th>
+                                <th class=\"col_header_os\">OS</th>
+                                <th class=\"col_header_mac\">@ MAC</th>
+                                <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
+                                <th class=\"col_header_modif_ip\">@ IP_conf</th>
+                            </tr>";
+
+                //AFFICHAGE COMPTENUE DANS LE TABLEAU
+                foreach ($matches as $match) {
+                    $host_name = $match[1];
+                    $hardware_ethernet = $match[2];
+                    $fixed_address = $match[3];
+
+                    echo "<tr class=\"tableau\" data-ip=\"{$fixed_address}\">
+                            <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i><a href=\"https://{$fixed_address}:8006\">{$host_name}</a></td>
+                            <td class=\"col_etat\"><i class=\"fa-solid fa-spinner fa-spin\"></i></td>
+                            <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
+                            <td class=\"col_mac\">{$hardware_ethernet}</td>
+                            <td class=\"col_ip_fixe\">{$fixed_address}</td>
+                            <td class=\"col_ip_fixe\">
+                                <i class=\"fa-solid fa-gears\"></i>
+                                <div class=\"formulaire_ip_conteneur\">
+                                    <form class=\"ip_change_form\">
+                                        <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                        <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                        <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
+                                        <button class=\"button\" type=\"submit\">
+                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\">
+                                                <path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25
+                                                0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path>
+                                                <path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0
+                                                0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path>
+                                            </svg>
+                                            Modifier
+                                        </button>
+                                        <i class=\"fa-solid fa-xmark\"></i>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>";
+                }
+                echo "</table>
+                    </div>";
+            } else {
+                echo "Aucun hôte trouvé dans le fichier de configuration.";
+            }
+        ?>
+
+        <script>
+            /////////////////////////////////////////////////////////
+            //         MASQUER LE TABLEAU HISTORIQUE OU NON        //
+            /////////////////////////////////////////////////////////
+            let bouton = document.getElementById("nav_button_attribution");
+            let tableau = document.getElementById("tableau_historique_dhcp");
+            bouton.addEventListener("click", () => {
+                if(getComputedStyle(tableau).display != "none"){
+                    tableau.style.display = "none";
+                } else {
+                    tableau.style.display = "table";
+                }
+            });
+
+            $(document).ready(function() {
+                /////////////////////////////////////////////////////////
+                //       RECUPERER LES ETATS DES MACHINES VIA AJAX     //
+                /////////////////////////////////////////////////////////
+                $.ajax({
+                    url: 'fetch_host_status.php',
+                    method: 'GET',
+                    success: function(response) {
+                        // Parse the response JSON
+                        let statuses = JSON.parse(response);
+                        // Update each host row with the correct status
+                        $('#hosts_table tr[data-ip]').each(function() {
+                            let ip = $(this).data('ip');
+                            let statusIcon = statuses[ip] ? 
+                                "<i style='color: var(--Couleur4);' class='fa-solid fa-circle-check'></i>" : 
+                                "<i style='color: var(--CouleurSecondaire);' class='fa-solid fa-plug'></i>";
+                            $(this).find('.col_etat').html(statusIcon);
+                        });
+                    },
+                    error: function() {
+                        alert("Une erreur s'est produite lors de la récupération de l'état des hôtes.");
+                    }
+                });
+
+                /////////////////////////////////////////////////////////
+                //       AFFICHER LE FORMULAIRE DE CHANGEMENT IP       //
+                /////////////////////////////////////////////////////////
+                $('.fa-gears').click(function(event) {
+                    event.preventDefault();
+                    var $icon = $(this);
+                    var $formContainer = $icon.next('.formulaire_ip_conteneur');
+
+                    //changement Ip une a la fois
+                    $('.formulaire_ip_conteneur').hide();
+                    $('.fa-gears').show();
+                    
+                    $formContainer.show();
+                    $icon.hide();
+                });
+
+                /////////////////////////////////////////////////////////
+                //         MASQUAGE FORMULAIRE DE CHANGEMENT IP        //
+                /////////////////////////////////////////////////////////
+                $('.fa-xmark').click(function(event) {
+                    event.preventDefault();
+                    var $closeIcon = $(this);
+                    var $formContainer = $closeIcon.closest('.formulaire_ip_conteneur');
+                    var $icon = $formContainer.prev('.fa-gears');
+                    $formContainer.hide();
+                    $icon.show();
+                });
+
+                /////////////////////////////////////////////////////////
+                //        GESTION DE SOUMISSION FORMULAIRE EN AJAX     //
+                /////////////////////////////////////////////////////////
+                $('.ip_change_form').submit(function(event) {
+                    event.preventDefault();
+                    var formData = $(this).serialize();
+                    $.ajax({
+                        type: "POST",
+                        url: "conf/conf_ip_dhcp.php",
+                        data: formData,
+                        success: function(response) {
+                            // Mettre à jour le contenu de la balise avec l'emoji
+                            $('#emoji-container').html(response);
+                            // Ajouter la classe pour l'animation
+                            $('#emoji-container').addClass('animate');
+                            // Actualiser la page après 2 secondes
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        },
+                        error: function(xhr, status, error) {
+                            // Gérer les erreurs
+                            alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
+                            console.error(error);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
 </html>
