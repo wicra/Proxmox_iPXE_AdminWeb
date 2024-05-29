@@ -3,7 +3,6 @@
 /////////////////////////////////////////////////////////
 //                        SESSION                     //
 /////////////////////////////////////////////////////////
-
 session_start();
 // Verif si user connecter si la variable $_SESSION comptien le username 
 if(!isset($_SESSION["login"])){
@@ -16,9 +15,7 @@ if(isset($_POST['deconnection'])){
     session_destroy();
     header('location: ../index.php');
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -40,19 +37,15 @@ if(isset($_POST['deconnection'])){
     </head>
 
     <body>
-
-    
-        
-
-
-       
+        <!-- NAV BARRE -->
         <div class="execute_scrip_conteneur">
             <h1 class="execute_titre">déploiement d'images</h1>
 
             <div class="nav_barre">
-
+                <!-- ATTRIBUTION MASQUAGE/ AFFICHAGE TABLEAU -->
                 <button class="nav_button_attribution" id="nav_button_attribution" type="submit"  name="historique_dhcp">Attribution ip</button>
-                  
+                
+                <!-- REFRESH PAGE -->
                 <form action="" method="post">
                     <button class="nav_refresh" name="refresh">
                         <i class="fa-solid fa-rotate-right"></i>
@@ -64,53 +57,51 @@ if(isset($_POST['deconnection'])){
                     ?>
                 </form>
 
+                <!-- DECONNECTION -->
                 <form  method='POST'>
                     <button type="submit" class="button_deconnection"  name='deconnection' >
                     <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </form>       
                 
-
+                <!-- USER CONNECTE -->
                 <?php
                     include('connection/connection_db.php');
-                        // Assurez-vous que $_SESSION["username"] est protégé contre les injections SQL
-                        $username = mysqli_real_escape_string($conn, $_SESSION["login"]);
-                        $requete = "SELECT login = '$username' FROM users_admin  ";
-                        $result = mysqli_query($conn, $requete);
-                        $user_connect =$_SESSION["login"];
-                        if ($result) {
-                            echo "
-                                <div class=\"nav_user\">
-                                    <i class=\"fa-solid fa-user-tie\"></i>
-                                    <h1 class=\"nav_user_connect\">$user_connect</h1>
-                                </div>                            
-                            " ;
-                        };
+                
+                    $username = mysqli_real_escape_string($conn, $_SESSION["login"]);
+                    $requete = "SELECT login = '$username' FROM users_admin  ";
+                    $result = mysqli_query($conn, $requete);
+                    $user_connect =$_SESSION["login"];
+                    if ($result) {
+                        echo "
+                            <div class=\"nav_user\">
+                                <i class=\"fa-solid fa-user-tie\"></i>
+                                <h1 class=\"nav_user_connect\">$user_connect</h1>
+                            </div>                            
+                        " ;
+                    };
                 ?>
             </div>
         </div>  
         
-        <!-- CONTENEUR ANIMATION -->
+        <!-- CONTENEUR ANIMATION MODIF IP REUSSI -->
         <div id="emoji-container"></div>   
 
-        <!-- Ajout du  tableau contenant l'historique DHCP -->
+        <!-- AJOUT TABLEAU DISTORIQUE DHCP -->
         <?php include("dhcpd_attribution_auto.php");?>
-      
-
-
 
         <?php
-            // TABLEAU D'AFFICHAGE DES HOSTS
+        
+            /////////////////////////////////////////////////////////
+            //            TABLEAU D'AFFICHAGE DES HOSTS           //
+            /////////////////////////////////////////////////////////
             $file_path = '../../dhcp/dhcpd_hosts.conf';
-
             $config = file_get_contents($file_path);
 
             if ($config === false) {
                 die("Impossible de lire le fichier de configuration.");
             }
-
-            //$pattern = '/host\s+(\w+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
-
+            //recupère le nom , mac , ip
             $pattern = '/host\s+([a-zA-Z0-9_-]+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
 
             if (preg_match_all($pattern, $config, $matches, PREG_SET_ORDER)) {
@@ -127,15 +118,16 @@ if(isset($_POST['deconnection'])){
                             </tr>";
 
 
-                //Fonction pour exécuter un ping vers une adresse IP et renvoyer l'état
-                 
+                /////////////////////////////////////////////////////////
+                //            FONCTION DE VERIF ETAT MACHINE           //
+                /////////////////////////////////////////////////////////
+                                
                 //shell_exec('../shell/ipScan.sh');//Changer le propriétaire du dossier projet
                 $file = file("../shell/ipScan.txt");
 
                 function verifEtat($file,$ip_address,$actif ,$eteint){
                     $pc_state = $eteint;
-                    foreach($file as $ligne)
-                    {
+                    foreach($file as $ligne){
                         $ligne = trim($ligne);
                         if($ligne == trim($ip_address)){
                             $pc_state = $actif;
@@ -145,8 +137,7 @@ if(isset($_POST['deconnection'])){
                     return $pc_state;
                 }
 
-
-
+                //AFFICHAGE COMPTENUE DANS LE TABLEAU
                 foreach ($matches as $match) {
                     $host_name = $match[1];
                     $hardware_ethernet = $match[2];
@@ -195,9 +186,10 @@ if(isset($_POST['deconnection'])){
             }
         ?>
 
-
         <script>
-            //MASQUER LE TABLEAU HISTORIQUE OU NON
+            /////////////////////////////////////////////////////////
+            //         MASQUER LE TABLEAU HISTORIQUE OU NON        //
+            /////////////////////////////////////////////////////////
             let bouton = document.getElementById("nav_button_attribution");
             let tableau = document.getElementById("tableau_historique_dhcp");
             bouton.addEventListener("click", () => {
@@ -208,40 +200,26 @@ if(isset($_POST['deconnection'])){
             }
             })
 
-
-
-            //SCRIP D'EXECUTION ATTRIBUTION IP AJAX
-            // $(document).ready(function() {
-            //     $('#execute_script_bouton').submit(function(event) {
-            //         event.preventDefault();
-            //         $.ajax({
-            //             type: 'POST',
-            //             url: $(this).attr('action'),
-            //             data: $(this).serialize(),
-            //             success: function(response) {
-            //                 console.log(response);
-            //                 // Recharger la page pour afficher les mises à jour
-            //                 window.location.reload();
-            //             },
-            //             error: function(xhr, status, error) {
-            //                 console.error(error);
-            //                 alert("Une erreur s'est produite lors de l'exécution du script DHCP.");
-            //             }
-            //         });
-            //     });
-            // });
-
-            // AFFICHAGE FORMULAIRE DE CHANGEMENT IP
             $(document).ready(function() {
+                /////////////////////////////////////////////////////////
+                //       AFFICHER LE FORMULAIRE DE CHANGEMENT IP       //
+                /////////////////////////////////////////////////////////
                 $('.fa-gears').click(function(event) {
                     event.preventDefault();
                     var $icon = $(this);
                     var $formContainer = $icon.next('.formulaire_ip_conteneur');
+
+                    //changement Ip une a la fois
+                    $('.formulaire_ip_conteneur').hide();
+                    $('.fa-gears').show();
+                    
                     $formContainer.show();
                     $icon.hide();
                 });
 
-                // MASQUAGE FORMULAIRE DE CHANGEMENT IP
+                /////////////////////////////////////////////////////////
+                //         MASQUAGE FORMULAIRE DE CHANGEMENT IP        //
+                /////////////////////////////////////////////////////////
                 $('.fa-xmark').click(function(event) {
                     event.preventDefault();
                     var $closeIcon = $(this);
@@ -251,8 +229,10 @@ if(isset($_POST['deconnection'])){
                     $icon.show();
                 });
 
+                /////////////////////////////////////////////////////////
+                //        GESTION DE SOUMISSION FORMULAIRE EN AJAX     //
+                /////////////////////////////////////////////////////////
                 $(document).ready(function() {
-                    // Gestion de la soumission du formulaire en AJAX
                     $('.ip_change_form').submit(function(event) {
                         event.preventDefault();
                         var formData = $(this).serialize();
@@ -268,7 +248,7 @@ if(isset($_POST['deconnection'])){
                                 // Actualiser la page après 2 secondes
                                 setTimeout(function() {
                                     location.reload();
-                                }, 2000);
+                                }, 1000);
                             },
                             error: function(xhr, status, error) {
                                 // Gérer les erreurs
@@ -280,7 +260,5 @@ if(isset($_POST['deconnection'])){
                 });
             });
         </script>
-
-
     </body>
 </html>

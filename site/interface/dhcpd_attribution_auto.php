@@ -1,14 +1,15 @@
+
 <?php
-// Fichier de log DHCP/var/lib/dhcp/
+
+// Fichier de log DHCP/var/lib/dhcp/ et /etc/dhcp/
 $LEASES_FILE = "../../dhcp/dhcpd.leases";
-// Fichier de configuration DHCP
 $DHCP_CONF = "../../dhcp/dhcpd_hosts.conf";
 
-// Plage d'adresses IP (à adapter selon votre réseau)
+// Plage d'adresses IP fixe (à adapter)
 $IP_RANGE_START = '10.10.62.10';
 $IP_RANGE_END = '10.10.62.150';
 
-// Vérification de l'existence des fichiers
+// Vérification existence des fichiers
 if (!file_exists($LEASES_FILE)) {
     die("Erreur : Le fichier $LEASES_FILE n'existe pas.\n");
 }
@@ -16,10 +17,10 @@ if (!file_exists($DHCP_CONF)) {
     die("Erreur : Le fichier $DHCP_CONF n'existe pas.\n");
 }
 
-// Lire le contenu du fichier de bail DHCP
+// Lire le contenu  de bail DHCP
 $leases_content = file_get_contents($LEASES_FILE);
 
-// Vérifier si la lecture du fichier a réussi
+// Vérifier si la lecture
 if ($leases_content === false) {
     die("Erreur : Impossible de lire le fichier $LEASES_FILE.\n");
 }
@@ -27,13 +28,13 @@ if ($leases_content === false) {
 // Analyser les baux DHCP par adresse MAC
 preg_match_all('/lease ([0-9.]+) {([^}]*)}/s', $leases_content, $matches);
 
-// Tableau pour stocker la connexion la plus récente pour chaque adresse MAC
+// stocker la connexion la plus récente pour chaque adresse MAC
 $recent_connections = [];
 
 // Lire le contenu du fichier de configuration DHCP
 $dhcp_conf_content = file_get_contents($DHCP_CONF);
 
-// Vérifier si la lecture du fichier a réussi
+// Vérifier si la lecture
 if ($dhcp_conf_content === false) {
     die("Erreur : Impossible de lire le fichier $DHCP_CONF.\n");
 }

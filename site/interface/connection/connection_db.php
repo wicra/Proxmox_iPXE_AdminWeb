@@ -1,4 +1,7 @@
 <?php
+
+?>
+<?php
 $servername = "sql.freedb.tech"; 
 $port = '3306' ;
 $dbname = "freedb_iot_db";  
