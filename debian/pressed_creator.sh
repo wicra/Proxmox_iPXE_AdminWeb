@@ -132,7 +132,7 @@ while getopts ":i:o:p:t:r:xdgvw:h" opt; do
             WGETOPT=""
             ;;
 
-        #   Option r ajouter pour pouvoir ajouter des fichiers dans l'iso
+        #   Option r ajouter pour pouvoir ajouter des fichiers de preconfig
         r)
             RESDIR=$OPTARG
             if [[ ! -e $RESDIR ]]; then

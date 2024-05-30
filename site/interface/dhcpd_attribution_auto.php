@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
                 fwrite($file_handle, "    hardware ethernet $mac_address;\n");
                 fwrite($file_handle, "    fixed-address $ip_address;\n");
                 fwrite($file_handle, "    # PXE Boot\n");
-                fwrite($file_handle, "    include(\"condition_pxe_boot.conf\");\n");
+                fwrite($file_handle, "    include \"condition_pxe_boot.conf\" ;\n");
                 fwrite($file_handle, "};\n");
 
                 // fwrite($file_handle, "    if option arch = 00:07 or option arch = 00:09 {\n");
