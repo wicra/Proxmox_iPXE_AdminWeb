@@ -367,6 +367,10 @@ if(isset($_POST['deconnection'])){
                     $('.delete_host_form').submit(function(event) {
                         event.preventDefault();
                         var formData = $(this).serialize();
+                        var formData = $(this).serialize(); // Sérialiser les données du formulaire
+                        var isLocalChecked = $(this).find('input[name="demarage_local"]').is(':checked'); // Vérifier si la checkbox est cochée
+                        var url = isLocalChecked ? "conf/conf_choice_demarage.php" : "conf/conf_default_demarage.php"; // Déterminer l'URL en fonction de l'état de la checkbox
+
                         $.ajax({
                             type: "POST",
                             url: "conf/conf_delete_machine.php",
