@@ -47,7 +47,7 @@ if(isset($_POST['deconnection'])){
                 
                 <!-- REFRESH PAGE -->
                 <form action="" method="post">
-                    <button class="nav_refresh" name="refresh">
+                    <button class="nav_refresh" name="refresh" id='teste'>
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
                     <?php
@@ -194,6 +194,17 @@ if(isset($_POST['deconnection'])){
                                     <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
                                     <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
                                     <button class=\"col_demarage_default\" type=\"submit\" name=\"demarage_default\">default</button>
+                                    
+                                    <div class=\"checkbox-wrapper-35\">
+                                        <input value=\"private\" name=\"switch\" id=\"switch\" type=\"checkbox\" class=\"switch\">
+                                        <label for=\"switch\">
+                                            <span class=\"switch-x-text\"></span>
+                                            <span class=\"switch-x-toggletext\">
+                                            <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>default</span>
+                                            <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>local</span>
+                                            </span>
+                                        </label>
+                                    </div>
                                 </form>
                             </td>
 
@@ -202,6 +213,8 @@ if(isset($_POST['deconnection'])){
                                 <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
                                 <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
                                 <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
+
+
                                     <button class=\"col_delete_host_form\" type=\"submit\" name=\"delete_host_button\">Supprimer l'hôte</button>
                                 </form>
                             </td>
@@ -318,7 +331,7 @@ if(isset($_POST['deconnection'])){
                         });
                     });
                 });
-                                /////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////
                 //  GESTION DE SOUMISSION FORMULAIRE DEMARAGE EN AJAX   //
                 /////////////////////////////////////////////////////////
                 $(document).ready(function() {
@@ -347,7 +360,7 @@ if(isset($_POST['deconnection'])){
                         });
                     });
                 });
-                                                /////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////
                 //  GESTION DE SOUMISSION FORMULAIRE DEMARAGE EN AJAX   //
                 /////////////////////////////////////////////////////////
                 $(document).ready(function() {
@@ -363,16 +376,16 @@ if(isset($_POST['deconnection'])){
                                 $('#emoji-container').html(response);
                                 // Ajouter la classe pour l'animation
                                 $('.emoji-container').addClass('animate');
-                                // Actualiser la page après 2 secondes
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 1000);
+
+                                // Actualiser la page après une supression 
+                                document.getElementById('teste').click();
                             },
                             error: function(xhr, status, error) {
                                 // Gérer les erreurs
                                 alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
                                 console.error(error);
                             }
+
                         });
                     });
                 });

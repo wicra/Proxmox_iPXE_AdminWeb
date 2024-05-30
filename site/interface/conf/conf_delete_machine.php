@@ -17,15 +17,17 @@ if ($file_content === false) {
 }
 
 // Recherche de l'entrée du host à supprimer
-$pattern = "/^host\s+{$host_name}\s*{[^}]+hardware ethernet\s+{$mac_address};[^}]+fixed-address\s+{$ip_address};[^}]*}/mi";
+$pattern = "/^host\s+{$host_name}\s*{[^}]+hardware ethernet\s+{$mac_address};[^}]+fixed-address\s+{$ip_address};[^}]*\s*};\s/mi";
 
 // Suppression de l'entrée du host
-$file_content = preg_replace($pattern, '', $file_content);
+$file_content = preg_replace($pattern,'', $file_content);
 
 // Écriture du nouveau contenu dans le fichier
 if (file_put_contents($file_path, $file_content) !== false) {
     echo "L'entrée du host a été supprimée avec succès.";
+
 } else {
     echo "Une erreur s'est produite lors de la suppression de l'entrée du host.";
 }
+
 ?>
