@@ -115,6 +115,8 @@ if(isset($_POST['deconnection'])){
                                 <th class=\"col_header_mac\">@ MAC</th>
                                 <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
                                 <th class=\"col_header_modif_ip\">@ IP_conf</th>
+                                <th class=\"col_header_demarage\">Demarage</th>
+                                <th class=\"col_header_delete_host\">Sup</th>
                             </tr>";
 
 
@@ -177,6 +179,33 @@ if(isset($_POST['deconnection'])){
                                     </form>
                                 </div>
                             </td>
+                            <td class=\"col_demarage\">
+
+                            
+                                <form class=\"demarage_local\" method=\"post\">
+                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                    <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
+                                    <button class=\"col_demarage_local\" type=\"submit\" name=\"demarage_local\">local</button>
+                                </form>
+                        
+                                <form class=\"demarage_default\" method=\"post\">
+                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                    <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
+                                    <button class=\"col_demarage_default\" type=\"submit\" name=\"demarage_default\">default</button>
+                                </form>
+                            </td>
+
+                            <td class=\"col_delete_host\">
+                                <form class=\"delete_host_form\" method=\"post\" id=\"delete_host_form\">
+                                <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
+                                    <button class=\"col_delete_host_form\" type=\"submit\" name=\"delete_host_button\">Supprimer l'hôte</button>
+                                </form>
+                            </td>
+
                         </tr>";
                 }
                 echo "</table>
@@ -184,6 +213,7 @@ if(isset($_POST['deconnection'])){
             } else {
                 echo "Aucun hôte trouvé dans le fichier de configuration.";
             }
+
         ?>
 
         <script>
@@ -239,6 +269,94 @@ if(isset($_POST['deconnection'])){
                         $.ajax({
                             type: "POST",
                             url: "conf/conf_ip_dhcp.php",
+                            data: formData,
+                            success: function(response) {
+                                // Mettre à jour le contenu de la balise avec l'emoji
+                                $('#emoji-container').html(response);
+                                // Ajouter la classe pour l'animation
+                                $('.emoji-container').addClass('animate');
+                                // Actualiser la page après 2 secondes
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            },
+                            error: function(xhr, status, error) {
+                                // Gérer les erreurs
+                                alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
+                                console.error(error);
+                            }
+                        });
+                    });
+                });
+
+                /////////////////////////////////////////////////////////
+                //  GESTION DE SOUMISSION FORMULAIRE DEMARAGE EN AJAX   //
+                /////////////////////////////////////////////////////////
+                $(document).ready(function() {
+                    $('.demarage_local').submit(function(event) {
+                        event.preventDefault();
+                        var formData = $(this).serialize();
+                        $.ajax({
+                            type: "POST",
+                            url: "conf/conf_choice_demarage.php",
+                            data: formData,
+                            success: function(response) {
+                                // Mettre à jour le contenu de la balise avec l'emoji
+                                $('#emoji-container').html(response);
+                                // Ajouter la classe pour l'animation
+                                $('.emoji-container').addClass('animate');
+                                // Actualiser la page après 2 secondes
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            },
+                            error: function(xhr, status, error) {
+                                // Gérer les erreurs
+                                alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
+                                console.error(error);
+                            }
+                        });
+                    });
+                });
+                                /////////////////////////////////////////////////////////
+                //  GESTION DE SOUMISSION FORMULAIRE DEMARAGE EN AJAX   //
+                /////////////////////////////////////////////////////////
+                $(document).ready(function() {
+                    $('.demarage_default').submit(function(event) {
+                        event.preventDefault();
+                        var formData = $(this).serialize();
+                        $.ajax({
+                            type: "POST",
+                            url: "conf/conf_default_demarage.php",
+                            data: formData,
+                            success: function(response) {
+                                // Mettre à jour le contenu de la balise avec l'emoji
+                                $('#emoji-container').html(response);
+                                // Ajouter la classe pour l'animation
+                                $('.emoji-container').addClass('animate');
+                                // Actualiser la page après 2 secondes
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            },
+                            error: function(xhr, status, error) {
+                                // Gérer les erreurs
+                                alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
+                                console.error(error);
+                            }
+                        });
+                    });
+                });
+                                                /////////////////////////////////////////////////////////
+                //  GESTION DE SOUMISSION FORMULAIRE DEMARAGE EN AJAX   //
+                /////////////////////////////////////////////////////////
+                $(document).ready(function() {
+                    $('.delete_host_form').submit(function(event) {
+                        event.preventDefault();
+                        var formData = $(this).serialize();
+                        $.ajax({
+                            type: "POST",
+                            url: "conf/conf_delete_machine.php",
                             data: formData,
                             success: function(response) {
                                 // Mettre à jour le contenu de la balise avec l'emoji

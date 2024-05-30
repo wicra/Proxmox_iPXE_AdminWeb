@@ -118,6 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
             // Ajouter l'entrée au fichier de configuration DHCP
             $file_handle = fopen($DHCP_CONF, 'a');
             if ($file_handle !== false) {
+                
+
                 fwrite($file_handle, "host $hostname {\n");
                 fwrite($file_handle, "    hardware ethernet $mac_address;\n");
                 fwrite($file_handle, "    fixed-address $ip_address;\n");
