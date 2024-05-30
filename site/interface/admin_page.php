@@ -47,7 +47,7 @@ if(isset($_POST['deconnection'])){
                 
                 <!-- REFRESH PAGE -->
                 <form action="" method="post">
-                    <button class="nav_refresh" name="refresh" id='teste'>
+                    <button class="nav_refresh" name="refresh" id='refresh'>
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
                     <?php
@@ -91,7 +91,6 @@ if(isset($_POST['deconnection'])){
         <?php include("dhcpd_attribution_auto.php");?>
 
         <?php
-        
             /////////////////////////////////////////////////////////
             //            TABLEAU D'AFFICHAGE DES HOSTS           //
             /////////////////////////////////////////////////////////
@@ -110,6 +109,7 @@ if(isset($_POST['deconnection'])){
                         <table >
                             <tr class=\"tableau\">
                                 <th class=\"col_header_name\" >hôte</th>
+                                <th class=\"col_header_change_name\" >name change</th>
                                 <th class=\"col_header_etat\">Etat</th>
                                 <th class=\"col_header_os\">OS</th>
                                 <th class=\"col_header_mac\">@ MAC</th>
@@ -119,11 +119,27 @@ if(isset($_POST['deconnection'])){
                                 <th class=\"col_header_delete_host\">Sup</th>
                             </tr>";
 
+                /////////////////////////////////////////////////////////
+                //            FONCTION DE VERIF ETAT SWITCH          //
+                /////////////////////////////////////////////////////////
+                function checkIncludeAndHostName($file_path, $host_name_to_find, $include_to_find) {
+                    $content = file_get_contents($file_path);
+                    $pattern = '/host\s+' . preg_quote($host_name_to_find, '/') . '\s*{[^}]+include\s+"([^"]+)"[^}]*}/s';
+                    if (preg_match($pattern, $content, $match)) {
+                        $host_include = $match[1];
+                        if ($host_include === $include_to_find) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        return "hôte non trouvé";
+                    }
+                }
 
                 /////////////////////////////////////////////////////////
                 //            FONCTION DE VERIF ETAT MACHINE           //
                 /////////////////////////////////////////////////////////
-                                
                 //shell_exec('../shell/ipScan.sh');//Changer le propriétaire du dossier projet
                 $file = file("../shell/ipScan.txt");
 
@@ -149,16 +165,31 @@ if(isset($_POST['deconnection'])){
                     $eteint="<i style = \"color : var(--CouleurSecondaire);\" class=\"fa-solid fa-plug\"></i>";
 
                     $pc_state = verifEtat($file ,$fixed_address,$actif,$eteint);
-                    
+                    $result = checkIncludeAndHostName($file_path, $host_name, "condition_pxe_boot_local.conf");
+            
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
 
                     echo "<tr class=\"tableau\" >
                             <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i>$link{$host_name}$link_close</td>
+
+                            <td class=\"col_edit_host\">
+                                <form class=\"edit_host_form\" method=\"post\" id=\"edit_host_form_{$host_name}\">
+                                    <input type=\"hidden\" name=\"old_host_name\" value=\"{$host_name}\">
+                                    <input type=\"text\" name=\"new_host_name\" placeholder=\"New\"  minlength=\"1\" maxlength=\"15\" required>
+                                    <button type=\"submit\" name=\"edit_host_button\" style=\"display: none;\"></button>
+                                    <i class=\"fa-solid fa-edit\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
+                                </form>
+                            </td>
+
                             <td class=\"col_etat\">$pc_state</td>
+
                             <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
+
                             <td class=\"col_mac\">{$hardware_ethernet}</td>
+
                             <td class=\"col_ip_fixe\">{$fixed_address}</td>
+
                             <td class=\"col_ip_fixe\">
                                 <i class=\"fa-solid fa-gears\"></i>
                                 <div class=\"formulaire_ip_conteneur\">
@@ -180,32 +211,31 @@ if(isset($_POST['deconnection'])){
                                 </div>
                             </td>
                             <td class=\"col_demarage\">
+                                
 
-                            
-                                <form class=\"demarage_local\" method=\"post\">
+                                
+                                <form class=\"demarage_choix_admin\" method=\"post\" id=\"demarage_choix_admin_form_{$host_name}\">
                                     <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
                                     <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
                                     <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
-                                    <button class=\"col_demarage_local\" type=\"submit\" name=\"demarage_local\">local</button>
-                                </form>
-                        
-                                <form class=\"demarage_default\" method=\"post\">
-                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                    <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
-                                    <button class=\"col_demarage_default\" type=\"submit\" name=\"demarage_default\">default</button>
-                                    
+                                    <button class=\"col_choix_admin\" type=\"submit\" name=\"demarage_choix_admin\" style=\"display: none;\"></button>
                                     <div class=\"checkbox-wrapper-35\">
-                                        <input value=\"private\" name=\"switch\" id=\"switch\" type=\"checkbox\" class=\"switch\">
-                                        <label for=\"switch\">
-                                            <span class=\"switch-x-text\"></span>
-                                            <span class=\"switch-x-toggletext\">
-                                            <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>default</span>
-                                            <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>local</span>
-                                            </span>
-                                        </label>
+                                            <input name=\"switch\" id=\"switch_{$host_name}\" type=\"checkbox\" class=\"switch\" data-host-name=\"{$host_name}\" ";
+                                        if ($result === 1) {
+                                            echo "checked"; // Si $result est "oui", le switch est activé par défaut
+                                        }
+                                        echo ">
+                                            <label for=\"switch_{$host_name}\">
+                                                <span class=\"switch-x-text\"></span>
+                                                <span class=\"switch-x-toggletext\">
+                                                    <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>default</span>
+                                                    <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>local</span>
+                                                </span>
+                                            </label>
                                     </div>
+
                                 </form>
+                            
                             </td>
 
                             <td class=\"col_delete_host\">
@@ -213,9 +243,8 @@ if(isset($_POST['deconnection'])){
                                 <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
                                 <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
                                 <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
-
-
-                                    <button class=\"col_delete_host_form\" type=\"submit\" name=\"delete_host_button\">Supprimer l'hôte</button>
+                                    <button class=\"col_delete_host_form\" type=\"submit\" name=\"delete_host_button\" style=\"display: none;\"></button>
+                                    <i class=\"fa-solid fa-trash\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
                                 </form>
                             </td>
 
@@ -227,173 +256,175 @@ if(isset($_POST['deconnection'])){
                 echo "Aucun hôte trouvé dans le fichier de configuration.";
             }
 
-        ?>
+        ?><script>
 
-        <script>
+        $(document).ready(function() {
             /////////////////////////////////////////////////////////
-            //         MASQUER LE TABLEAU HISTORIQUE OU NON        //
+            //  GESTION DE SWITCH POUR DEMARRAGE LOCAL/DEFAULT EN AJAX //
             /////////////////////////////////////////////////////////
-            let bouton = document.getElementById("nav_button_attribution");
-            let tableau = document.getElementById("tableau_historique_dhcp");
-            bouton.addEventListener("click", () => {
-            if(getComputedStyle(tableau).display != "none"){
-                tableau.style.display = "none";
-            } else {
-                tableau.style.display = "table";
-            }
-            })
+ 
 
+            /////////////////////////////////////////////////////////
+            //       AFFICHER LE FORMULAIRE DE CHANGEMENT IP       //
+            /////////////////////////////////////////////////////////
+            $('.fa-gears').click(function(event) {
+                event.preventDefault();
+                var $icon = $(this);
+                var $formContainer = $icon.next('.formulaire_ip_conteneur');
+        
+                //changement Ip une a la fois
+                $('.formulaire_ip_conteneur').hide();
+                $('.fa-gears').show();
+        
+                $formContainer.show();
+                $icon.hide();
+            });
+        
+            /////////////////////////////////////////////////////////
+            //         MASQUAGE FORMULAIRE DE CHANGEMENT IP        //
+            /////////////////////////////////////////////////////////
+            $('.fa-xmark').click(function(event) {
+                event.preventDefault();
+                var $closeIcon = $(this);
+                var $formContainer = $closeIcon.closest('.formulaire_ip_conteneur');
+                var $icon = $formContainer.prev('.fa-gears');
+                $formContainer.hide();
+                $icon.show();
+            });
+        
+            /////////////////////////////////////////////////////////
+            //        GESTION DE SOUMISSION FORMULAIRE EN AJAX     //
+            /////////////////////////////////////////////////////////
+            $('.ip_change_form').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "conf/conf_ip_dhcp.php",
+                    data: formData,
+                    success: function(response) {
+                        // Mettre à jour le contenu de la balise avec l'emoji
+                        $('#emoji-container').html(response);
+                        // Ajouter la classe pour l'animation
+                        $('.emoji-container').addClass('animate');
+                        // Actualiser la page après 2 secondes
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    },
+                    error: function(xhr, status, error) {
+                        // Gérer les erreurs
+                        alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
+                        console.error(error);
+                    }
+                });
+            });
+        
+            /////////////////////////////////////////////////////////
+            //  GESTION DE SOUMISSION FORMULAIRE DEMARRAGE EN AJAX //
+            /////////////////////////////////////////////////////////
             $(document).ready(function() {
-                /////////////////////////////////////////////////////////
-                //       AFFICHER LE FORMULAIRE DE CHANGEMENT IP       //
-                /////////////////////////////////////////////////////////
-                $('.fa-gears').click(function(event) {
+    // GESTION DE SWITCH POUR DEMARRAGE LOCAL/DEFAULT EN AJAX
+    $('.switch').change(function() {
+        var $form = $(this).closest('form');
+        var formData = $form.serialize();
+        var url = $(this).is(':checked') ? "conf/conf_local_demarage.php" : "conf/conf_choix_user_demarage.php";
+        
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            success: function(response) {
+                $('#emoji-container').html(response);
+                $('.emoji-container').addClass('animate');
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            },
+            error: function(xhr, status, error) {
+                alert("Une erreur s'est produite lors du démarrage.");
+                console.error(error);
+            }
+        });
+    });
+});
+
+        
+            /////////////////////////////////////////////////////////
+            //  GESTION DE SOUMISSION FORMULAIRE SUPPRESSION EN AJAX //
+            /////////////////////////////////////////////////////////
+            $(document).ready(function() {
+                // Fonction pour soumettre le formulaire lorsqu'on clique sur l'icône
+                $('i.fa-trash').click(function() {
+                    var hostName = $(this).data('host-name');
+                    $('#delete_host_form').submit();
+                });
+
+                // Gestionnaire de soumission du formulaire
+                $('.delete_host_form').submit(function(event) {
                     event.preventDefault();
-                    var $icon = $(this);
-                    var $formContainer = $icon.next('.formulaire_ip_conteneur');
+                    var formData = $(this).serialize();
+                    $.ajax({
+                        type: "POST",
+                        url: "conf/conf_delete_machine.php",
+                        data: formData,
+                        success: function(response) {
+                            // Mettre à jour le contenu de la balise avec l'emoji
+                            $('#emoji-container').html(response);
+                            // Ajouter la classe pour l'animation
+                            $('.emoji-container').addClass('animate');
 
-                    //changement Ip une a la fois
-                    $('.formulaire_ip_conteneur').hide();
-                    $('.fa-gears').show();
-                    
-                    $formContainer.show();
-                    $icon.hide();
-                });
-
-                /////////////////////////////////////////////////////////
-                //         MASQUAGE FORMULAIRE DE CHANGEMENT IP        //
-                /////////////////////////////////////////////////////////
-                $('.fa-xmark').click(function(event) {
-                    event.preventDefault();
-                    var $closeIcon = $(this);
-                    var $formContainer = $closeIcon.closest('.formulaire_ip_conteneur');
-                    var $icon = $formContainer.prev('.fa-gears');
-                    $formContainer.hide();
-                    $icon.show();
-                });
-
-                /////////////////////////////////////////////////////////
-                //        GESTION DE SOUMISSION FORMULAIRE EN AJAX     //
-                /////////////////////////////////////////////////////////
-                $(document).ready(function() {
-                    $('.ip_change_form').submit(function(event) {
-                        event.preventDefault();
-                        var formData = $(this).serialize();
-                        $.ajax({
-                            type: "POST",
-                            url: "conf/conf_ip_dhcp.php",
-                            data: formData,
-                            success: function(response) {
-                                // Mettre à jour le contenu de la balise avec l'emoji
-                                $('#emoji-container').html(response);
-                                // Ajouter la classe pour l'animation
-                                $('.emoji-container').addClass('animate');
-                                // Actualiser la page après 2 secondes
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 1000);
-                            },
-                            error: function(xhr, status, error) {
-                                // Gérer les erreurs
-                                alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
-                                console.error(error);
-                            }
-                        });
-                    });
-                });
-
-                /////////////////////////////////////////////////////////
-                //  GESTION DE SOUMISSION FORMULAIRE DEMARAGE EN AJAX   //
-                /////////////////////////////////////////////////////////
-                $(document).ready(function() {
-                    $('.demarage_local').submit(function(event) {
-                        event.preventDefault();
-                        var formData = $(this).serialize();
-                        $.ajax({
-                            type: "POST",
-                            url: "conf/conf_choice_demarage.php",
-                            data: formData,
-                            success: function(response) {
-                                // Mettre à jour le contenu de la balise avec l'emoji
-                                $('#emoji-container').html(response);
-                                // Ajouter la classe pour l'animation
-                                $('.emoji-container').addClass('animate');
-                                // Actualiser la page après 2 secondes
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 1000);
-                            },
-                            error: function(xhr, status, error) {
-                                // Gérer les erreurs
-                                alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
-                                console.error(error);
-                            }
-                        });
-                    });
-                });
-                /////////////////////////////////////////////////////////
-                //  GESTION DE SOUMISSION FORMULAIRE DEMARAGE EN AJAX   //
-                /////////////////////////////////////////////////////////
-                $(document).ready(function() {
-                    $('.demarage_default').submit(function(event) {
-                        event.preventDefault();
-                        var formData = $(this).serialize();
-                        $.ajax({
-                            type: "POST",
-                            url: "conf/conf_default_demarage.php",
-                            data: formData,
-                            success: function(response) {
-                                // Mettre à jour le contenu de la balise avec l'emoji
-                                $('#emoji-container').html(response);
-                                // Ajouter la classe pour l'animation
-                                $('.emoji-container').addClass('animate');
-                                // Actualiser la page après 2 secondes
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 1000);
-                            },
-                            error: function(xhr, status, error) {
-                                // Gérer les erreurs
-                                alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
-                                console.error(error);
-                            }
-                        });
-                    });
-                });
-                /////////////////////////////////////////////////////////
-                //  GESTION DE SOUMISSION FORMULAIRE DEMARAGE EN AJAX   //
-                /////////////////////////////////////////////////////////
-                $(document).ready(function() {
-                    $('.delete_host_form').submit(function(event) {
-                        event.preventDefault();
-                        var formData = $(this).serialize();
-                        var formData = $(this).serialize(); // Sérialiser les données du formulaire
-                        var isLocalChecked = $(this).find('input[name="demarage_local"]').is(':checked'); // Vérifier si la checkbox est cochée
-                        var url = isLocalChecked ? "conf/conf_choice_demarage.php" : "conf/conf_default_demarage.php"; // Déterminer l'URL en fonction de l'état de la checkbox
-
-                        $.ajax({
-                            type: "POST",
-                            url: "conf/conf_delete_machine.php",
-                            data: formData,
-                            success: function(response) {
-                                // Mettre à jour le contenu de la balise avec l'emoji
-                                $('#emoji-container').html(response);
-                                // Ajouter la classe pour l'animation
-                                $('.emoji-container').addClass('animate');
-
-                                // Actualiser la page après une supression 
-                                document.getElementById('teste').click();
-                            },
-                            error: function(xhr, status, error) {
-                                // Gérer les erreurs
-                                alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
-                                console.error(error);
-                            }
-
-                        });
+                            // Actualiser la page après une suppression 
+                            document.getElementById('refresh').click();
+                        },
+                        error: function(xhr, status, error) {
+                            // Gérer les erreurs
+                            alert("Une erreur s'est produite lors de la modification de l'adresse IP.");
+                            console.error(error);
+                        }
                     });
                 });
             });
+
+
+
+
+
+            $(document).ready(function() {
+    // Fonction pour soumettre le formulaire lorsqu'on clique sur l'icône
+    $('i.fa-edit').click(function() {
+        var hostName = $(this).data('host-name');
+        $('#edit_host_form_' + hostName).submit();
+    });
+
+    // Gestionnaire de soumission du formulaire
+    $('.edit_host_form').submit(function(event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type: "POST",
+            url: "conf/conf_change_name_host.php",
+            data: formData,
+            success: function(response) {
+                // Mettre à jour le contenu de la balise avec le message
+                $('#message-container').html(response);
+
+                // Actualiser la page après la modification du nom d'hôte
+                document.getElementById('refresh').click();
+            },
+            error: function(xhr, status, error) {
+                // Gérer les erreurs
+                alert("Une erreur s'est produite lors de la modification du nom d'hôte.");
+                console.error(error);
+            }
+        });
+    });
+});
+
+        });
         </script>
+        
+ 
+ 
     </body>
 </html>
