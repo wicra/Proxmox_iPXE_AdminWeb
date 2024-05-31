@@ -104,8 +104,9 @@ if(isset($_POST['deconnection'])){
             /////////////////////////////////////////////////////////
             //            TABLEAU D'AFFICHAGE DES HOSTS           //
             /////////////////////////////////////////////////////////
-            $file_path = '../../dhcp/dhcpd_hosts.conf';
-            $config = file_get_contents($file_path);
+            include("connection/link.php");
+
+            $config = file_get_contents($file_path_admin);
 
             if ($config === false) {
                 die("Impossible de lire le fichier de configuration.");
@@ -131,8 +132,8 @@ if(isset($_POST['deconnection'])){
                 /////////////////////////////////////////////////////////
                 //             FONCTION DE VERIF VM OU PAS            //
                 /////////////////////////////////////////////////////////
-                function verify_mac_address($host_name, $mac_prefix, $file_path) {
-                    $file_content = file_get_contents($file_path);
+                function verify_mac_address($host_name, $mac_prefix, $file_path_admin) {
+                    $file_content = file_get_contents($file_path_admin);
 
                     if ($file_content === false) {
                         return "Impossible de lire le fichier de configuration.";
@@ -155,8 +156,8 @@ if(isset($_POST['deconnection'])){
                 /////////////////////////////////////////////////////////
                 //            FONCTION DE VERIF ETAT SWITCH          //
                 /////////////////////////////////////////////////////////
-                function checkIncludeAndHostName($file_path, $host_name_to_find, $include_to_find) {
-                    $content = file_get_contents($file_path);
+                function checkIncludeAndHostName($file_path_admin, $host_name_to_find, $include_to_find) {
+                    $content = file_get_contents($file_path_admin);
                     $pattern = '/host\s+' . preg_quote($host_name_to_find, '/') . '\s*{[^}]+include\s+"([^"]+)"[^}]*}/s';
                     if (preg_match($pattern, $content, $match)) {
                         $host_include = $match[1];
@@ -198,8 +199,8 @@ if(isset($_POST['deconnection'])){
                     $eteint="<i style = \"color : var(--CouleurSecondaire);\" class=\"fa-solid fa-plug\"></i>";
 
                     $pc_state = verifEtat($file ,$fixed_address,$actif,$eteint);
-                    $result = checkIncludeAndHostName($file_path, $host_name, "condition_pxe_boot_local.conf");
-                    $verif_vm = verify_mac_address($host_name,"bc:24:11", $file_path);
+                    $result = checkIncludeAndHostName($file_path_admin, $host_name, "condition_pxe_boot_local.conf");
+                    $verif_vm = verify_mac_address($host_name,"bc:24:11", $file_path_admin);
 
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";

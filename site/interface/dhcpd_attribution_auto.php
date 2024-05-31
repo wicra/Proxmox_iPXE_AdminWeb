@@ -2,8 +2,7 @@
 <?php
 
 // Fichier de log DHCP/var/lib/dhcp/ et /etc/dhcp/
-$LEASES_FILE = "../../dhcp/dhcpd.leases";
-$DHCP_CONF = "../../dhcp/dhcpd_hosts.conf";
+include("connection/link.php");
 
 // Plage d'adresses IP fixe (à adapter)
 $IP_RANGE_START = '10.10.62.10';

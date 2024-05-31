@@ -3,11 +3,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $old_host_name = $_POST['old_host_name'];
     $new_host_name = $_POST['new_host_name'];
 
+    // Validation du nom d'hôte sécurité
+    if (preg_match('/^[a-zA-Z0-9_-]{1,15}$/', $new_host_name) === 0) {
+        echo "Nom d'hôte invalide.";
+        exit;
+    }
     // Chemin vers le fichier dhcpd_hosts.conf
     include("../connection/link.php");
 
+
     // Lecture du contenu du fichier
-    $file_content = file_get_contents($file_path);
+    $file_content = file_get_contents($file_path_conf);
 
     // Vérification si le fichier a été lu avec succès
     if ($file_content === false) {
@@ -21,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $file_content = preg_replace($pattern, $replacement, $file_content);
 
     // Écriture du nouveau contenu dans le fichier
-    if (file_put_contents($file_path, $file_content) !== false) {
+    if (file_put_contents($file_path_conf, $file_content) !== false) {
         echo "Le nom d'hôte a été mis à jour avec succès.";
     } else {
         echo "Une erreur s'est produite lors de la mise à jour du nom d'hôte.";

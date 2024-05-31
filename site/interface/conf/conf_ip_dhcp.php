@@ -23,13 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mac_address = $_POST['mac_address'];
     $new_ip = $_POST['new_ip'];
 
+    //Verif securité ip
+    if (filter_var($new_ip, FILTER_VALIDATE_IP) === false) {
+        echo "Adresse IP invalide.";
+        exit;
+    }
     // Chemin vers le fichier de configuration DHCP
     include("../connection/link.php");
 
-    // Lire le contenu du fichier
-    $config = file_get_contents($file_path);
+    $config = file_get_contents($file_path_conf);
 
-    // Définir le modèle de recherche pour l'hôte spécifié
     $pattern = '/(host\s+' . preg_quote($host_name, '/') . '\s*{[^}]*hardware\s+ethernet\s+' . preg_quote($mac_address, '/') . ';[^}]*fixed-address\s+)[0-9.]+(;[^}]*})/mi';
 
     // Remplacer uniquement l'adresse IP existante par la nouvelle adresse IP
@@ -37,9 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_config = preg_replace($pattern, $replacement, $config);
 
     // Écrire les modifications dans le fichier
-    $result = file_put_contents($file_path, $new_config);
+    $result = file_put_contents($file_path_conf, $new_config);
 
-    // Vérifier si l'écriture a réussi
     if ($result !== false) {
         echo '<div class="emoji-container"><i class="fa-solid fa-thumbs-up fa-shake"></i></div>'; // Emoji de célébration
     } else {

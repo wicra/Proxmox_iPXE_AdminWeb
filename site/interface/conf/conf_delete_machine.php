@@ -8,7 +8,7 @@ $ip_address = $_POST['ip_address'];
 include("../connection/link.php");
 
 // Lecture du contenu du fichier
-$file_content = file_get_contents($file_path);
+$file_content = file_get_contents($file_path_conf);
 
 // Vérification si le fichier a été lu avec succès
 if ($file_content === false) {
@@ -23,7 +23,7 @@ $pattern = "/^host\s+{$host_name}\s*{[^}]+hardware ethernet\s+{$mac_address};[^}
 $file_content = preg_replace($pattern,'', $file_content);
 
 // Écriture du nouveau contenu dans le fichier
-if (file_put_contents($file_path, $file_content) !== false) {
+if (file_put_contents($file_path_conf, $file_content) !== false) {
     echo "L'entrée du host a été supprimée avec succès.";
 
 } else {

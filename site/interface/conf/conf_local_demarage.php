@@ -15,7 +15,7 @@ $new_host_entry = "host {$host_name} {
 include("../connection/link.php");
 
 // Lecture du contenu du fichier
-$file_content = file_get_contents($file_path);
+$file_content = file_get_contents($file_path_conf);
 
 // Vérification si le fichier a été lu avec succès
 if ($file_content === false) {
@@ -27,7 +27,7 @@ if ($file_content === false) {
 $file_content = preg_replace("/host {$host_name}.*?}/s", $new_host_entry, $file_content);
 
 // Écriture du nouveau contenu dans le fichier
-if (file_put_contents($file_path, $file_content) !== false) {
+if (file_put_contents($file_path_conf, $file_content) !== false) {
     echo "Le fichier dhcpd_hosts.conf a été mis à jour avec succès.";
 } else {
     echo "Une erreur s'est produite lors de la mise à jour du fichier dhcpd_hosts.conf.";
