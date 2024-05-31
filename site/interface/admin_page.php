@@ -129,6 +129,30 @@ if(isset($_POST['deconnection'])){
                             </tr>";
 
                 /////////////////////////////////////////////////////////
+                //             FONCTION DE VERIF VM OU PAS            //
+                /////////////////////////////////////////////////////////
+                function verify_mac_address($host_name, $mac_prefix, $file_path) {
+                    $file_content = file_get_contents($file_path);
+
+                    if ($file_content === false) {
+                        return "Impossible de lire le fichier de configuration.";
+                    }
+
+                    // Rechercher l'adresse MAC dans le fichier
+                    $pattern = "/host\s+{$host_name}\s*{[^}]*hardware ethernet\s+([0-9a-f:]{17});/";
+                    if (preg_match($pattern, $file_content, $matches)) {
+                        $found_mac_address = $matches[1];
+
+                        // Vérifier si l'adresse MAC commence par la séquence spécifiée
+                        if (strpos($found_mac_address, $mac_prefix) === 0) {
+                            return "oui";
+                        } else {
+                            return "non";
+                        }
+                    }
+                }
+                
+                /////////////////////////////////////////////////////////
                 //            FONCTION DE VERIF ETAT SWITCH          //
                 /////////////////////////////////////////////////////////
                 function checkIncludeAndHostName($file_path, $host_name_to_find, $include_to_find) {
@@ -175,18 +199,16 @@ if(isset($_POST['deconnection'])){
 
                     $pc_state = verifEtat($file ,$fixed_address,$actif,$eteint);
                     $result = checkIncludeAndHostName($file_path, $host_name, "condition_pxe_boot_local.conf");
-            
+                    $verif_vm = verify_mac_address($host_name,"bc:24:11", $file_path);
+
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
 
                     echo "<tr class=\"tableau\" >
                             <td class=\"col_name\">
-                                
                                 <i class=\"fa-solid fa-pen-to-square\"></i>
                                 <h4 class=\"host_name\">$link{$host_name}$link_close</h4>
-                            
-                                
-
+                        
                                 <form class=\"edit_host_form\" method=\"post\" id=\"edit_host_form_{$host_name}\">
                                     <input type=\"hidden\" name=\"old_host_name\" value=\"{$host_name}\">
                                     <input class=\"new_host_name\" type=\"text\" name=\"new_host_name\" placeholder=\"New\"  minlength=\"1\" maxlength=\"15\" required>
@@ -194,11 +216,7 @@ if(isset($_POST['deconnection'])){
                                     <i class=\"fa-solid fa-check\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
                                     <i class=\"fa-solid fa-hand-point-left\"></i>
                                 </form>
-                                
-                            
                             </td>
-
-                            
 
                             <td class=\"col_etat\">$pc_state</td>
 
@@ -228,33 +246,35 @@ if(isset($_POST['deconnection'])){
                                     </form>
                                 </div>
                             </td>
-                            <td class=\"col_demarage\">
-                                
 
-                                
-                                <form class=\"demarage_choix_admin\" method=\"post\" id=\"demarage_choix_admin_form_{$host_name}\">
-                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                    <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
-                                    <button class=\"col_choix_admin\" type=\"submit\" name=\"demarage_choix_admin\" style=\"display: none;\"></button>
-                                    <div class=\"checkbox-wrapper-35\">
-                                            <input name=\"switch\" id=\"switch_{$host_name}\" type=\"checkbox\" class=\"switch\" data-host-name=\"{$host_name}\" ";
-                                        if ($result === 1) {
-                                            echo "checked"; // Si $result est "oui", le switch est activé par défaut
-                                        }
-                                        echo ">
-                                            <label for=\"switch_{$host_name}\">
-                                                <span class=\"switch-x-text\"></span>
-                                                <span class=\"switch-x-toggletext\">
-                                                    <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>default</span>
-                                                    <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>local</span>
-                                                </span>
-                                            </label>
-                                    </div>
-
-                                </form>
-                            
-                            </td>
+                            <td class=\"col_demarage\">";
+                                // VM OU PAS
+                                if ($verif_vm === "oui") {
+                                    echo "<i class=\"fa-solid fa-triangle-exclamation\"></i>"; 
+                                }
+                                else{
+                                    echo  " 
+                                    <form class=\"demarage_choix_admin\" method=\"post\" id=\"demarage_choix_admin_form_{$host_name}\">
+                                        <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                        <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                        <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
+                                        <button class=\"col_choix_admin\" type=\"submit\" name=\"demarage_choix_admin\" style=\"display: none;\"></button>
+                                        <div class=\"checkbox-wrapper-35\">
+                                                <input name=\"switch\" id=\"switch_{$host_name}\" type=\"checkbox\" class=\"switch\" data-host-name=\"{$host_name}\" ";
+                                                if ($result === 1) {
+                                                    echo "checked"; // Si $result est 1, le switch est activé par défaut
+                                                }
+                                                echo ">
+                                                <label for=\"switch_{$host_name}\">
+                                                    <span class=\"switch-x-text\"></span>
+                                                    <span class=\"switch-x-toggletext\">
+                                                        <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>default</span>
+                                                        <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>local</span>
+                                                    </span>
+                                                </label>
+                                        </div>
+                                    </form>";} 
+                            echo "</td>
 
                             <td class=\"col_delete_host\">
                                 <form class=\"delete_host_form\" method=\"post\" id=\"delete_host_form\">
@@ -265,7 +285,6 @@ if(isset($_POST['deconnection'])){
                                     <i class=\"fa-solid fa-trash\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
                                 </form>
                             </td>
-
                         </tr>";
                 }
                 echo "</table>

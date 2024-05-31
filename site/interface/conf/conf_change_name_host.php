@@ -4,7 +4,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $new_host_name = $_POST['new_host_name'];
 
     // Chemin vers le fichier dhcpd_hosts.conf
-    $file_path = '../../../dhcp/dhcpd_hosts.conf';
+    include("../connection/link.php");
 
     // Lecture du contenu du fichier
     $file_content = file_get_contents($file_path);

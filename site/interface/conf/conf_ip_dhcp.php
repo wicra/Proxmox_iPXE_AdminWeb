@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_ip = $_POST['new_ip'];
 
     // Chemin vers le fichier de configuration DHCP
-    $file_path = '../../../dhcp/dhcpd_hosts.conf';
+    include("../connection/link.php");
 
     // Lire le contenu du fichier
     $config = file_get_contents($file_path);
