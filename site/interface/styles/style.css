@@ -141,11 +141,33 @@ body{
 
 /*TABLEAU D'HOTE*/
 
-
-
-
 body{
     padding: 8vh 5vw;
+}
+
+/* FOMULAIRE CHANGE HOST NAME*/
+
+.edit_host_form{
+    display: none;
+    
+    padding: 1vh 2vw;
+}
+
+
+.new_host_name{
+    width: 100px;
+    padding: 1vh 1vw;
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.fa-check ,.fa-hand-point-left{
+    background-color: var(--Couleur5);
+    border: none;
+    cursor: pointer;
+    padding: 0.8vh 1vw;
+    border-radius: 0.5rem;
+    color: var(--CouleurFont);
 }
 
 /* FOMUAIRE DATE */
@@ -267,16 +289,16 @@ th{
     color: var(--Couleur5);
 }
 
-.col_name i{
+.fa-pen-to-square{
     padding: 1vh 2vw;
     text-align: center;
     font-size: 20px;
     color: var(--CouleurFont);
 }
 
-.col_header_name,.col_header_mac,.col_header_ip_fixe,.col_header_modif_ip,
+.col_header_name,.col_header_demarage,.col_header_mac,.col_header_ip_fixe,.col_header_modif_ip,
 .col_header_os,.col_header_etat,.tab_historique_header_nom,
-.tab_historique_header_mac,.tab_historique_header_bouton{
+.tab_historique_header_mac,.tab_historique_header_bouton,.col_header_delete_host{
     padding: 2vh 0vw;
     text-align: center;
     font-size: 20px;
@@ -290,12 +312,17 @@ th{
     display: flex;
 }
 
-.col_name,.col_mac,.col_ip_fixe,.col_modif_ip,.col_os,.col_etat{
+.col_name,.col_mac,.col_ip_fixe,.col_modif_ip,.col_os,.col_etat,.col_demarage,.col_delete_host{
     padding: 2vh 1vw;
     text-align: center;
     font-size: 20px;
 }
 
+.col_demarage{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
 
 .ip_change_form{
     display: flex;

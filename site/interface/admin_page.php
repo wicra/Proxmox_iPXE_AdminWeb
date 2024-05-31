@@ -119,7 +119,6 @@ if(isset($_POST['deconnection'])){
                         <table >
                             <tr class=\"tableau\">
                                 <th class=\"col_header_name\" >hôte</th>
-                                <th class=\"col_header_change_name\" >name change</th>
                                 <th class=\"col_header_etat\">Etat</th>
                                 <th class=\"col_header_os\">OS</th>
                                 <th class=\"col_header_mac\">@ MAC</th>
@@ -181,16 +180,25 @@ if(isset($_POST['deconnection'])){
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
 
                     echo "<tr class=\"tableau\" >
-                            <td class=\"col_name\"><i class=\"fa-solid fa-desktop\"></i>$link{$host_name}$link_close</td>
+                            <td class=\"col_name\">
+                                
+                                <i class=\"fa-solid fa-pen-to-square\"></i>
+                                <h4 class=\"host_name\">$link{$host_name}$link_close</h4>
+                            
+                                
 
-                            <td class=\"col_edit_host\">
                                 <form class=\"edit_host_form\" method=\"post\" id=\"edit_host_form_{$host_name}\">
                                     <input type=\"hidden\" name=\"old_host_name\" value=\"{$host_name}\">
-                                    <input type=\"text\" name=\"new_host_name\" placeholder=\"New\"  minlength=\"1\" maxlength=\"15\" required>
+                                    <input class=\"new_host_name\" type=\"text\" name=\"new_host_name\" placeholder=\"New\"  minlength=\"1\" maxlength=\"15\" required>
                                     <button type=\"submit\" name=\"edit_host_button\" style=\"display: none;\"></button>
-                                    <i class=\"fa-solid fa-edit\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
+                                    <i class=\"fa-solid fa-check\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
+                                    <i class=\"fa-solid fa-hand-point-left\"></i>
                                 </form>
+                                
+                            
                             </td>
+
+                            
 
                             <td class=\"col_etat\">$pc_state</td>
 
@@ -250,9 +258,9 @@ if(isset($_POST['deconnection'])){
 
                             <td class=\"col_delete_host\">
                                 <form class=\"delete_host_form\" method=\"post\" id=\"delete_host_form\">
-                                <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
+                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                    <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
                                     <button class=\"col_delete_host_form\" type=\"submit\" name=\"delete_host_button\" style=\"display: none;\"></button>
                                     <i class=\"fa-solid fa-trash\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
                                 </form>
@@ -269,7 +277,55 @@ if(isset($_POST['deconnection'])){
         ?>
 
         <script>
+        
+               
+                
             $(document).ready(function() {
+                /////////////////////////////////////////////////////////
+                //    AFFICHER LE FORMULAIRE DE CHANGEMENT HOST NAME   //
+                /////////////////////////////////////////////////////////
+                $('.fa-pen-to-square').click(function() {
+                    // Masquer tous les autres formulaires et réafficher les icônes et noms d'hôtes
+                    $('.edit_host_form').hide();
+                    $('.fa-pen-to-square').show();
+                    $('.host_name').show();
+
+                    var $icon = $(this);
+                    var $hostName = $icon.siblings('.host_name');
+                    var $form = $icon.siblings('.edit_host_form');
+
+                    $icon.hide();
+                    $hostName.hide();
+                    $form.show();
+                });
+
+                /////////////////////////////////////////////////////////
+                //    MASUQER LE FORMULAIRE DE CHANGEMENT HOST NAME    //
+                /////////////////////////////////////////////////////////
+                $('.edit_host_form').on('submit', function(event) {
+                    event.preventDefault();
+                    var $form = $(this);
+                    var $icon = $form.siblings('.fa-pen-to-square');
+                    var $hostName = $form.siblings('.host_name');
+
+                    $form.hide();
+                    $icon.show();
+                    $hostName.show();
+                });
+
+                /////////////////////////////////////////////////////////
+                //            ANNULER LE CHANGEMENT HOST NAME          //
+                /////////////////////////////////////////////////////////
+                $('.fa-hand-point-left').click(function() {
+                    var $form = $(this).closest('.edit_host_form');
+                    var $icon = $form.siblings('.fa-pen-to-square');
+                    var $hostName = $form.siblings('.host_name');
+
+                    $form.hide();
+                    $icon.show();
+                    $hostName.show();
+                });
+
                 /////////////////////////////////////////////////////////
                 //       AFFICHER LE FORMULAIRE DE CHANGEMENT IP       //
                 /////////////////////////////////////////////////////////
@@ -399,7 +455,7 @@ if(isset($_POST['deconnection'])){
 
                 $(document).ready(function() {
                     // Fonction pour soumettre le formulaire lorsqu'on clique sur l'icône
-                    $('i.fa-edit').click(function() {
+                    $('i.fa-check').click(function() {
                         var hostName = $(this).data('host-name');
                         $('#edit_host_form_' + hostName).submit();
                     });
