@@ -163,9 +163,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
     }
 }
 
+
 ?>
 
-
+<?php if(!empty($recent_connections)): ?>
 <table class="tableau_historique_dhcp" id="tableau_historique_dhcp">
     <thead>
         <tr>
@@ -190,3 +191,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
         <?php endforeach; ?>
     </tbody>
 </table>
+<?php endif;?>
