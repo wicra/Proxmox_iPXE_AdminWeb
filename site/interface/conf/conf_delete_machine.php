@@ -1,4 +1,7 @@
 <?php
+//session de stockage notification
+session_start();
+
 // Récupération des données du formulaire
 $host_name = $_POST['host_name'];
 $mac_address = $_POST['mac_address'];
@@ -12,7 +15,7 @@ $file_content = file_get_contents($file_path_conf);
 
 // Vérification si le fichier a été lu avec succès
 if ($file_content === false) {
-    echo "Impossible de lire le fichier de configuration.";
+    $_SESSION['notifications'][] = "Impossible de lire le fichier de configuration.";
     exit;
 }
 
@@ -24,10 +27,10 @@ $file_content = preg_replace($pattern,'', $file_content);
 
 // Écriture du nouveau contenu dans le fichier
 if (file_put_contents($file_path_conf, $file_content) !== false) {
-    echo "L'entrée du host a été supprimée avec succès.";
+    $_SESSION['notifications'][] = "L'entrée du host a été supprimée avec succès.";
 
 } else {
-    echo "Une erreur s'est produite lors de la suppression de l'entrée du host.";
+    $_SESSION['notifications'][] = "Une erreur s'est produite lors de la suppression de l'entrée du host.";
 }
 
 ?>

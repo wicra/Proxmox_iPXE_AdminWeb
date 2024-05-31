@@ -95,12 +95,56 @@ if(isset($_POST['deconnection'])){
         </div>  
         
         <!-- CONTENEUR ANIMATION MODIF IP REUSSI -->
-        <div id="emoji-container"></div>   
+        <div id="emoji-container"></div>  
 
+        <!-- CONTENEUR NOTIF -->
+        <div id="notification-container"></div>
+        
         <!-- AJOUT TABLEAU DISTORIQUE DHCP -->
         <?php include("dhcpd_attribution_auto.php");?>
-
+        
         <?php
+        
+            /////////////////////////////////////////////////////////
+            //                   LES NOTIFICATIONS                 //
+            /////////////////////////////////////////////////////////
+            function notif($message) {
+                echo "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var notificationContainer = document.getElementById('notification-container');
+                        if (notificationContainer) {
+                            var notif = document.createElement('div');
+                            notif.className = 'error';
+                            notif.innerHTML = `
+                                <div class=\"error__icon\">
+                                    <svg fill=\"none\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\">
+                                        <path d=\"m13 13h-2v-6h2zm0 4h-2v-2h2zm-1-15c-1.3132 0-2.61358.25866-3.82683.7612-1.21326.502
+                                        55-2.31565 1.23915-3.24424 2.16773-1.87536 1.87537-2.92893 4.41891-2.92893 7.07107 0 2.6522
+                                        1.05357 5.1957 2.92893 7.0711.92859.9286 2.03098 1.6651 3.24424 2.1677 1.21325.5025 2.51363
+                                        .7612 3.82683.7612 2.6522 0 5.1957-1.0536 7.0711-2.9289 1.8753-1.8754 2.9289-4.4189 2.9289-
+                                        7.0711 0-1.3132-.2587-2.61358-.7612-3.82683-.5026-1.21326-1.2391-2.31565-2.1677-3.24424-.92
+                                        86-.92858-2.031-1.66518-3.2443-2.16773-1.2132-.50254-2.5136-.7612-3.8268-.7612z\" fill=\"#393a37\">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div class=\"error__title\">$message</div>
+                            `;
+                            notificationContainer.appendChild(notif);
+                            setTimeout(function() { notif.style.display = 'none'; }, 4000); // Fermer la notification après 2 secondes
+                        }
+                    });
+                </script>
+                ";
+            }
+            // recuperer les notif stocker dans la sessions 
+            if (!empty($_SESSION['notifications'])) {
+                foreach ($_SESSION['notifications'] as $message) {
+                    notif($message);
+                }
+                unset($_SESSION['notifications']);
+            }
+            
             /////////////////////////////////////////////////////////
             //            TABLEAU D'AFFICHAGE DES HOSTS           //
             /////////////////////////////////////////////////////////
@@ -109,7 +153,7 @@ if(isset($_POST['deconnection'])){
             $config = file_get_contents($file_path_admin);
 
             if ($config === false) {
-                die("Impossible de lire le fichier de configuration.");
+                notif("Impossible de lire le fichier de configuration.");
             }
             //recupère le nom , mac , ip
             $pattern = '/host\s+([a-zA-Z0-9_-]+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
@@ -291,14 +335,13 @@ if(isset($_POST['deconnection'])){
                 echo "</table>
                     </div>";
             } else {
-                echo "Aucun hôte trouvé dans le fichier de configuration.";
+                notif("Aucun hôte trouvé dans le fichier de configuration.");
             }
 
         ?>
 
         <script>
-        
-               
+ 
                 
             $(document).ready(function() {
                 /////////////////////////////////////////////////////////

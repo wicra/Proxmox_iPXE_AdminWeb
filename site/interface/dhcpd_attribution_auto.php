@@ -10,10 +10,10 @@ $IP_RANGE_END = '10.10.62.150';
 
 // Vérification existence des fichiers
 if (!file_exists($LEASES_FILE)) {
-    die("Erreur : Le fichier $LEASES_FILE n'existe pas.\n");
+    notif("Erreur : Le fichier $LEASES_FILE n'existe pas.\n");
 }
 if (!file_exists($DHCP_CONF)) {
-    die("Erreur : Le fichier $DHCP_CONF n'existe pas.\n");
+    notif("Erreur : Le fichier $DHCP_CONF n'existe pas.\n");
 }
 
 // Lire le contenu  de bail DHCP
@@ -21,7 +21,7 @@ $leases_content = file_get_contents($LEASES_FILE);
 
 // Vérifier si la lecture
 if ($leases_content === false) {
-    die("Erreur : Impossible de lire le fichier $LEASES_FILE.\n");
+    notif("Erreur : Impossible de lire le fichier $LEASES_FILE.\n");
 }
 
 // Analyser les baux DHCP par adresse MAC
@@ -35,7 +35,7 @@ $dhcp_conf_content = file_get_contents($DHCP_CONF);
 
 // Vérifier si la lecture
 if ($dhcp_conf_content === false) {
-    die("Erreur : Impossible de lire le fichier $DHCP_CONF.\n");
+    notif("Erreur : Impossible de lire le fichier $DHCP_CONF.\n");
 }
 
 // Extraire les adresses MAC déjà présentes dans le fichier de configuration
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
         // Obtenir la prochaine IP disponible
         $ip_address = get_next_available_ip($IP_RANGE_START, $IP_RANGE_END, $existing_ips);
         if ($ip_address === false) {
-            echo "Erreur : Aucune adresse IP disponible dans la plage définie.\n";
+            notif( "Erreur : Aucune adresse IP disponible dans la plage définie.\n");
         } else {
             // Ajouter l'entrée au fichier de configuration DHCP
             $file_handle = fopen($DHCP_CONF, 'a');
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
                 // Retirer l'entrée des connexions récentes pour ne pas l'afficher de nouveau
                 unset($recent_connections[$mac_address]);
             } else {
-                echo "Erreur : Impossible d'ouvrir le fichier $DHCP_CONF pour écriture.\n";
+                notif("Erreur : Impossible d'ouvrir le fichier $DHCP_CONF pour écriture.\n");
             }
         }
     }
