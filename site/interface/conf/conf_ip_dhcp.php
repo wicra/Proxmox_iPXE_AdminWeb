@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //Verif securité ip
     if (filter_var($new_ip, FILTER_VALIDATE_IP) === false) {
-        echo "Adresse IP invalide.";
+        $_SESSION['notifications'][] = "Adresse IP invalide.";
         exit;
     }
     // Chemin vers le fichier de configuration DHCP

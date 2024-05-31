@@ -144,7 +144,7 @@ if(isset($_POST['deconnection'])){
                 }
                 unset($_SESSION['notifications']);
             }
-            
+
             /////////////////////////////////////////////////////////
             //            TABLEAU D'AFFICHAGE DES HOSTS           //
             /////////////////////////////////////////////////////////

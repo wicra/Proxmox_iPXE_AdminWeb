@@ -1,4 +1,7 @@
 <?php
+//session de stockage notification
+session_start();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $old_host_name = $_POST['old_host_name'];
     $new_host_name = $_POST['new_host_name'];
@@ -17,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Vérification si le fichier a été lu avec succès
     if ($file_content === false) {
-        echo "Impossible de lire le fichier de configuration.";
+        $_SESSION['notifications'][] = "Impossible de lire le fichier de configuration.";
         exit;
     }
 
@@ -28,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Écriture du nouveau contenu dans le fichier
     if (file_put_contents($file_path_conf, $file_content) !== false) {
-        echo "Le nom d'hôte a été mis à jour avec succès.";
+        $_SESSION['notifications'][] = "Le nom d'hôte a été mis à jour avec succès.";
     } else {
-        echo "Une erreur s'est produite lors de la mise à jour du nom d'hôte.";
+        $_SESSION['notifications'][] = "Une erreur s'est produite lors de la mise à jour du nom d'hôte.";
     }
 }
 ?>

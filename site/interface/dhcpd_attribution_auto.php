@@ -109,6 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
         $connection = $recent_connections[$mac_address];
         $hostname = $connection['hostname'];
         
+        notif( "Attibution réussi");
         // Obtenir la prochaine IP disponible
         $ip_address = get_next_available_ip($IP_RANGE_START, $IP_RANGE_END, $existing_ips);
         if ($ip_address === false) {
