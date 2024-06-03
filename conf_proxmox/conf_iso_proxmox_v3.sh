@@ -16,7 +16,7 @@ EOF
 
 # Vérifie si deux arguments sont fournis (le chemin vers l'ISO et le chemin vers le script post-install)
 if [ ! $# -eq 2 ]; then
-  echo -ne "Usage: bash pve-iso-2-pxe.sh /path/to/pve.iso /path/to/post-install-script.sh\n\n"
+  echo -ne "Usage: bash pve-iso-2-pxe.sh $ISO_ORIGINAL $SCRIPT_POST_INSTALL\n\n"
   exit 1
 fi
 
@@ -108,15 +108,15 @@ fi
 # Ajoute le script post-install à initrd
 echo "Ajout du script post-install à initrd..."
 cp "$SCRIPT_POST_INSTALL" /tmp/
-echo "path/to/script_post_install.sh" | cpio -L -H newc -o >> initrd || exit 5
+echo "$SCRIPT_POST_INSTALL" | cpio -L -H newc -o >> initrd || exit 5
 
 # Modification de initrd pour exécuter le script post-install
 echo "Modification de initrd pour exécuter le script post-install..."
 if [ -f /tmp/init ]; then
-  sed -i '/^exit 0/i bash /path/to/script_post_install.sh' /tmp/init
-  echo "bash /path/to/script_post_install.sh" | cpio -L -H newc -o >> initrd || exit 5
+  sed -i "/^exit 0/i bash $SCRIPT_POST_INSTALL" /tmp/init
+  echo "bash $SCRIPT_POST_INSTALL" | cpio -L -H newc -o >> initrd || exit 5
 else
-  echo "bash /path/to/script_post_install.sh" >> /tmp/init
+  echo "bash $SCRIPT_POST_INSTALL" >> /tmp/init
   echo "/tmp/init" | cpio -L -H newc -o >> initrd || exit 5
 fi
 
