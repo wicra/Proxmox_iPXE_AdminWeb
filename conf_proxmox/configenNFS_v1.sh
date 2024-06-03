@@ -241,9 +241,14 @@ UUID=$(dmidecode | grep -A8 "System Information"| grep UUID | sed 's/^.*UUID: //
 SKUb64=$(dmidecode | grep -A8 "System Information"| grep "SKU Number" | sed 's/^.*SKU Number: //' | tr -d '\n' |base64)
 familyb64=$(dmidecode | grep -A8 "System Information"| grep Family | sed 's/^.*Family: //' | tr -d '\n' |base64)
 
-#echo qm create 205 --sockets 1 --cores $nbcpu --memory $memory --net0 virtio,bridge=vmbr0,firewall=1 --agent 1 --balloon $memory --name testcli --onboot 1 --scsihw virtio-scsi-single --ostype win10 --vga virtio-gl --boot order=\'scsi0;ide2;net0\' --smbios1 uuid=$UUID,manufacturer=$manufb64,product=$productb64,version=$versionb64,serial=$serialb64,sku=$SKUb64,family=$familyb64,base64=1 --args \'-acpitable file=/root/MSDM.bin\'
+#recuperation de l'addresse mac de la machine pour attribuer la fin a celui de la vm ex: @mac machine da:fe:qs:la:fi:nn @vm fa:ca:de:la:fi:nn
+ifname = $(ls /sys/class/net/ | grep enp)
+phymac = $(cat /sys/class/net/$ifname/address)
+mac= $(echo $phymac | sed 's/^..:..:../fa:ca:de/')
 
-qm create 205 --sockets 1 --cores $nbcpu --memory $memory --net0 virtio,bridge=vmbr0,firewall=1 --agent 1 --balloon $memory --name testcli --onboot 1 --scsihw virtio-scsi-pci --ostype win10 --vga qxl --boot order='scsi0;ide2;net0' --smbios1 uuid=$UUID,manufacturer=$manufb64,product=$productb64,version=$versionb64,serial=$serialb64,sku=$SKUb64,family=$familyb64,base64=1 --args '-acpitable file=/root/MSDM.bin'
+#echo qm create 205 --sockets 1 --cores $nbcpu --memory $memory --net0 virtio,bridge=vmbr0,firewall=1,macaddr=$mac --agent 1 --balloon $memory --name testcli --onboot 1 --scsihw virtio-scsi-single --ostype win10 --vga virtio-gl --boot order=\'scsi0;ide2;net0\' --smbios1 uuid=$UUID,manufacturer=$manufb64,product=$productb64,version=$versionb64,serial=$serialb64,sku=$SKUb64,family=$familyb64,base64=1 --args \'-acpitable file=/root/MSDM.bin\'
+
+qm create 205 --sockets 1 --cores $nbcpu --memory $memory --net0 virtio,bridge=vmbr0,firewall=1,macaddr=$mac --agent 1 --balloon $memory --name testcli --onboot 1 --scsihw virtio-scsi-pci --ostype win10 --vga qxl --boot order='scsi0;ide2;net0' --smbios1 uuid=$UUID,manufacturer=$manufb64,product=$productb64,version=$versionb64,serial=$serialb64,sku=$SKUb64,family=$familyb64,base64=1 --args '-acpitable file=/root/MSDM.bin'
 
 
 /home/$username/MontageDisk.sh $DisqueChargement
