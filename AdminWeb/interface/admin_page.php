@@ -198,7 +198,6 @@ if(isset($_POST['deconnection'])){
                                 <th class=\"col_header_os\">OS</th>
                                 <th class=\"col_header_mac\">@ MAC</th>
                                 <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
-                                <th class=\"col_header_modif_ip\">@ IP_conf</th>
                                 <th class=\"col_header_demarage\">Demarage</th>
                                 <th class=\"col_header_delete_host\">Sup</th>
                             </tr>";
@@ -300,28 +299,32 @@ if(isset($_POST['deconnection'])){
 
                             <td class=\"col_mac\">{$hardware_ethernet}</td>
 
-                            <td class=\"col_ip_fixe\">{$fixed_address}</td>
-
                             <td class=\"col_ip_fixe\">
-                                <i class=\"fa-solid fa-gears\"></i>
-                                <div class=\"formulaire_ip_conteneur\">
-                                    <form class=\"ip_change_form\">
-                                        <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                        <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                        <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
-                                        <button class=\"button\" type=\"submit\">
-                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\">
-                                                <path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25
-                                                0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path>
-                                                <path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0
-                                                0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path>
-                                            </svg>
-                                            Modifier
-                                        </button>
-                                        <i class=\"fa-solid fa-xmark\"></i>
-                                    </form>
+                                <div class=\"col_conteneur_ip_conf\">
+                                    <h4 class=\"ip_address\">{$fixed_address}</h4>
+
+                                    <i class=\"fa-solid fa-gears\"></i>
+                                    <div class=\"formulaire_ip_conteneur\">
+                                        <form class=\"ip_change_form\">
+                                            <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                            <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                            <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
+                                            <button class=\"button\" type=\"submit\">
+                                                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\">
+                                                    <path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25
+                                                    0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path>
+                                                    <path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0
+                                                    0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path>
+                                                </svg>
+                                                Modifier
+                                            </button>
+                                            <i class=\"fa-solid fa-xmark\"></i>
+                                        </form>
+                                    </div>
                                 </div>
                             </td>
+
+
 
                             <td class=\"col_demarage\">";
                                 // VM OU PAS
@@ -426,12 +429,15 @@ if(isset($_POST['deconnection'])){
                     event.preventDefault();
                     var $icon = $(this);
                     var $formContainer = $icon.next('.formulaire_ip_conteneur');
-            
+                    var $ip_address = $icon.siblings('.ip_address');
+
+                    
                     //changement Ip une a la fois
                     $('.formulaire_ip_conteneur').hide();
                     $('.fa-gears').show();
             
                     $formContainer.show();
+                    $ip_address.hide();
                     $icon.hide();
                 });
             
@@ -443,7 +449,9 @@ if(isset($_POST['deconnection'])){
                     var $closeIcon = $(this);
                     var $formContainer = $closeIcon.closest('.formulaire_ip_conteneur');
                     var $icon = $formContainer.prev('.fa-gears');
+                    var $ip_address = $icon.siblings('.ip_address');
                     $formContainer.hide();
+                    $ip_address.show();
                     $icon.show();
                 });
             
