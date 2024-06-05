@@ -42,6 +42,20 @@ if(isset($_POST['deconnection'])){
             <h1 class="execute_titre">déploiement d'images</h1>
 
             <div class="nav_barre">
+                <!-- IP RANGE MASQUAGE/ AFFICHAGE  -->
+                <button class="nav_button_ip_range" id="nav_button_ip_range" type="button"  onclick="masquer_ip_range()">Range ip</button>
+                <script>
+                    function masquer_ip_range(){
+                        var element = document.getElementById('conteneur_formulaire_range_ip');
+                        if(element.style.display === 'none'){
+                            element.style.display = 'block';
+
+                        }else{
+                            element.style.display = 'none'
+                        }
+                    }
+                </script>
+
                 <!-- ATTRIBUTION MASQUAGE/ AFFICHAGE TABLEAU -->
                 <button class="nav_button_attribution" id="nav_button_attribution" type="button"  onclick="masquer()">Attribution ip</button>
                 <script>
@@ -72,7 +86,19 @@ if(isset($_POST['deconnection'])){
                     <button type="submit" class="button_deconnection"  name='deconnection' >
                     <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
-                </form>       
+                </form>    
+                
+                <!-- REBOOT SERVER DHCP -->
+                <form  method='post'>
+                    <button type="submit" class="nav_button_boot_dhcp"  name='reboot_dhcp' >
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                    <?php
+                        if(isset($_POST['reboot_dhcp'])){
+                            shell_exec('../boot_dhcp/boot_server_dhcp.sh');
+                        }
+                    ?>
+                </form>  
                 
                 <!-- USER CONNECTE -->
                 <?php
@@ -94,6 +120,10 @@ if(isset($_POST['deconnection'])){
             </div>
         </div>  
         
+        <!-- CONFIGURATION PLAGE ADRESSE -->
+        <?php include("conf/conf_ip_range.php");?>
+
+
         <!-- CONTENEUR ANIMATION MODIF IP REUSSI -->
         <div id="emoji-container"></div>  
 
@@ -342,9 +372,8 @@ if(isset($_POST['deconnection'])){
         ?>
 
         <script>
- 
-                
             $(document).ready(function() {
+
                 /////////////////////////////////////////////////////////
                 //    AFFICHER LE FORMULAIRE DE CHANGEMENT HOST NAME   //
                 /////////////////////////////////////////////////////////

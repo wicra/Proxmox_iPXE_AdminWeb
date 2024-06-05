@@ -76,6 +76,8 @@ body{
     padding: 3vh 0;
 }
 
+
+
 /*FORMULAIRE*/
 .formulaire_conteneur{
     display: none;
@@ -201,6 +203,26 @@ body{
     font-family: var(--FontSeconfaire);
 }
 
+.nav_button_ip_range{
+    background-color: var(--Couleur5);
+    border: none;
+    cursor: pointer;
+    padding: 1vh 1vw;
+    border-radius: 0.5rem;
+    color: var(--CouleurFont);
+}
+
+
+.nav_button_boot_dhcp{
+    background-color: var(--Couleur5);
+    border: none;
+    cursor: pointer;
+    padding: 0.5vh 0.5vw;
+    font-size: 20px;
+    border-radius: 0.5rem;
+    color: var(--CouleurFont);
+}
+
 .nav_barre{
     display: flex;
     align-items: center;
@@ -216,25 +238,17 @@ body{
     border-radius: 0.5rem;
     color: var(--CouleurFont);
 }
-.nav_button_attribution{
-    background-color: var(--Couleur5);
-    border: none;
-    cursor: pointer;
-    padding: 1vh 1vw;
-    border-radius: 0.5rem;
-    color: var(--CouleurFont);
-}
+
 .nav_refresh{
     background-color: var(--Couleur5);
     border: none;
     cursor: pointer;
-    padding: 1vh 1vw;
+    padding: 0.5vh 0.5vw;
+    font-size: 20px;
     border-radius: 0.5rem;
     color: var(--CouleurFont);
 }
-.nav_refresh i{
-    font-size: 20px;
-}
+
 
 .nav_user{
     display: flex;
@@ -243,7 +257,7 @@ body{
     color: var(--CouleurFont);
     background-color: var(--Couleur5);
     font-family: var(--FontSeconfaire);
-    padding: 1vh 1vw;
+    padding: 0.5vh 0.5vw;
     font-size: 20px;
     border-radius: 0.5rem;
     gap: 1vw;
@@ -261,11 +275,11 @@ body{
     margin: 0;
 }
 .button_deconnection{
-    padding: 1vh 1vw;
+    padding: 0.5vh 0.5vw;
+    font-size: 20px;
     border-radius: 0.5rem;
     border: 0 ;
     font-size: 20px;
-    border-radius: 0.5rem;
     color: var(--CouleurFont);
     background-color: var(--Couleur5);
 }
@@ -415,29 +429,29 @@ th{
 
 
 /*ANIMATION IP CHANGEMENT*/
-    .emoji-container {
-        position:  absolute;
-        z-index: 2;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 250px;
+.emoji-container {
+    position:  absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 250px;
+    opacity: 1; 
+    animation: fadeInOut 3s ease forwards; 
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 1;
+    }
+    90% {
         opacity: 1; 
-        animation: fadeInOut 3s ease forwards; 
     }
-    
-    @keyframes fadeInOut {
-        0% {
-            opacity: 1;
-        }
-        90% {
-            opacity: 1; 
-        }
-        100% {
-            opacity: 0;
-            display: none; 
-        }
+    100% {
+        opacity: 0;
+        display: none; 
     }
+}
 
 
 
@@ -474,7 +488,7 @@ th{
 .checkbox-wrapper-35 .switch {
     display: none;
 }
-  
+
 .checkbox-wrapper-35 .switch + label {
     -webkit-box-align: center;
     -webkit-align-items: center;
@@ -495,13 +509,13 @@ th{
     -ms-user-select: none;
     user-select: none;
 }
-  
+
 .checkbox-wrapper-35 .switch + label::before,
     .checkbox-wrapper-35 .switch + label::after {
     content: '';
     display: block;
 }
-  
+
 .checkbox-wrapper-35 .switch + label::before {
     background-color: #05012c;
     border-radius: 500px;
@@ -511,7 +525,7 @@ th{
     transition: background-color 0.125s ease-out;
     width: 25px;
 }
-  
+
 .checkbox-wrapper-35 .switch + label::after {
     background-color: #fff;
     border-radius: 13px;
@@ -526,12 +540,12 @@ th{
     transition: transform 0.125s ease-out, -webkit-transform 0.125s ease-out;
     width: 13px;
 }
-  
+
 .checkbox-wrapper-35 .switch + label .switch-x-text {
     display: block;
     margin-right: .3em;
 }
-  
+
 .checkbox-wrapper-35 .switch + label .switch-x-toggletext {
     display: block;
     font-weight: bold;
@@ -540,7 +554,7 @@ th{
     position: relative;
     width: 15px;
 }
-  
+
 .checkbox-wrapper-35 .switch + label .switch-x-unchecked,
     .checkbox-wrapper-35 .switch + label .switch-x-checked {
     left: 0;
@@ -551,51 +565,45 @@ th{
     transition: transform 0.125s ease-out, opacity 0.125s ease-out;
     transition: transform 0.125s ease-out, opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
 }
-  
+
 .checkbox-wrapper-35 .switch + label .switch-x-unchecked {
     opacity: 1;
     -webkit-transform: none;
     transform: none;
 }
-  
+
 .checkbox-wrapper-35 .switch + label .switch-x-checked {
     opacity: 0;
     -webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);
 }
-  
+
 .checkbox-wrapper-35 .switch + label .switch-x-hiddenlabel {
     width:80px;
     position: absolute;
     visibility: hidden;
 }
-  
+
 .checkbox-wrapper-35 .switch:checked + label::before {
     background-color: var(--Couleur5);
 }
-  
+
 .checkbox-wrapper-35 .switch:checked + label::after {
     -webkit-transform: translate3d(10px, 0, 0);
     transform: translate3d(10px, 0, 0);
 }
-  
+
 .checkbox-wrapper-35 .switch:checked + label .switch-x-unchecked {
     opacity: 0;
     -webkit-transform: translate3d(0, -100%, 0);
     transform: translate3d(0, -100%, 0);
 }
-  
+
 .checkbox-wrapper-35 .switch:checked + label .switch-x-checked {
     opacity: 1;
     -webkit-transform: none;
     transform: none;
 }
-  
-
-
-
-
-
 
 
 /*NOTIF*/
@@ -643,4 +651,45 @@ th{
 
 .error__close path {
     fill: var(--Couleur5);
+}
+
+
+/* FORMULAIRE CONF RANGE IP*/
+
+.conteneur_formulaire_range_ip{
+    background-color: var(--Couleur5);
+    border-radius: 0.5rem;
+    padding: 3vh 1vw 1vh 1vw;
+}
+.formulaire_range_ip {
+    margin-bottom: 20px;
+
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    
+}
+
+.label_range_ip {
+    text-transform: uppercase;
+    font-weight: 700;
+    display: inline-block;
+    width: 150px;
+    margin-right: 10px;
+    color: var(--CouleurPrimaire);
+}
+
+.input_range_ip{
+    width: 100px;
+    padding: 0.2vh 1vw;
+    border-radius: 0.5rem;
+    border: none;
+}
+.bouton_range_ip{
+    background-color: var(--CouleurPrimaire);
+    border: none;
+    cursor: pointer;
+    padding: 0.2vh 1vw;
+    border-radius: 0.5rem;
+    color: var(--CouleurFont);
 }

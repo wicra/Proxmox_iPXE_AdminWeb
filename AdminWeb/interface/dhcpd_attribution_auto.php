@@ -5,7 +5,7 @@
 include("connection/link.php");
 
 // Plage d'adresses IP fixe (à adapter)
-$IP_RANGE_START = '10.10.62.10';
+$IP_RANGE_START = '10.10.62.40';
 $IP_RANGE_END = '10.10.62.150';
 
 // Vérification existence des fichiers

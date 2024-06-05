@@ -3,18 +3,6 @@
 //                        SESSION                     //
 /////////////////////////////////////////////////////////
 session_start();
-// Verif si user connecter si la variable $_SESSION comptien le username 
-if(!isset($_SESSION["login"])){
-    header("location: ../index.php");
-exit(); 
-}
-
-// déconnection
-if(isset($_POST['deconnection'])){
-    session_destroy();
-    header('location: ../index.php');
-}
-
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
