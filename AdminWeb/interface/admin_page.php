@@ -281,15 +281,14 @@ if(isset($_POST['deconnection'])){
 
                     echo "<tr class=\"tableau\" >
                             <td class=\"col_name\">
-                                <i class=\"fa-solid fa-pen-to-square\"></i>
+                                <i class=\"fa-solid fa-pen-to-square open_edit_host_name\"></i>
                                 <h4 class=\"host_name\">$link{$host_name}$link_close</h4>
                         
                                 <form class=\"edit_host_form\" method=\"post\" id=\"edit_host_form_{$host_name}\">
                                     <input type=\"hidden\" name=\"old_host_name\" value=\"{$host_name}\">
                                     <input class=\"new_host_name\" type=\"text\" name=\"new_host_name\" placeholder=\"New\"  minlength=\"1\" maxlength=\"15\" required>
-                                    <button type=\"submit\" name=\"edit_host_button\" style=\"display: none;\"></button>
-                                    <i class=\"fa-solid fa-check\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
-                                    <i class=\"fa-solid fa-hand-point-left\"></i>
+                                    <i class=\"fa-solid fa-check valide_edit_host_name\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
+                                    <i class=\"fa-solid fa-hand-point-left close_host_name_form\"></i>
                                 </form>
                             </td>
 
@@ -303,22 +302,14 @@ if(isset($_POST['deconnection'])){
                                 <div class=\"col_conteneur_ip_conf\">
                                     <h4 class=\"ip_address\">{$fixed_address}</h4>
 
-                                    <i class=\"fa-solid fa-gears\"></i>
+                                    <i class=\"fa-solid fa-pen-to-square open_change_ip\"></i>
                                     <div class=\"formulaire_ip_conteneur\">
                                         <form class=\"ip_change_form\">
                                             <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
                                             <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
                                             <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
-                                            <button class=\"button\" type=\"submit\">
-                                                <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\">
-                                                    <path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25
-                                                    0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path>
-                                                    <path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0
-                                                    0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path>
-                                                </svg>
-                                                Modifier
-                                            </button>
-                                            <i class=\"fa-solid fa-xmark\"></i>
+                                            <i class=\"fa-solid fa-check valide_change_ip\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
+                                            <i class=\"fa-solid fa-hand-point-left close_change_ip\"></i>
                                         </form>
                                     </div>
                                 </div>
@@ -329,7 +320,7 @@ if(isset($_POST['deconnection'])){
                             <td class=\"col_demarage\">";
                                 // VM OU PAS
                                 if ($verif_vm === "oui") {
-                                    echo "<i class=\"fa-solid fa-triangle-exclamation\"></i>"; 
+                                    echo "<i class=\"fa-solid fa-vr-cardboard\"> vm</i>"; 
                                 }
                                 else{
                                     echo  " 
@@ -380,10 +371,10 @@ if(isset($_POST['deconnection'])){
                 /////////////////////////////////////////////////////////
                 //    AFFICHER LE FORMULAIRE DE CHANGEMENT HOST NAME   //
                 /////////////////////////////////////////////////////////
-                $('.fa-pen-to-square').click(function() {
+                $('.open_edit_host_name').click(function() {
                     // Masquer tous les autres formulaires et réafficher les icônes et noms d'hôtes
                     $('.edit_host_form').hide();
-                    $('.fa-pen-to-square').show();
+                    $('.open_edit_host_name').show();
                     $('.host_name').show();
 
                     var $icon = $(this);
@@ -401,7 +392,7 @@ if(isset($_POST['deconnection'])){
                 $('.edit_host_form').on('submit', function(event) {
                     event.preventDefault();
                     var $form = $(this);
-                    var $icon = $form.siblings('.fa-pen-to-square');
+                    var $icon = $form.siblings('.open_edit_host_name');
                     var $hostName = $form.siblings('.host_name');
 
                     $form.hide();
@@ -412,9 +403,9 @@ if(isset($_POST['deconnection'])){
                 /////////////////////////////////////////////////////////
                 //            ANNULER LE CHANGEMENT HOST NAME          //
                 /////////////////////////////////////////////////////////
-                $('.fa-hand-point-left').click(function() {
+                $('.close_host_name_form').click(function() {
                     var $form = $(this).closest('.edit_host_form');
-                    var $icon = $form.siblings('.fa-pen-to-square');
+                    var $icon = $form.siblings('.open_edit_host_name');
                     var $hostName = $form.siblings('.host_name');
 
                     $form.hide();
@@ -425,7 +416,7 @@ if(isset($_POST['deconnection'])){
                 /////////////////////////////////////////////////////////
                 //       AFFICHER LE FORMULAIRE DE CHANGEMENT IP       //
                 /////////////////////////////////////////////////////////
-                $('.fa-gears').click(function(event) {
+                $('.open_change_ip').click(function(event) {
                     event.preventDefault();
                     var $icon = $(this);
                     var $formContainer = $icon.next('.formulaire_ip_conteneur');
@@ -434,7 +425,7 @@ if(isset($_POST['deconnection'])){
                     
                     //changement Ip une a la fois
                     $('.formulaire_ip_conteneur').hide();
-                    $('.fa-gears').show();
+                    $('.open_change_ip').show();
             
                     $formContainer.show();
                     $ip_address.hide();
@@ -444,21 +435,29 @@ if(isset($_POST['deconnection'])){
                 /////////////////////////////////////////////////////////
                 //         MASQUAGE FORMULAIRE DE CHANGEMENT IP        //
                 /////////////////////////////////////////////////////////
-                $('.fa-xmark').click(function(event) {
+                $('.close_change_ip').click(function(event) {
                     event.preventDefault();
                     var $closeIcon = $(this);
                     var $formContainer = $closeIcon.closest('.formulaire_ip_conteneur');
-                    var $icon = $formContainer.prev('.fa-gears');
+                    var $icon = $formContainer.prev('.open_change_ip');
                     var $ip_address = $icon.siblings('.ip_address');
                     $formContainer.hide();
                     $ip_address.show();
                     $icon.show();
                 });
-            
+
+
+                $('i.valide_change_ip').click(function() {
+                    // Déclencher le clic sur le bouton de soumission du formulaire
+                    $(this).closest('.ip_change_form').submit();
+                });
                 /////////////////////////////////////////////////////////
-                //        GESTION DE SOUMISSION FORMULAIRE EN AJAX     //
+                //      GESTION DE SOUMISSION FORMULAIRE IP EN AJAX    //
                 /////////////////////////////////////////////////////////
                 $('.ip_change_form').submit(function(event) {
+                                        // Fonction pour soumettre le formulaire lorsqu'on clique sur l'icône
+                                        
+
                     event.preventDefault();
                     var formData = $(this).serialize();
                     $.ajax({
@@ -556,7 +555,7 @@ if(isset($_POST['deconnection'])){
 
                 $(document).ready(function() {
                     // Fonction pour soumettre le formulaire lorsqu'on clique sur l'icône
-                    $('i.fa-check').click(function() {
+                    $('i.valide_edit_host_name').click(function() {
                         var hostName = $(this).data('host-name');
                         $('#edit_host_form_' + hostName).submit();
                     });

@@ -34,11 +34,12 @@
 }
 /* COULEUR */ 
 :root {
-    --CouleurFont:white;
-    --CouleurPrimaire: black;
+    --CouleurFont:#f6f7eb;
+    --CouleurPrimaire: #393e41;
     --CouleurSecondaire: #bc4749;
-    --Couleur4: #386641;
-    --Couleur5: #d68c45;
+    --Couleur4: #04e762;
+    --Couleur5: #e94f37;
+    --Couleur6: #acaaa1;
 	--FontPrimaire: 'Abel'; 
 	--FontSeconfaire: 'Jaro';
     --FontOccasionnelle:'Monoton';
@@ -183,6 +184,7 @@ body{
     border: none;
     cursor: pointer;
     padding: 0.2vh 1vw;
+    margin: 0 0.5vw;
     border-radius: 0.5rem;
     color: var(--CouleurFont);
 }
@@ -303,7 +305,7 @@ table{
 }
 /*couleur une sur deux tableau*/
 tr:nth-child(even) {
-    background-color: #e0c694;
+    background-color: var(--Couleur6);
 }
 
 
@@ -342,7 +344,7 @@ th{
     font-family: var(--FontSeconfaire);
 }        
 .col_header_name{
-    width: 350px;
+    width: 390px;
 }
 .col_header_ip_fixe{
     width: 200px;
@@ -371,8 +373,8 @@ th{
 .col_conteneur_ip_conf{
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 2vh;
+    justify-content: flex-end;
+
 }
 
 .ip_address{
@@ -540,7 +542,7 @@ th{
 }
 
 .checkbox-wrapper-35 .switch + label::before {
-    background-color: #05012c;
+    background-color: var(--CouleurPrimaire);
     border-radius: 500px;
     height: 15px;
     margin-right: 8px;
@@ -550,7 +552,7 @@ th{
 }
 
 .checkbox-wrapper-35 .switch + label::after {
-    background-color: #fff;
+    background-color: var(--CouleurFont);
     border-radius: 13px;
     box-shadow: 0 3px 1px 0 rgba(37, 34, 71, 0.05), 0 2px 2px 0 rgba(37, 34, 71, 0.1), 0 3px 3px 0 rgba(37, 34, 71, 0.05);
     height: 13px;
@@ -608,7 +610,7 @@ th{
 }
 
 .checkbox-wrapper-35 .switch:checked + label::before {
-    background-color: var(--Couleur5);
+    background-color: var(--Couleur4);
 }
 
 .checkbox-wrapper-35 .switch:checked + label::after {
