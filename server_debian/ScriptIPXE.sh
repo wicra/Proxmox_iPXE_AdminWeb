@@ -31,7 +31,10 @@ sed -i "s/option broadcast-address 10.10.62.255;/option broadcast-address $broad
 sed -i "s/option routers 10.10.62.254;/option routers $gateway;/g" /root/dhcpd.conf
 sed -i "s/option domain-name-servers 8.8.8.8, 1.1.1.1;/option domain-name-servers $dnsIP;/g" /root/dhcpd.conf
 sed -i "s/next-server 10.10.62.29;/next-server $ipmachine;/g" /root/dhcpd.conf
+
 sed -i "s/filename \"http:\/\/10.10.62.29\/install.ipxe\";/filename \"http:\/\/$ipmachine\/install.ipxe\";/g" /root/dhcpd.conf
+sed -i "s/filename \"http:\/\/10.10.62.29\/boot_choix.ipxe\";/filename \"http:\/\/$ipmachine\/boot_choix.ipxe\";/g" /root/condition_pxe_boot_choix.conf
+sed -i "s/filename \"http:\/\/10.10.62.29\/boot_local.ipxe\";/filename \"http:\/\/$ipmachine\/boot_local.ipxe\";/g" /root/condition_pxe_boot_local.conf
 
 sed -i "s/INTERFACESv4=\"\"/INTERFACESv4=\"$interfaceNetwork\"/g" /etc/default/isc-dhcp-server
 
@@ -53,6 +56,10 @@ Lastip="$debutip""$Lastip"
 
 sed -i "s/range 10.10.62.30 10.10.62.199;/range $Firstip $Lastip;/g" /root/dhcpd.conf
 cp /root/dhcpd.conf /etc/dhcp/
+cp /root/dhcpd_hosts.conf /etc/dhcp/
+cp /root/condition_pxe_boot_choix.conf /etc/dhcp/ 
+cp /root/condition_pxe_boot_local.conf /etc/dhcp/
+chmod +w /etc/dhcp/*
 
 # Redémarrer le services DHCP
 systemctl restart isc-dhcp-server
@@ -108,8 +115,11 @@ wget http://boot.ipxe.org/ipxe.efi
 
 # Modification du fichier iPXE - /var/www/html/install.ipxe
 sed -i "s/set serverip http:\/\/10.10.62.29/set serverip http:\/\/$ipmachine/g" /root/install.ipxe
+sed -i "s/set serverip http:\/\/10.10.62.29/set serverip http:\/\/$ipmachine/g" /root/boot_choix.ipxe
+sed -i "s/set serverip http:\/\/10.10.62.29/set serverip http:\/\/$ipmachine/g" /root/boot_local.ipxe
 cp /root/install.ipxe /var/www/html/
-
+cp /root/boot_choix.ipxe /var/www/html/
+cp /root/boot_local.ipxe /var/www/html/
 
 ###############################
 #           Script            # 
@@ -129,8 +139,24 @@ chown modele:modele /images
 echo "/images *(rw,sync,no_subtree_check)" >> /etc/exports
 
 # Fichier initrd & Linux26 a déplacer dans /var/www/proxmox
-mkdir /var/www/proxmox
-cp /root/initrd linux26 /var/www/proxmox
+mkdir /var/www/html/proxmox
+cp /root/initrd /var/www/html/proxmox
+cp /root/linux26 /var/www/html/proxmox
 
 # Redémarrer le services NFS
 systemctl restart nfs-kernel-server
+
+
+
+###############################
+#      Deplacement site       # 
+###############################
+
+#insatallation de sudo et conig www-data pour les droits d'execution du site
+apt install sudo
+echo "www-data ALL = (ALL) NOPASSWD : /usr/bin/nmap" >> /etc/sudoers
+chown www-data:www-data /etc/dhcp/dhcpd_hosts.conf
+
+#deplacement du site et changer les droits
+cp -r /root/site_v3/ /var/www/html/
+#sudo chown -R www-data:www-data /var/www/html/site_v3

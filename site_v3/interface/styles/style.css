@@ -1,3 +1,18 @@
+/*SCROOLLBAR*/
+
+::-webkit-scrollbar{
+	width: 13px;
+}
+
+::-webkit-scrollbar-track{
+	background-color: var(--CouleurPrimaire);
+	
+}
+
+::-webkit-scrollbar-thumb{
+	background:var(--Couleur5) ;
+	border-radius: 4px;
+}
 
 @font-face
 {
@@ -156,7 +171,7 @@ body{
 
 .new_host_name{
     width: 100px;
-    padding: 1vh 1vw;
+    padding: 0.2vh 1vw;
     border-radius: 0.5rem;
     border: none;
 }
@@ -165,7 +180,7 @@ body{
     background-color: var(--Couleur5);
     border: none;
     cursor: pointer;
-    padding: 0.8vh 1vw;
+    padding: 0.2vh 1vw;
     border-radius: 0.5rem;
     color: var(--CouleurFont);
 }
@@ -283,6 +298,8 @@ th{
 
 .tableau{
     color: var(--couleurFont);
+    padding: 0;
+    margin: 0;
 }
 
 
@@ -291,7 +308,7 @@ th{
 }
 
 .fa-pen-to-square{
-    padding: 1vh 2vw;
+    padding: 0vh 2vw;
     text-align: center;
     font-size: 20px;
     color: var(--CouleurFont);
@@ -314,9 +331,10 @@ th{
 }
 
 .col_name,.col_mac,.col_ip_fixe,.col_modif_ip,.col_os,.col_etat,.col_demarage,.col_delete_host{
-    padding: 2vh 1vw;
+    margin: 0;
+    padding: 0vh 0vw;
     text-align: center;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .col_demarage{
@@ -338,11 +356,14 @@ th{
 
 .formulaire_ip {
     width: 100px;
-    padding: 1vh 1vw;
+    padding: 0.2vh 1vw;
     border-radius: 0.5rem;
     border:none;
 }
 
+.host_name{
+    margin: 0.6vh 0vw;
+}
 
 /**BOUTON */
 .button {
@@ -352,7 +373,7 @@ th{
     font-weight: 500;
     border-radius: 0.5rem;
     font-size: 15px;
-    padding: 1vh 1vw;
+    padding: 0.2vh 1vw;
     cursor: pointer;
     text-align: center;
     margin-right: 0.5rem;
@@ -428,9 +449,9 @@ th{
 }
 
 .tab_historique_mac,.tab_historique_bouton{
-    padding:  2vh 0vw;
+    padding:  0vh 0vw;
     text-align: center;
-    font-size: 20px;
+    font-size: 15px;
 }    
 .tab_historique_nom{
     padding: 2vh 0vw 2vh 2vw;
@@ -441,7 +462,7 @@ th{
     background-color: var(--Couleur5);
     border: none;
     cursor: pointer;
-    padding: 1vh 1vw;
+    padding: 0.2vh 1vw;
     border-radius: 0.5rem;
     color: var(--CouleurFont);
 }

@@ -120,12 +120,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
             if ($file_handle !== false) {
                 
 
-                fwrite($file_handle, "host $hostname {\n");
-                fwrite($file_handle, "    hardware ethernet $mac_address;\n");
-                fwrite($file_handle, "    fixed-address $ip_address;\n");
-                fwrite($file_handle, "    # PXE Boot\n");
-                fwrite($file_handle, "    include \"condition_pxe_boot_local.conf\" ;\n");
-                fwrite($file_handle, "};\n");
+                fwrite($file_handle, "host $hostname {\r\n");
+                fwrite($file_handle, "    hardware ethernet $mac_address;\r\n");
+                fwrite($file_handle, "    fixed-address $ip_address;\r\n");
+                fwrite($file_handle, "    # PXE Boot\r\n");
+                fwrite($file_handle, "    include \"condition_pxe_boot_local.conf\" ;\r\n");
+                fwrite($file_handle, "}\r\n");
 
                 // fwrite($file_handle, "    if option arch = 00:07 or option arch = 00:09 {\n");
                 // fwrite($file_handle, "        if exists user-class and option user-class = \"iPXE\" {\n");

@@ -249,7 +249,7 @@ rsync -a -H --exclude=TRANS.TBL loopdir/ cd
 umount loopdir
 
 mkdir cd/files
-rsync -a -H $RESDIR cd/files/
+rsync -a -H  $RESDIR cd/files/
 
 [[ $VERBOSE == 0 ]] && echo -ne 'Hacking initrd                              [====================>         ](70%)\r'
 [[ $VERBOSE == 1 ]] && echo -e "Hacking initrd\nGetting initrd.gz content"

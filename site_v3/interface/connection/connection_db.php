@@ -1,6 +1,4 @@
-<?php
 
-?>
 <?php
 $servername = "sql.freedb.tech"; 
 $port = '3306' ;

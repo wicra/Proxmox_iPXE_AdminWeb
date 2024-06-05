@@ -12,7 +12,7 @@ $new_host_entry = "host {$host_name} {
     hardware ethernet {$mac_address};
     fixed-address {$ip_address};
     # PXE Boot
-    include \"condition_pxe_boot_local.conf\";
+    include \"/etc/dhcp/condition_pxe_boot_local.conf\";
 }";
 
 // Chemin vers le fichier dhcpd_hosts.conf

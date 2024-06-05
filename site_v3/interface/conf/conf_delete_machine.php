@@ -20,7 +20,7 @@ if ($file_content === false) {
 }
 
 // Recherche de l'entrée du host à supprimer
-$pattern = "/^host\s+{$host_name}\s*{[^}]+hardware ethernet\s+{$mac_address};[^}]+fixed-address\s+{$ip_address};[^}]*\s*};\s/mi";
+$pattern = "/^host\s+{$host_name}\s*{[^}]+hardware ethernet\s+{$mac_address};[^}]+fixed-address\s+{$ip_address};[^}]*\s*}\s/mi";
 
 // Suppression de l'entrée du host
 $file_content = preg_replace($pattern,'', $file_content);

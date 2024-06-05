@@ -149,7 +149,7 @@ if(isset($_POST['deconnection'])){
             //            TABLEAU D'AFFICHAGE DES HOSTS           //
             /////////////////////////////////////////////////////////
             include("connection/link.php");
-
+            
             $config = file_get_contents($file_path_admin);
 
             if ($config === false) {
