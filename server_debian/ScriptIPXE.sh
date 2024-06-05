@@ -158,5 +158,5 @@ echo "www-data ALL = (ALL) NOPASSWD : /usr/bin/nmap" >> /etc/sudoers
 chown www-data:www-data /etc/dhcp/dhcpd_hosts.conf
 
 #deplacement du site et changer les droits
-cp -r /root/site_v3/ /var/www/html/
-#sudo chown -R www-data:www-data /var/www/html/site_v3
+cp -r /root/AdminWeb/ /var/www/html/
+#sudo chown -R www-data:www-data /var/www/html/AdminWeb

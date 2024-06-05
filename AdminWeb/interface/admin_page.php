@@ -218,10 +218,11 @@ if(isset($_POST['deconnection'])){
                 /////////////////////////////////////////////////////////
                 //            FONCTION DE VERIF ETAT MACHINE           //
                 /////////////////////////////////////////////////////////
-                //shell_exec('../shell/ipScan.sh');//Changer le propriétaire du dossier projet
+                
                 $file = file("../shell/ipScan.txt");
 
                 function verifEtat($file,$ip_address,$actif ,$eteint){
+                    shell_exec('../shell/ipScan.sh');
                     $pc_state = $eteint;
                     foreach($file as $ligne){
                         $ligne = trim($ligne);
@@ -243,7 +244,7 @@ if(isset($_POST['deconnection'])){
                     $eteint="<i style = \"color : var(--CouleurSecondaire);\" class=\"fa-solid fa-plug\"></i>";
 
                     $pc_state = verifEtat($file ,$fixed_address,$actif,$eteint);
-                    $result = checkIncludeAndHostName($file_path_admin, $host_name, "condition_pxe_boot_local.conf");
+                    $result = checkIncludeAndHostName($file_path_admin, $host_name, "/etc/dhcp/condition_pxe_boot_local.conf");
                     $verif_vm = verify_mac_address($host_name,"bc:24:11", $file_path_admin);
 
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
@@ -313,7 +314,7 @@ if(isset($_POST['deconnection'])){
                                                 <label for=\"switch_{$host_name}\">
                                                     <span class=\"switch-x-text\"></span>
                                                     <span class=\"switch-x-toggletext\">
-                                                        <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>default</span>
+                                                        <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>Reseau</span>
                                                         <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>local</span>
                                                     </span>
                                                 </label>

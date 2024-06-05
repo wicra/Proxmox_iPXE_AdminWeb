@@ -31,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Écriture du nouveau contenu dans le fichier
     if (file_put_contents($file_path_conf, $file_content) !== false) {
+        #redemarage du server dhcp après modif
+        shell_exec('../../boot_dhcp/boot_server_dhcp.sh');
         $_SESSION['notifications'][] = "Le nom d'hôte a été mis à jour avec succès.";
     } else {
         $_SESSION['notifications'][] = "Une erreur s'est produite lors de la mise à jour du nom d'hôte.";

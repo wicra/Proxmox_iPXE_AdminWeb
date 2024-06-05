@@ -43,6 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = file_put_contents($file_path_conf, $new_config);
 
     if ($result !== false) {
+        #redemarage du server dhcp après modif
+        shell_exec('../../boot_dhcp/boot_server_dhcp.sh');
         echo '<div class="emoji-container"><i class="fa-solid fa-thumbs-up fa-shake"></i></div>'; // Emoji de célébration
     } else {
         echo '<div class="emoji-container" style="color: blue;">😢</div>'; // Emoji de tristesse

@@ -27,6 +27,8 @@ $file_content = preg_replace($pattern,'', $file_content);
 
 // Écriture du nouveau contenu dans le fichier
 if (file_put_contents($file_path_conf, $file_content) !== false) {
+    #redemarage du server dhcp après modif
+    shell_exec('../../boot_dhcp/boot_server_dhcp.sh');
     $_SESSION['notifications'][] = "L'entrée du host a été supprimée avec succès.";
 
 } else {

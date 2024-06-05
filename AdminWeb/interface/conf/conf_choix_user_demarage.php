@@ -1,5 +1,4 @@
 <?php
-
 //session de stockage notification
 session_start();
 
@@ -12,7 +11,7 @@ $new_host_entry = "host {$host_name} {
     hardware ethernet {$mac_address};
     fixed-address {$ip_address};
     # PXE Boot
-    include \"/etc/dhcp/condition_pxe_boot_local.conf\";
+    include \"/etc/dhcp/condition_pxe_boot_choix.conf\";
 }";
 
 // Chemin vers le fichier dhcpd_hosts.conf
@@ -23,7 +22,7 @@ $file_content = file_get_contents($file_path_conf);
 
 // Vérification si le fichier a été lu avec succès
 if ($file_content === false) {
-    $_SESSION['notifications'][] = "Impossible de lire le fichier de configuration.";
+    $_SESSION['notifications'][] =  "Impossible de lire le fichier de configuration.";
     exit;
 }
 
@@ -32,8 +31,10 @@ $file_content = preg_replace("/host {$host_name}.*?}/s", $new_host_entry, $file_
 
 // Écriture du nouveau contenu dans le fichier
 if (file_put_contents($file_path_conf, $file_content) !== false) {
-    $_SESSION['notifications'][] = "Le fichier dhcpd_hosts.conf a été mis à jour avec succès.";
+    #redemarage du server dhcp après modif
+    shell_exec('../../boot_dhcp/boot_server_dhcp.sh');
+    $_SESSION['notifications'][] =  "Le fichier dhcpd_hosts.conf a été mis à jour avec succès.";
 } else {
-    $_SESSION['notifications'][] = "Une erreur s'est produite lors de la mise à jour du fichier dhcpd_hosts.conf.";
+    $_SESSION['notifications'][] =  "Une erreur s'est produite lors de la mise à jour du fichier dhcpd_hosts.conf.";
 }
 ?>
