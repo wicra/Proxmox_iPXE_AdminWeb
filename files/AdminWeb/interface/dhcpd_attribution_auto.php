@@ -5,8 +5,8 @@
 include("include/link.php");
 
 // Plage d'adresses IP fixe (à adapter)
-include("include/range_ip_fixe.php");
-
+$IP_RANGE_START = '10.10.62.40';
+$IP_RANGE_END = '10.10.62.111';
 
 // Vérification existence des fichiers
 if (!file_exists($LEASES_FILE)) {

@@ -4,6 +4,7 @@
 // Fichier de log DHCP/var/lib/dhcp/ et /etc/dhcp/
 include("include/link.php");
 
+
 // Fonction pour mettre à jour les variables de configuration
 function update_auto_config($file, $new_config) {
     $config_content = file_get_contents($file);
@@ -105,9 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
 </div>
 
-
-
-
 <script>
     function validateForm() {
         // Récupérer les valeurs des champs d'entrée
@@ -144,6 +142,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }, 0);
     }
 </script>
-
-
-

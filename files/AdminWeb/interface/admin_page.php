@@ -273,7 +273,7 @@ if(isset($_POST['deconnection'])){
                     $eteint="<i style = \"color : var(--CouleurSecondaire);\" class=\"fa-solid fa-plug\"></i>";
 
                     $pc_state = verifEtat($file ,$fixed_address,$actif,$eteint);
-                    $result = checkIncludeAndHostName($file_path_admin, $host_name, "/etc/dhcp/condition_pxe_boot_choix.conf");
+                    $result = checkIncludeAndHostName($file_path_admin, $host_name, "/etc/dhcp/condition_pxe_boot_local.conf");
                     $verif_vm = verify_mac_address($host_name,"bc:24:11", $file_path_admin);
 
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
@@ -338,14 +338,12 @@ if(isset($_POST['deconnection'])){
                                                 <label for=\"switch_{$host_name}\">
                                                     <span class=\"switch-x-text\"></span>
                                                     <span class=\"switch-x-toggletext\">
-                                                        <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>local</span>
-                                                        <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>reseau</span>
+                                                        <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>Reseau</span>
+                                                        <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>local</span>
                                                     </span>
                                                 </label>
                                         </div>
                                     </form>";} 
-                                    echo $host_name;
-
                             echo "</td>
 
                             <td class=\"col_delete_host\">
@@ -389,7 +387,7 @@ if(isset($_POST['deconnection'])){
                 });
 
                 /////////////////////////////////////////////////////////
-                //    MASQER LE FORMULAIRE DE CHANGEMENT HOST NAME    //
+                //    MASUQER LE FORMULAIRE DE CHANGEMENT HOST NAME    //
                 /////////////////////////////////////////////////////////
                 $('.edit_host_form').on('submit', function(event) {
                     event.preventDefault();
@@ -457,6 +455,9 @@ if(isset($_POST['deconnection'])){
                 //      GESTION DE SOUMISSION FORMULAIRE IP EN AJAX    //
                 /////////////////////////////////////////////////////////
                 $('.ip_change_form').submit(function(event) {
+                                        // Fonction pour soumettre le formulaire lorsqu'on clique sur l'icône
+                                        
+
                     event.preventDefault();
                     var formData = $(this).serialize();
                     $.ajax({
@@ -488,7 +489,7 @@ if(isset($_POST['deconnection'])){
                     $('.switch').change(function() {
                         var $form = $(this).closest('form');
                         var formData = $form.serialize();
-                        var url = $(this).is(':checked') ? "conf/conf_choix_user_demarage.php" :  "conf/conf_local_demarage.php";
+                        var url = $(this).is(':checked') ? "conf/conf_local_demarage.php" : "conf/conf_choix_user_demarage.php";
                         
                         $.ajax({
                             type: "POST",
@@ -497,6 +498,9 @@ if(isset($_POST['deconnection'])){
                             success: function(response) {
                                 $('#emoji-container').html(response);
                                 $('.emoji-container').addClass('animate');
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
                             },
                             error: function(xhr, status, error) {
                                 alert("Une erreur s'est produite lors du démarrage.");

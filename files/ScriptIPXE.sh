@@ -36,7 +36,6 @@ sed -i "s/next-server 10.10.62.29;/next-server $ipmachine;/g" /root/dhcpd.conf
 sed -i "s/filename \"http:\/\/10.10.62.29\/install.ipxe\";/filename \"http:\/\/$ipmachine\/install.ipxe\";/g" /root/dhcpd.conf
 sed -i "s/filename \"http:\/\/10.10.62.29\/boot_choix.ipxe\";/filename \"http:\/\/$ipmachine\/boot_choix.ipxe\";/g" /root/condition_pxe_boot_choix.conf
 sed -i "s/filename \"http:\/\/10.10.62.29\/boot_local.ipxe\";/filename \"http:\/\/$ipmachine\/boot_local.ipxe\";/g" /root/condition_pxe_boot_local.conf
-sed -i "s/filename \"http:\/\/10.10.62.29\/install.ipxe\";/filename \"http:\/\/$ipmachine\/install.ipxe\";/g" /root/condition_pxe_boot_unknown.conf
 
 sed -i "s/INTERFACESv4=\"\"/INTERFACESv4=\"$interfaceNetwork\"/g" /etc/default/isc-dhcp-server
 
@@ -56,19 +55,16 @@ Lastip="$debutip""$Lastip"
 #read -p "Saisissez la première adresse IP du pool DHCP" FirstIP
 #read -p "Saisissez la dernière adresse IP du pool DHCP" LastIP
 
-
-echo "range $Firstip $Lastip;" > /root/dhcpd_range.conf
+echo "range $Firstip $Lastip;" /root/dhcpd_range.conf
 cp /root/dhcpd_range.conf /etc/dhcp/
 cp /root/dhcpd.conf /etc/dhcp/
 cp /root/dhcpd_hosts.conf /etc/dhcp/
 cp /root/condition_pxe_boot_choix.conf /etc/dhcp/ 
 cp /root/condition_pxe_boot_local.conf /etc/dhcp/
-cp /root/condition_pxe_boot_unknown.conf /etc/dhcp/
 chmod +w /etc/dhcp/*
 
 #changer de proprietaire de dhcpd_range.conf
 chown www-data www-data /etc/dhcp/dhcpd_range.conf
-
 
 # Redémarrer le services DHCP
 systemctl restart isc-dhcp-server
@@ -179,5 +175,3 @@ chmod 777 /var/www/html/AdminWeb/shell/ipScan.txt
 #Modif droit reboot dhcp
 chmod 555 /var/www/html/AdminWeb/shell/boot_server_dhcp.sh
 
-#Modif proprietaire range_ip_fixe.php
-chown www-data:www-data /var/www/html/AdminWeb/interface/include/range_ip_fixe.php

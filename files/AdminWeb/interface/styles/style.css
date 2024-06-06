@@ -34,13 +34,12 @@
 }
 /* COULEUR */ 
 :root {
-    --CouleurFont:#f0ead2;
+    --CouleurFont:#f6f7eb;
     --CouleurPrimaire: #393e41;
     --CouleurSecondaire: #bc4749;
     --Couleur4: #04e762;
-    --Couleur5: #a98467;
-    --Couleur6: #a9927d;
-    --CouleurHover: #d68b45d0;
+    --Couleur5: #e94f37;
+    --Couleur6: #acaaa1;
 	--FontPrimaire: 'Abel'; 
 	--FontSeconfaire: 'Jaro';
     --FontOccasionnelle:'Monoton';
@@ -216,7 +215,7 @@ body{
 }
 
 
-.nav_button_shell{
+.nav_button_boot_dhcp{
     background-color: var(--Couleur5);
     border: none;
     cursor: pointer;
@@ -265,14 +264,10 @@ body{
     border-radius: 0.5rem;
     gap: 1vw;
 }
-
-.nav_user:hover,.nav_button_ip_range:hover,.nav_button_shell:hover,.nav_refresh:hover,
-.nav_button_attribution:hover,.tab_historique_bouton form button:hover,.fa-check:hover,
- .fa-hand-point-left:hover,.bouton_range_ip:hover {
-    background-color: var(--CouleurHover);
+.nav_user:hover {
+    background-color: #d68b45d0;
     cursor: pointer;
 }
-
 .nav_user i{
     font-size: 20px;
     margin: 0;
@@ -291,7 +286,7 @@ body{
     background-color: var(--Couleur5);
 }
 .button_deconnection:hover,.button_deconnection:hover {
-    background-color: var(--CouleurHover);
+    background-color: #d68b45d0;
     cursor: pointer;
 }
 
@@ -339,9 +334,7 @@ th{
     font-size: 20px;
     color: var(--CouleurFont);
 }
-.fa-pen-to-square:hover,.fa-trash:hover{
-    transform: scale(1.2);
-}
+
 .col_header_name,.col_header_demarage,.col_header_mac,.col_header_ip_fixe,
 .col_header_os,.col_header_etat,.tab_historique_header_nom,
 .tab_historique_header_mac,.tab_historique_header_bouton,.col_header_delete_host{
@@ -429,7 +422,7 @@ th{
 }
 
 .button:hover {
-    background-color: var(--CouleurHover);
+    background-color: #d68b45d0;
 }
 
 .button:active {
