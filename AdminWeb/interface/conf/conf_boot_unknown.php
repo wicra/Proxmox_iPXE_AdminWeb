@@ -1,59 +1,63 @@
-<div class="conf_boot_ipxe_unknown">
-        
-        <h4>Démarer les machines unknown :</h2>
-        <form  method="post">
-            <button type="submit" name="bouton_boot_unknown_ajout">ajout</button>
-            <button type="submit" name="bouton_boot_unknown_del">del</button>
-            <!-- <input type="hidden" name="host_name" value="unknown">
-            <input type="hidden" name="mac_address" value="unknown">
-            <input type="hidden" name="ip_address" value="unknown"> -->
+<?php
+$configFile = 'include/add_boot_ipxe_unknown.conf';
+$currentContent = file_get_contents($configFile);
 
-            <?php
-            
-                $file_path = "include/add_boot_ipxe_unknown.conf";
-                $commente = '#include "/etc/dhcp/condition_pxe_boot_unknown.conf";';
-                $decommente = 'include "/etc/dhcp/condition_pxe_boot_unknown.conf";';
-                $file_content = file_get_contents($file_path);
-                
-                if($file_content == $decommente){
-                    $checkboxState = "checked";
-                }else{
-                    $checkboxState = "";
-                }
-                
+$commentedContent = '#include "/etc/dhcp/condition_pxe_boot_unknown.conf";';
+$uncommentedContent = 'include "/etc/dhcp/condition_pxe_boot_unknown.conf";';
 
+$checkboxState = (strpos($currentContent, '#include') === 0) ? '' : 'checked';
 
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    if (isset($_POST['boot'])) {
-                        $replace = str_replace($decommente, $commente, $file_content);
-                        file_put_contents($file_path, $replace);
-                        $checkboxState = "checked";
-                        echo "<pre>" ;
-                        
-                        print_r($_POST);
-                        echo "</pre>";
-                    }
-                    elseif (isset($_POST['bouton_boot_unknown_del'])) {
-                        $replace = str_replace($commente, $decommente, $file_content);
-                        file_put_contents($file_path, $replace);
-                        $checkboxState = "";
-                    }
-                    
-                }
+// Vérifier si le formulaire a été soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Vérifier si le checkbox est coché
+    if (isset($_POST['boot']) && $_POST['boot'] === 'on') {
+        // Mettre à jour le contenu du fichier pour le cas où le checkbox est coché
+        $newContent = $uncommentedContent;
+    } else {
+        // Mettre à jour le contenu du fichier pour le cas où le checkbox n'est pas coché
+        $newContent = $commentedContent ;
+    }
 
-            ?>
+    // Écrire le nouveau contenu dans le fichier
+    file_put_contents($configFile, $newContent);
 
-            <div class="checkbox-wrapper-35">
-                <input name="boot" id="boot_unknown" type="checkbox" class="switch" value="" <?php  echo $checkboxState  ; ?>>
-                <label  for="boot_unknown">
-                    <span class="switch-x-text"></span>
-                    <span class="switch-x-toggletext">
-                        <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Unchecked: </span>local</span>
-                        <span class="switch-x-checked"><span class="switch-x-hiddenlabel">Checked: </span>Reseau</span>
-                    </span>
-                </label>
-            </div>
-        </form>
+    // Mettre à jour l'état du checkbox pour le recharger dans la page
+    if (isset($_POST['boot']) && $_POST['boot'] === 'on') {
+        $checkboxState = 'checked';
+    } else {
+        $checkboxState = '';
+    }
+}
+?>
 
 
-    </div>
+    <form id="configForm" method="post">
+        <h4>démarrer les machines inconnue en : </h4>
+        <div class="checkbox-wrapper-unique">
+            <!-- Input du type checkbox avec le nom, l'identifiant et la classe appropriés -->
+            <input name="boot" id="boot_unique" type="checkbox" class="switch-unique" <?php echo $checkboxState; ?>>
+            <!-- Label pour le switch -->
+            <label for="boot_unique">
+                <!-- Texte caché pour le switch -->
+                <span class="switch-x-text-unique"></span>
+                <!-- Texte pour les états du switch -->
+                <span class="switch-x-toggletext-unique">
+                    <span class="switch-x-unchecked-unique"><span class="switch-x-hiddenlabel-unique">Unchecked: </span>local</span>
+                    <span class="switch-x-checked-unique"><span class="switch-x-hiddenlabel-unique">Checked: </span>Reseau</span>
+                </span>
+            </label>
+        </div>
+    </form>
+
+
+    <script>
+        // Sélection de l'élément du switch
+        const switchElement = document.getElementById('boot_unique');
+
+        // Ajout d'un écouteur d'événements pour le changement d'état du switch
+        switchElement.addEventListener('change', function() {
+            // Soumettre automatiquement le formulaire lorsque l'état du switch change
+            document.getElementById('configForm').submit();
+        });
+    </script>
+

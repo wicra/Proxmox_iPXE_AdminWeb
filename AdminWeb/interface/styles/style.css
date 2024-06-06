@@ -514,7 +514,7 @@ th{
 }
 
 
-/*CHECKBOX*/
+/*CHECKBOX TABLEAU*/
 
 
 .checkbox-wrapper-35 .switch {
@@ -637,6 +637,146 @@ th{
     transform: none;
 }
 
+/*CHECKBOX BOOT UNKNOWN*/
+
+#configForm{
+    display: flex;
+    align-items: center;
+    gap: 0vw;
+    background-color: var(--Couleur5);
+    border-radius: 0.5rem;
+    padding: 1vh 4vw;
+}
+
+#configForm h4{
+    text-transform: uppercase;
+    font-weight: 700;
+    display: inline-block;
+    width: 305px;
+    margin-right: 10px;
+    color: var(--CouleurFont);
+}
+
+.checkbox-wrapper-unique .switch-unique {
+    display: none;
+}
+
+.checkbox-wrapper-unique .switch-unique + label {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color: #78768d;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 15px;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-wrapper-unique .switch-unique + label::before,
+.checkbox-wrapper-unique .switch-unique + label::after {
+    content: '';
+    display: block;
+}
+
+.checkbox-wrapper-unique .switch-unique + label::before {
+    background-color: var(--CouleurPrimaire);
+    border-radius: 500px;
+    height: 15px;
+    margin-right: 8px;
+    -webkit-transition: background-color 0.125s ease-out;
+    transition: background-color 0.125s ease-out;
+    width: 25px;
+}
+
+.checkbox-wrapper-unique .switch-unique + label::after {
+    background-color: var(--CouleurFont);
+    border-radius: 13px;
+    box-shadow: 0 3px 1px 0 rgba(37, 34, 71, 0.05), 0 2px 2px 0 rgba(37, 34, 71, 0.1), 0 3px 3px 0 rgba(37, 34, 71, 0.05);
+    height: 13px;
+    left: 1px;
+    position: absolute;
+    top: 1px;
+    -webkit-transition: -webkit-transform 0.125s ease-out;
+    transition: -webkit-transform 0.125s ease-out;
+    transition: transform 0.125s ease-out;
+    transition: transform 0.125s ease-out, -webkit-transform 0.125s ease-out;
+    width: 13px;
+}
+
+.checkbox-wrapper-unique .switch-unique + label .switch-x-text-unique {
+    display: block;
+    margin-right: .3em;
+}
+
+.checkbox-wrapper-unique .switch-unique + label .switch-x-toggletext-unique {
+    display: block;
+    font-weight: bold;
+    height: 15px;
+    overflow: visible;
+    position: relative;
+    width: 15px;
+}
+
+.checkbox-wrapper-unique .switch-unique + label .switch-x-unchecked-unique,
+.checkbox-wrapper-unique .switch-unique + label .switch-x-checked-unique {
+    left: 0;
+    position: absolute;
+    top: 0;
+    -webkit-transition: opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
+    transition: opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
+    transition: transform 0.125s ease-out, opacity 0.125s ease-out;
+    transition: transform 0.125s ease-out, opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
+}
+
+.checkbox-wrapper-unique .switch-unique + label .switch-x-unchecked-unique {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+}
+
+.checkbox-wrapper-unique .switch-unique + label .switch-x-checked-unique {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+}
+
+.checkbox-wrapper-unique .switch-unique + label .switch-x-hiddenlabel-unique {
+    width: 80px;
+    position: absolute;
+    visibility: hidden;
+}
+
+.checkbox-wrapper-unique .switch-unique:checked + label::before {
+    background-color: var(--Couleur4);
+}
+
+.checkbox-wrapper-unique .switch-unique:checked + label::after {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+}
+
+.checkbox-wrapper-unique .switch-unique:checked + label .switch-x-unchecked-unique {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+}
+
+.checkbox-wrapper-unique .switch-unique:checked + label .switch-x-checked-unique {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+}
+
 
 /*NOTIF*/
 .error {
@@ -709,7 +849,7 @@ th{
     display: inline-block;
     width: 150px;
     margin-right: 10px;
-    color: var(--CouleurPrimaire);
+    color: var(--CouleurFont);
 }
 
 .input_range_ip{

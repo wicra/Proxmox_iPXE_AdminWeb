@@ -122,7 +122,7 @@ if(isset($_POST['deconnection'])){
         
         <!-- CONFIGURATION PLAGE ADRESSE -->
         <?php include("conf/conf_ip_range.php");?>
-
+        <?php include("conf/conf_boot_unknown.php");?>
 
         <!-- CONTENEUR ANIMATION MODIF IP REUSSI -->
         <div id="emoji-container"></div>  

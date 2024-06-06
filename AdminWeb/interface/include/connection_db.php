@@ -2,9 +2,9 @@
 <?php
 $servername = "sql.freedb.tech"; 
 $port = '3306' ;
-$dbname = "freedb_iot_db";  
-$username = "freedb_eleve"; 
-$password = "FGv86P&Qg#UJ&r$";  
+$dbname = "freedb_outils";  
+$username = "freedb_wicra"; 
+$password = 'UA3Xjqt$m?NWBFe';  
 
 /*
 $servername = "localhost"; 
