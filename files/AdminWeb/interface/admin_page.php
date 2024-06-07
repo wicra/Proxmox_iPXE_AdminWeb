@@ -102,7 +102,7 @@ if(isset($_POST['deconnection'])){
                 
                 <!-- USER CONNECTE -->
                 <?php
-                    include('include/connection_db.php');
+                    include('include/connection_db.env.php');
                 
                     $username = mysqli_real_escape_string($conn, $_SESSION["login"]);
                     $requete = "SELECT login = '$username' FROM users_admin  ";
