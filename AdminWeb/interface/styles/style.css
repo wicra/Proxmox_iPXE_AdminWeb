@@ -1,5 +1,4 @@
 /*SCROOLLBAR*/
-
 ::-webkit-scrollbar{
 	width: 13px;
 }
@@ -14,24 +13,22 @@
 	border-radius: 4px;
 }
 
-@font-face
-{
+/* FONT */
+@font-face {
     font-family: 'Abel';
     src: url('../fonts/Abel-Regular.ttf');
 }
 
-@font-face
-{
+@font-face {
     font-family: 'Jaro';
     src: url('../fonts/Jaro-Regular-VariableFont_opsz.ttf');
 }
 
-
-@font-face
-{
+@font-face {
     font-family: 'Monoton';
     src: url('../fonts/Monoton-Regular.ttf');
 }
+
 /* COULEUR */ 
 :root {
     --CouleurFont:#f0ead2;
@@ -46,12 +43,13 @@
     --FontOccasionnelle:'Monoton';
 }
 
+/* BODY */
 body{
     background-color: var(--CouleurPrimaire);
     color: var(--CouleurFont);
     font-family: var(--FontPrimaire);
+    padding: 8vh 5vw;
 }
-
 
 /*BIENVENUE*/
 .bienvenue{
@@ -65,6 +63,7 @@ body{
     transform: translate(-50%,-50%);
     
 }
+
 .fa-eye-low-vision{
     color: var(--Couleur5);
     font-size: 120px;
@@ -79,8 +78,7 @@ body{
 }
 
 
-
-/*FORMULAIRE*/
+/*FORMULAIRE DE CONNECTION */
 .formulaire_conteneur{
     display: none;
 }
@@ -109,9 +107,8 @@ body{
 }
 
 
-/*BUTTON*/
+/* BUTTON DE CONNECTION */
 .connection_bouton {
-
     all: unset;
     position: relative;
     height: 4em;
@@ -143,35 +140,26 @@ body{
     border-left: 1px solid #0004;
     border-bottom: 1px solid #0004;
     border-top: 1px solid #0009;
-  }
+}
   
-  .connection_bouton span {
+.connection_bouton span {
     font-size: 1.5rem;
     color: white;
     position: relative;
     margin-top: -8px;
-  }
-
-  .connection_bouton:active {
-    transform: translateY(5px);
-    transition: 200ms;
-  }
-
-
-/*TABLEAU D'HOTE*/
-
-body{
-    padding: 8vh 5vw;
 }
 
-/* FOMULAIRE CHANGE HOST NAME*/
+.connection_bouton:active {
+    transform: translateY(5px);
+    transition: 200ms;
+}
 
+/* FOMULAIRE CHANGE HOST NAME */
 .edit_host_form{
     display: none;
     
     padding: 1vh 2vw;
 }
-
 
 .new_host_name{
     width: 100px;
@@ -190,15 +178,13 @@ body{
     color: var(--CouleurFont);
 }
 
-/* FOMUAIRE DATE */
+/*  NAV BARRE */
 .execute_scrip_conteneur{
-    
     display:flex;
     align-items:center;
     justify-content:space-between;
     text-transform: uppercase;
 }
-
 
 .execute_titre{
     font-size: 35px;
@@ -214,7 +200,6 @@ body{
     border-radius: 0.5rem;
     color: var(--CouleurFont);
 }
-
 
 .nav_button_shell{
     background-color: var(--Couleur5);
@@ -252,7 +237,6 @@ body{
     color: var(--CouleurFont);
 }
 
-
 .nav_user{
     display: flex;
     align-items: center;
@@ -277,10 +261,12 @@ body{
     font-size: 20px;
     margin: 0;
 }
+
 .nav_user_connect{
     font-size: 20px;
     margin: 0;
 }
+
 .button_deconnection{
     padding: 0.5vh 0.5vw;
     font-size: 20px;
@@ -290,12 +276,13 @@ body{
     color: var(--CouleurFont);
     background-color: var(--Couleur5);
 }
+
 .button_deconnection:hover,.button_deconnection:hover {
     background-color: var(--CouleurHover);
     cursor: pointer;
 }
 
-/*TABLEAU D'HOTE*/
+/* TABLEAU D'HOTE */
 .tableau_conteneur{
     display: flex;
     flex-direction: column;
@@ -306,13 +293,11 @@ body{
 
 table{
     width: 100%;
-
 }
-/*couleur une sur deux tableau*/
+
 tr:nth-child(even) {
-    background-color: var(--Couleur6);
+    background-color: var(--Couleur6);/*couleur une sur deux tableau*/
 }
-
 
 th{
     text-transform:uppercase;
@@ -328,7 +313,6 @@ th{
     margin: 0;
 }
 
-
 .col_name a{
     color: var(--Couleur5);
 }
@@ -339,9 +323,11 @@ th{
     font-size: 20px;
     color: var(--CouleurFont);
 }
+
 .fa-pen-to-square:hover,.fa-trash:hover{
     transform: scale(1.2);
 }
+
 .col_header_name,.col_header_demarage,.col_header_mac,.col_header_ip_fixe,
 .col_header_os,.col_header_etat,.tab_historique_header_nom,
 .tab_historique_header_mac,.tab_historique_header_bouton,.col_header_delete_host{
@@ -349,10 +335,12 @@ th{
     text-align: center;
     font-size: 20px;
     font-family: var(--FontSeconfaire);
-}        
+}  
+
 .col_header_name{
     width: 390px;
 }
+
 .col_header_ip_fixe{
     width: 200px;
 }
@@ -363,8 +351,8 @@ th{
     display: flex;
 }
 
-
-.col_name,.col_mac,.col_ip_fixe,.col_modif_ip,.col_os,.col_etat,.col_demarage,.col_delete_host{
+.col_name,.col_mac,.col_ip_fixe,.col_modif_ip,
+.col_os,.col_etat,.col_demarage,.col_delete_host{
     margin: 0;
     padding: 0vh 0vw;
     text-align: center;
@@ -411,7 +399,7 @@ th{
     margin: 0.6vh 0vw;
 }
 
-/**BOUTON */
+/* BOUTON */
 .button {
     color: var(--couleurFont);
     background-color: var(--Couleur5);
@@ -459,8 +447,7 @@ th{
     }
 }
 
-
-/*ANIMATION IP CHANGEMENT*/
+/* ANIMATION IP CHANGER AVEC SUCCES  */
 .emoji-container {
     position:  absolute;
     z-index: 2;
@@ -485,11 +472,7 @@ th{
     }
 }
 
-
-
-
 /*TABLEAU ATTRIBUTION DHCP */
-
 .tableau_historique_dhcp{
     padding: 5vh 0;
 }
@@ -513,10 +496,7 @@ th{
     color: var(--CouleurFont);
 }
 
-
-/*CHECKBOX TABLEAU*/
-
-
+/* CHECKBOX TABLEAU */
 .checkbox-wrapper-35 .switch {
     display: none;
 }
@@ -637,8 +617,7 @@ th{
     transform: none;
 }
 
-/*CHECKBOX BOOT UNKNOWN*/
-
+/* CHECKBOX BOOT UNKNOWN */
 #configForm{
     display: flex;
     align-items: center;
@@ -777,8 +756,7 @@ th{
     transform: none;
 }
 
-
-/*NOTIF*/
+/* NOTIF */
 .error {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     width: 320px;
@@ -826,8 +804,7 @@ th{
 }
 
 
-/* FORMULAIRE CONF RANGE IP*/
-
+/* FORMULAIRE CONF RANGE IP */
 .conteneur_formulaire_range_ip{
     background-color: var(--Couleur5);
     border-radius: 0.5rem;

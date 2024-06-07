@@ -1,88 +1,87 @@
 <?php
+    /////////////////////////////////////////////////////////
+    //      SCRIP DE CHANGEMENT DE PLAGE D'ADRESSE          //
+    /////////////////////////////////////////////////////////
 
+    // Fichier de log DHCP/var/lib/dhcp/ et /etc/dhcp/
+    include("include/link.php");
 
-// Fichier de log DHCP/var/lib/dhcp/ et /etc/dhcp/
-include("include/link.php");
+    // Fonction pour mettre à jour les variables de configuration
+    function update_auto_config($file, $new_config) {
+        $config_content = file_get_contents($file);
+        if ($config_content === false) {
+            notif("Erreur : Impossible de lire le fichier de configuration.");
+        }
 
-// Fonction pour mettre à jour les variables de configuration
-function update_auto_config($file, $new_config) {
-    $config_content = file_get_contents($file);
-    if ($config_content === false) {
-        notif("Erreur : Impossible de lire le fichier de configuration.");
+        // Remplacer les valeurs existantes par les nouvelles valeurs
+        $config_content = preg_replace('/\$IP_RANGE_START = \'[^\']+\';/', "\$IP_RANGE_START = '{$new_config['ip_range_start']}';", $config_content);
+        $config_content = preg_replace('/\$IP_RANGE_END = \'[^\']+\';/', "\$IP_RANGE_END = '{$new_config['ip_range_end']}';", $config_content);
+
+        // Écrire les nouvelles valeurs dans le fichier de configuration
+        if (file_put_contents($file, $config_content) === false) {
+            notif("Erreur : Impossible de mettre à jour le fichier de configuration.");
+        }
     }
 
-    // Remplacer les valeurs existantes par les nouvelles valeurs
-    $config_content = preg_replace('/\$IP_RANGE_START = \'[^\']+\';/', "\$IP_RANGE_START = '{$new_config['ip_range_start']}';", $config_content);
-    $config_content = preg_replace('/\$IP_RANGE_END = \'[^\']+\';/', "\$IP_RANGE_END = '{$new_config['ip_range_end']}';", $config_content);
+    // Fonction pour mettre à jour la plage d'adresses IP dans le fichier de configuration DHCP
+    function update_dhcp_config($file, $start_ip, $end_ip) {
+        $config_content = file_get_contents($file);
+        if ($config_content === false) {
+            notif("Erreur : Impossible de lire le fichier de configuration.");
+        }
 
-    // Écrire les nouvelles valeurs dans le fichier de configuration
-    if (file_put_contents($file, $config_content) === false) {
-        notif("Erreur : Impossible de mettre à jour le fichier de configuration.");
+        // Rechercher et remplacer la plage d'adresses IP
+        $config_content = preg_replace('/range\s+\d+\.\d+\.\d+\.\d+\s+\d+\.\d+\.\d+\.\d+;/', "range $start_ip $end_ip;", $config_content);
+
+        // Écrire les nouvelles valeurs dans le fichier de configuration
+        if (file_put_contents($file, $config_content) === false) {
+            notif("Erreur : Impossible de mettre à jour le fichier de configuration.");
+        }
     }
-}
 
-// Fonction pour mettre à jour la plage d'adresses IP dans le fichier de configuration DHCP
-function update_dhcp_config($file, $start_ip, $end_ip) {
-    $config_content = file_get_contents($file);
-    if ($config_content === false) {
-        notif("Erreur : Impossible de lire le fichier de configuration.");
+    // Lire le contenu actuel du fichier de configuration pour préremplir le formulaire
+    $config_content_auto = file_get_contents($config_file_auto);
+    preg_match('/\$IP_RANGE_START = \'([^\']+)\';/', $config_content_auto, $start_matches_auto);
+    preg_match('/\$IP_RANGE_END = \'([^\']+)\';/', $config_content_auto, $end_matches_auto);
+    $current_start_ip_auto = $start_matches_auto[1];
+    $current_end_ip_auto = $end_matches_auto[1];
+
+    // Lire le contenu actuel du fichier de configuration DHCP pour préremplir le formulaire
+    $config_content_dhcp = file_get_contents($config_file_dhcp);
+    preg_match('/range\s+(\d+\.\d+\.\d+\.\d+)\s+(\d+\.\d+\.\d+\.\d+);/', $config_content_dhcp, $range_matches_dhcp);
+    $current_start_ip_dhcp = $range_matches_dhcp[1];
+    $current_end_ip_dhcp = $range_matches_dhcp[2];
+
+    // Vérifier si le formulaire a été soumis
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['update_auto'])) {
+            $ip_range_start = $_POST['ip_range_start'];
+            $ip_range_end = $_POST['ip_range_end'];
+
+            // Mettre à jour les variables de configuration
+            update_auto_config($config_file_auto, [
+                'ip_range_start' => $ip_range_start,
+                'ip_range_end' => $ip_range_end
+            ]);
+
+            shell_exec('../../shell/boot_server_dhcp.sh');
+            notif( "La plage d'adresses IP pour les attributions automatiques a été mise à jour avec succès.");
+            echo "<script>document.getElementById('refresh').click();</script>";
+
+        } elseif (isset($_POST['update_dhcp'])) {
+            $dhcp_range_start = $_POST['dhcp_range_start'];
+            $dhcp_range_end = $_POST['dhcp_range_end'];
+
+            // Mettre à jour la plage d'adresses IP dans le fichier DHCP
+            update_dhcp_config($config_file_dhcp, $dhcp_range_start, $dhcp_range_end);
+            shell_exec('../../shell/boot_server_dhcp.sh');
+            notif( "La plage d'adresses IP pour le DHCP a été mise à jour avec succès.");
+            echo "<script>document.getElementById('refresh').click();</script>";
+        }
     }
-
-    // Rechercher et remplacer la plage d'adresses IP
-    $config_content = preg_replace('/range\s+\d+\.\d+\.\d+\.\d+\s+\d+\.\d+\.\d+\.\d+;/', "range $start_ip $end_ip;", $config_content);
-
-    // Écrire les nouvelles valeurs dans le fichier de configuration
-    if (file_put_contents($file, $config_content) === false) {
-        notif("Erreur : Impossible de mettre à jour le fichier de configuration.");
-    }
-}
-
-
-// Lire le contenu actuel du fichier de configuration pour préremplir le formulaire
-$config_content_auto = file_get_contents($config_file_auto);
-preg_match('/\$IP_RANGE_START = \'([^\']+)\';/', $config_content_auto, $start_matches_auto);
-preg_match('/\$IP_RANGE_END = \'([^\']+)\';/', $config_content_auto, $end_matches_auto);
-$current_start_ip_auto = $start_matches_auto[1];
-$current_end_ip_auto = $end_matches_auto[1];
-
-// Lire le contenu actuel du fichier de configuration DHCP pour préremplir le formulaire
-$config_content_dhcp = file_get_contents($config_file_dhcp);
-preg_match('/range\s+(\d+\.\d+\.\d+\.\d+)\s+(\d+\.\d+\.\d+\.\d+);/', $config_content_dhcp, $range_matches_dhcp);
-$current_start_ip_dhcp = $range_matches_dhcp[1];
-$current_end_ip_dhcp = $range_matches_dhcp[2];
-
-// Vérifier si le formulaire a été soumis
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['update_auto'])) {
-        $ip_range_start = $_POST['ip_range_start'];
-        $ip_range_end = $_POST['ip_range_end'];
-
-        // Mettre à jour les variables de configuration
-        update_auto_config($config_file_auto, [
-            'ip_range_start' => $ip_range_start,
-            'ip_range_end' => $ip_range_end
-        ]);
-
-        shell_exec('../../shell/boot_server_dhcp.sh');
-        notif( "La plage d'adresses IP pour les attributions automatiques a été mise à jour avec succès.");
-        echo "<script>document.getElementById('refresh').click();</script>";
-        
-
-    } elseif (isset($_POST['update_dhcp'])) {
-        $dhcp_range_start = $_POST['dhcp_range_start'];
-        $dhcp_range_end = $_POST['dhcp_range_end'];
-
-        // Mettre à jour la plage d'adresses IP dans le fichier DHCP
-        update_dhcp_config($config_file_dhcp, $dhcp_range_start, $dhcp_range_end);
-        shell_exec('../../shell/boot_server_dhcp.sh');
-        notif( "La plage d'adresses IP pour le DHCP a été mise à jour avec succès.");
-        echo "<script>document.getElementById('refresh').click();</script>";
-        
-    }
-}
-
 ?>
 
+<!-- FORMULAIRE DE NOUVELLE PLAGE D'ADRESSE -->
 <div class="conteneur_formulaire_range_ip" id="conteneur_formulaire_range_ip">
     <form class="formulaire_range_ip" action="" method="POST" onsubmit="return validateForm()">
         <label class="label_range_ip" for="ip_range_start">Début Ip Fixe:</label>
@@ -105,9 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
 </div>
 
-
-
-
+<!-- SCRIPT JS VERIF CHEVAUCHEMENT DES PLAGE D'ADRESSE -->
 <script>
     function validateForm() {
         // Récupérer les valeurs des champs d'entrée

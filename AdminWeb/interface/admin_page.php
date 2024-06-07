@@ -1,20 +1,20 @@
-
 <?php
-/////////////////////////////////////////////////////////
-//                        SESSION                     //
-/////////////////////////////////////////////////////////
-session_start();
-// Verif si user connecter si la variable $_SESSION comptien le username 
-if(!isset($_SESSION["login"])){
-    header("location: ../index.php");
-exit(); 
-}
+    /////////////////////////////////////////////////////////
+    //                        SESSION                     //
+    /////////////////////////////////////////////////////////
+    session_start();
 
-// déconnection
-if(isset($_POST['deconnection'])){
-    session_destroy();
-    header('location: ../index.php');
-}
+    // Verif si user connecter si la variable $_SESSION comptien le username 
+    if(!isset($_SESSION["login"])){
+        header("location: ../index.php");
+    exit(); 
+    }
+
+    // déconnection
+    if(isset($_POST['deconnection'])){
+        session_destroy();
+        header('location: ../index.php');
+    }
 ?>
 
 <!DOCTYPE html>
@@ -121,8 +121,10 @@ if(isset($_POST['deconnection'])){
         </div>  
         
         <!-- CONFIGURATION PLAGE ADRESSE -->
-        <?php include("conf/conf_ip_range.php");?>
-        <?php include("conf/conf_boot_unknown.php");?>
+        <div class="conteneur_admin_conf">
+            <?php include("conf/conf_ip_range.php");?>
+            <?php include("conf/conf_boot_unknown.php");?>
+        </div>
 
         <!-- CONTENEUR ANIMATION MODIF IP REUSSI -->
         <div id="emoji-container"></div>  
@@ -134,7 +136,6 @@ if(isset($_POST['deconnection'])){
         <?php include("dhcpd_attribution_auto.php");?>
         
         <?php
-        
             /////////////////////////////////////////////////////////
             //                   LES NOTIFICATIONS                 //
             /////////////////////////////////////////////////////////
@@ -247,7 +248,6 @@ if(isset($_POST['deconnection'])){
                 /////////////////////////////////////////////////////////
                 //            FONCTION DE VERIF ETAT MACHINE           //
                 /////////////////////////////////////////////////////////
-                
                 $file = file("../shell/ipScan.txt");
 
                 function verifEtat($file,$ip_address,$actif ,$eteint){
@@ -263,7 +263,9 @@ if(isset($_POST['deconnection'])){
                     return $pc_state;
                 }
 
-                //AFFICHAGE COMPTENUE DANS LE TABLEAU
+                /////////////////////////////////////////////////////////
+                //          AFFICHAGE COMPTENUE DANS LE TABLEAU        //
+                /////////////////////////////////////////////////////////
                 foreach ($matches as $match) {
                     $host_name = $match[1];
                     $hardware_ethernet = $match[2];
@@ -315,8 +317,6 @@ if(isset($_POST['deconnection'])){
                                 </div>
                             </td>
 
-
-
                             <td class=\"col_demarage\">";
                                 // VM OU PAS
                                 if ($verif_vm === "oui") {
@@ -344,8 +344,6 @@ if(isset($_POST['deconnection'])){
                                                 </label>
                                         </div>
                                     </form>";} 
-                                    echo $host_name;
-
                             echo "</td>
 
                             <td class=\"col_delete_host\">
@@ -364,57 +362,11 @@ if(isset($_POST['deconnection'])){
             } else {
                 notif("Aucun hôte trouvé dans le fichier de configuration.");
             }
-
         ?>
 
+        <!-- LES SCRIPTS JS EN AJAX --->
         <script>
             $(document).ready(function() {
-
-                /////////////////////////////////////////////////////////
-                //    AFFICHER LE FORMULAIRE DE CHANGEMENT HOST NAME   //
-                /////////////////////////////////////////////////////////
-                $('.open_edit_host_name').click(function() {
-                    // Masquer tous les autres formulaires et réafficher les icônes et noms d'hôtes
-                    $('.edit_host_form').hide();
-                    $('.open_edit_host_name').show();
-                    $('.host_name').show();
-
-                    var $icon = $(this);
-                    var $hostName = $icon.siblings('.host_name');
-                    var $form = $icon.siblings('.edit_host_form');
-
-                    $icon.hide();
-                    $hostName.hide();
-                    $form.show();
-                });
-
-                /////////////////////////////////////////////////////////
-                //    MASQER LE FORMULAIRE DE CHANGEMENT HOST NAME    //
-                /////////////////////////////////////////////////////////
-                $('.edit_host_form').on('submit', function(event) {
-                    event.preventDefault();
-                    var $form = $(this);
-                    var $icon = $form.siblings('.open_edit_host_name');
-                    var $hostName = $form.siblings('.host_name');
-
-                    $form.hide();
-                    $icon.show();
-                    $hostName.show();
-                });
-
-                /////////////////////////////////////////////////////////
-                //            ANNULER LE CHANGEMENT HOST NAME          //
-                /////////////////////////////////////////////////////////
-                $('.close_host_name_form').click(function() {
-                    var $form = $(this).closest('.edit_host_form');
-                    var $icon = $form.siblings('.open_edit_host_name');
-                    var $hostName = $form.siblings('.host_name');
-
-                    $form.hide();
-                    $icon.show();
-                    $hostName.show();
-                });
-
                 /////////////////////////////////////////////////////////
                 //       AFFICHER LE FORMULAIRE DE CHANGEMENT IP       //
                 /////////////////////////////////////////////////////////
@@ -448,11 +400,11 @@ if(isset($_POST['deconnection'])){
                     $icon.show();
                 });
 
-
                 $('i.valide_change_ip').click(function() {
                     // Déclencher le clic sur le bouton de soumission du formulaire
                     $(this).closest('.ip_change_form').submit();
                 });
+
                 /////////////////////////////////////////////////////////
                 //      GESTION DE SOUMISSION FORMULAIRE IP EN AJAX    //
                 /////////////////////////////////////////////////////////
@@ -506,9 +458,8 @@ if(isset($_POST['deconnection'])){
                     });
                 });
 
-            
                 /////////////////////////////////////////////////////////
-                //     GESTION DE SUPPRESSION DE HOST NAME  EN AJAX    //
+                //         GESTION DE SUPPRESSION DE HOST EN AJAX      //
                 /////////////////////////////////////////////////////////
                 $(document).ready(function() {
                     // Fonction pour soumettre le formulaire lorsqu'on clique sur l'icône
@@ -543,12 +494,54 @@ if(isset($_POST['deconnection'])){
                     });
                 });
 
+                /////////////////////////////////////////////////////////
+                //    AFFICHER LE FORMULAIRE DE CHANGEMENT HOST NAME   //
+                /////////////////////////////////////////////////////////
+                $('.open_edit_host_name').click(function() {
+                    // Masquer tous les autres formulaires et réafficher les icônes et noms d'hôtes
+                    $('.edit_host_form').hide();
+                    $('.open_edit_host_name').show();
+                    $('.host_name').show();
 
+                    var $icon = $(this);
+                    var $hostName = $icon.siblings('.host_name');
+                    var $form = $icon.siblings('.edit_host_form');
+
+                    $icon.hide();
+                    $hostName.hide();
+                    $form.show();
+                });
+
+                /////////////////////////////////////////////////////////
+                //    MASQER LE FORMULAIRE DE CHANGEMENT HOST NAME    //
+                /////////////////////////////////////////////////////////
+                $('.edit_host_form').on('submit', function(event) {
+                    event.preventDefault();
+                    var $form = $(this);
+                    var $icon = $form.siblings('.open_edit_host_name');
+                    var $hostName = $form.siblings('.host_name');
+
+                    $form.hide();
+                    $icon.show();
+                    $hostName.show();
+                });
+
+                /////////////////////////////////////////////////////////
+                //            ANNULER LE CHANGEMENT HOST NAME          //
+                /////////////////////////////////////////////////////////
+                $('.close_host_name_form').click(function() {
+                    var $form = $(this).closest('.edit_host_form');
+                    var $icon = $form.siblings('.open_edit_host_name');
+                    var $hostName = $form.siblings('.host_name');
+
+                    $form.hide();
+                    $icon.show();
+                    $hostName.show();
+                });
 
                 /////////////////////////////////////////////////////////
                 //     GESTION DE CHANGEMENT DE HOST NAME  EN AJAX    //
                 /////////////////////////////////////////////////////////
-
                 $(document).ready(function() {
                     // Fonction pour soumettre le formulaire lorsqu'on clique sur l'icône
                     $('i.valide_edit_host_name').click(function() {
@@ -579,7 +572,6 @@ if(isset($_POST['deconnection'])){
                         });
                     });
                 });
-
             });
         </script>
     </body>

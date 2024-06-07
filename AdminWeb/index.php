@@ -17,7 +17,6 @@
             include('interface/include/connection_db.env.php');
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
                 session_start();
 
                 $login = htmlspecialchars(trim($_POST["login"])); // Nettoie et récupère le nom d'utilisateur.
@@ -41,6 +40,7 @@
             }
         ?>
 
+        <!--- FORMULAIRE DE CONNEXION -->
         <div class="bienvenue">
             <i class="fa-solid fa-eye-low-vision"></i>
 
@@ -58,7 +58,7 @@
                             <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0
                             0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"></path>
                         </svg>
-                        CONNECTION
+                        CONNEXION
                     </button>
                 </form>                 
             </div>
@@ -67,13 +67,16 @@
         </div>
         
         <script>
-        $(document).ready(function() {
-            $('#afficherFormulaire').click(function(event) {
-                event.preventDefault(); 
-                $('.formulaire_conteneur').show();
-                $(this).hide(); 
+            /////////////////////////////////////////////////////////
+            //     SCRIP JS AFFICHANGE FORMULAIRE DE CONNEXION     //
+            /////////////////////////////////////////////////////////
+            $(document).ready(function() {
+                $('#afficherFormulaire').click(function(event) {
+                    event.preventDefault(); 
+                    $('.formulaire_conteneur').show();
+                    $(this).hide(); 
+                });
             });
-        });
-    </script>
+        </script>
     </body>
 </html>
