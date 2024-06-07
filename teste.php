@@ -1,80 +1,66 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Switch persistant avec PHP et fichier</title>
-    <style>
-        .checkbox-wrapper-35 {
-            display: inline-block;
-        }
-        .switch {
-            display: none;
-        }
-        .switch + label {
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-        }
-        .switch + label .switch-x-toggletext {
-            display: inline-block;
-        }
-        .switch:checked + label .switch-x-checked {
-            display: inline;
-        }
-        .switch:not(:checked) + label .switch-x-unchecked {
-            display: inline;
-        }
-        .switch:checked + label .switch-x-unchecked,
-        .switch:not(:checked) + label .switch-x-checked {
-            display: none;
-        }
-    </style>
-    <script>
-        function submitForm() {
-            document.getElementById('switchForm').submit();
-        }
-    </script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</title>
 </head>
+
+<div id="conteneur" style="display:none; background-color:transparent; position:absolute; top:100px; left:5%; margin-right:5%; height:50px; width:90%; border:1px solid #000000;">
+	<div id="barre" style="display:block; background-color:#CCCCCC; width:0%; height:100%;">
+		<div id="pourcentage" style="text-align:right; height:100%; font-size:1.8em;">
+			&nbsp;
+		</div>
+	</div>
+</div>
+
 <body>
-    <?php
-        $file_path = "/AdminWeb/interface/include/add_boot_ipxe_unknown.conf";
-        $new = "#include";
-        $new2 = "include";
-        $checkboxState = false;
+	
+<p>Barre de progression PHP : Demonstration</p>
+	
+<?php
 
-        if (file_exists($file_path)) {
-            $file_content = file_get_contents($file_path);
-            $checkboxState = strpos($file_content, "#include") !== false;
-        }
+echo "<script>";
+	echo "document.getElementById('conteneur').style.display = \"block\";";
+echo "</script>";
+ob_flush();
+flush();
+ob_flush();
+flush();
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['switch'])) {
-                if ($_POST['switch'] === 'on') {
-                    $file_content = str_replace($new2, $new, $file_content);
-                    $checkboxState = true;
-                } else {
-                    $file_content = str_replace($new, $new2, $file_content);
-                    $checkboxState = false;
-                }
-                file_put_contents($file_path, $file_content);
-                header("Location: " . $_SERVER['PHP_SELF']);
-                exit();
-            }
-        }
-    ?>
+$x = 1000;
 
-    <form id="switchForm" action="" method="post">
-        <div class="checkbox-wrapper-35">
-            <input name="switch" id="switch" type="checkbox" class="switch" value="on" <?php if ($checkboxState) echo 'checked'; ?> onchange="submitForm()">
-            <label for="switch">
-                <span class="switch-x-text"></span>
-                <span class="switch-x-toggletext">
-                    <span class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Unchecked: </span>Reseau</span>
-                    <span class="switch-x-checked"><span class="switch-x-hiddenlabel">Checked: </span>local</span>
-                </span>
-            </label>
-        </div>
-    </form>
+for( $i=0 ; $i < $x ; $i++ )
+{ 
+	$indice = round(( ($i+1)*100 ) / $x);
+	progression($indice);
+
+	/* Placez ici le code tres tres long a executer … */
+	/* Exemple : */
+	for( $j = 0 ; $j < 1000 ; $j++ )
+		echo ".";
+	echo '<br />';
+}
+
+
+echo "<script>";
+	echo "document.getElementById('pourcentage').innerHTML='TERMINE !';";
+echo "</script>";
+
+
+
+function progression($indice)
+{	
+	echo "<script>";
+		echo "document.getElementById('pourcentage').innerHTML='$indice%';";
+		echo "document.getElementById('barre').style.width='$indice%';";
+	echo "</script>";
+	ob_flush();
+	flush();
+	ob_flush();
+	flush();
+}
+?>
 </body>
 </html>

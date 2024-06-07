@@ -3,7 +3,7 @@
     //    SCRIP CHANGE ETAT SWITCH ET CHANGE LE FICHIER    //
     /////////////////////////////////////////////////////////
     // lien ver le fichier le link centralisé pour le $configFileUnknown
-    include("../include/link.php");
+    include("include/link.php");
     $currentContent = file_get_contents($configFileUnknown);
 
     $commentedContent = '#include "/etc/dhcp/condition_pxe_boot_unknown.conf";';
