@@ -46,7 +46,7 @@
                 <button class="nav_button_ip_range" id="nav_button_ip_range" type="button"  onclick="masquer_ip_range()">Range ip</button>
                 <script>
                     function masquer_ip_range(){
-                        var element = document.getElementById('conteneur_formulaire_range_ip');
+                        var element = document.getElementById('conteneur_admin_conf');
                         if(element.style.display === 'none'){
                             element.style.display = 'block';
 
@@ -121,7 +121,7 @@
         </div>  
         
         <!-- CONFIGURATION PLAGE ADRESSE -->
-        <div class="conteneur_admin_conf">
+        <div id="conteneur_admin_conf">
             <?php include("conf/conf_ip_range.php");?>
             <?php include("conf/conf_boot_unknown.php");?>
         </div>

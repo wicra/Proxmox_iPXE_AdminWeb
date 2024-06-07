@@ -1,11 +1,5 @@
 #!ipxe
 
-#####################################
-# /var/www/html/install.ipxe #
-####################################
-
-#VERSION1
-
 dhcp
 set serverip http://10.10.62.29
 set pveversion 8.1-1

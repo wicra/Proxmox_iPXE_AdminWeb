@@ -1,7 +1,6 @@
 #!ipxe
-
 dhcp
-set serverip http://10.10.62.29
+set serverip http://10.10.62.210
 set pveversion 8.1-1
 
 set opts "vga=791 video=vesafb:ywrap,mtrr ramdisk_size=16777216 rw quiet initrd=initrd"
@@ -22,12 +21,16 @@ box --gap 10 --margin 20 --border 5 --color 0xffffffff --fill-color 0x00000000
 menu Please choose an operating system to boot
 item --gap --                 ------------------------- Operating Systems ------------------------------
 item normal                    Install Proxmox
+item continue                  Continue le démarrage avec le disque local
 
-choose --default normal --timeout 5000 target && goto ${target}
+choose --default continue --timeout 5000 target && goto ${target}
 
 :normal
 set kernel ${serverip}/proxmox/linux26
 goto init
+
+:continue
+sanboot --no-describe --drive 0x80
 
 :init
 initrd ${serverip}/proxmox/initrd
