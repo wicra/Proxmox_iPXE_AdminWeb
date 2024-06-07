@@ -7,6 +7,8 @@ ehthumbs_vista.db
 
 # Dump file
 *.stackdump
+#login
+connection_db.php
 
 # Folder config file
 [Dd]esktop.ini
