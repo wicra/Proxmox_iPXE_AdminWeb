@@ -68,8 +68,8 @@ cp /root/condition_pxe_boot_unknown.conf /etc/dhcp/
 chmod +w /etc/dhcp/*
 
 #changer de proprietaire de dhcpd_range.conf
-chown www-data www-data /etc/dhcp/dhcpd_range.conf
-chown www-data www-data /etc/dhcp/add_boot_ipxe_unknown.conf
+chown www-data:www-data /etc/dhcp/dhcpd_range.conf
+chown www-data:www-data /etc/dhcp/add_boot_ipxe_unknown.conf
 
 # Redémarrer le services DHCP
 systemctl restart isc-dhcp-server
