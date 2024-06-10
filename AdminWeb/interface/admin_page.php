@@ -294,7 +294,16 @@
                                 </form>
                             </td>
 
-                            <td class=\"col_etat\">$pc_state</td>
+                            <td class=\"col_etat\">
+                                <h4>$pc_state</h4>
+
+                                <form method=\"post\" action=\"conf/conf_wake_on_lan.php\" id=\"demarage_choix_admin_form_{$host_name}\">
+                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                    <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
+                                    <button type=\"submit\">Wake Up</button>
+                                </form>
+                            </td>
 
                             <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
 
