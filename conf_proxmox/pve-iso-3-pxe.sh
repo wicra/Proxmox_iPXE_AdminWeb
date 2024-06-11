@@ -1,4 +1,5 @@
-cat << EOF
+#!/bin/bash
+
 #########################################################################################################
 # Create PXE bootable Proxmox image including ISO                                                       #
 #                                                                                                       #
@@ -6,15 +7,13 @@ cat << EOF
 # Thread: http://forum.proxmox.com/threads/8484-Proxmox-installation-via-PXE-solution?p=55985#post55985 #
 # Modified: morph027 @ Proxmox Forum (23-02-2015) to work with 3.4                                      #
 #########################################################################################################
-EOF
 
-if [ ! $# -eq 2 ]; then
-  echo -ne "Usage: bash pve-iso-2-pxe.sh /path/to/pve.iso /path/to/answer.toml\n\n"
+if [ ! $# -eq 1 ]; then
+  echo -ne "Usage: bash pve-iso-2-pxe.sh /path/to/pve.iso\n\n"
   exit 1
 fi
 
 BASEDIR="$(dirname "$(readlink -f "$1")")"
-ANSWER_FILE="$2"
 pushd "$BASEDIR" >/dev/null || exit 1
 
 [ -L "proxmox.iso" ] && rm proxmox.iso &>/dev/null
@@ -27,7 +26,7 @@ for ISO in *.iso; do
 done
 
 if [ ! -f "proxmox.iso" ]; then
-  echo "Couldn't find a proxmox iso, aborting."
+  echo "Couldn't find a Proxmox ISO, aborting."
   echo "Add /path/to/iso_dir to the commandline."
   exit 2
 fi
@@ -37,14 +36,14 @@ rm -rf pxeboot
 
 pushd pxeboot >/dev/null || exit 1
 echo "extracting kernel..."
-if [ -x "$(which isoinfo)" ] ; then
+if [ -x $(which isoinfo) ] ; then
   isoinfo -i ../proxmox.iso -R -x /boot/linux26 > linux26 || exit 3
 else
   7z x ../proxmox.iso boot/linux26 -o/tmp || exit 3
   mv /tmp/boot/linux26 /tmp/
 fi
 echo "extracting initrd..."
-if [ -x "$(which isoinfo)" ] ; then
+if [ -x $(which isoinfo) ] ; then
   isoinfo -i ../proxmox.iso -R -x /boot/initrd.img > /tmp/initrd.img
 else
   7z x ../proxmox.iso boot/initrd.img -o/tmp
@@ -65,22 +64,13 @@ case "${mimetype##*/}" in
     ;;
 esac
 $decompress > initrd || exit 4
-
-echo "adding answer.toml ..."
-mkdir -p /tmp/initrd-root
-pushd /tmp/initrd-root >/dev/null || exit 1
-cpio -id < ../initrd || exit 1
-cp "$ANSWER_FILE" ./root/answer.toml || exit 1
-find . | cpio --create --format='newc' > ../new-initrd || exit 1
-popd >/dev/null 2>&1 || exit 1
-
-mv /tmp/new-initrd initrd
-
-echo "adding iso file ..."
-if [ -x "$(which cpio)" ] ; then
+echo "adding ISO file and answer.toml..."
+if [ -x $(which cpio) ] ; then
   echo "../proxmox.iso" | cpio -L -H newc -o >> initrd || exit 5
+  echo "../answer.toml" | cpio -L -H newc -o >> initrd || exit 6
 else
   7z x "../proxmox.iso" >> initrd || exit 5
+  7z x "../answer.toml" >> initrd || exit 6
 fi
 popd >/dev/null 2>&1 || exit 1
 

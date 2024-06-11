@@ -31,7 +31,7 @@
                     $_SESSION['login'] = $login ;
                     $_SESSION['password'] = $password ;
                     
-                    header("location: interface/admin_page.php");
+                    header("location: interface/chargement.php");
                     exit(); 
                 } else {
                     header("location: index.php");

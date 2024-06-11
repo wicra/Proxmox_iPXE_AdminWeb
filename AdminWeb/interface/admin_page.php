@@ -28,7 +28,9 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        
         <title>Interface Conf</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -153,8 +155,8 @@
                         var notificationContainer = document.getElementById('notification-container');
                         if (notificationContainer) {
                             var notif = document.createElement('div');
-                            notif.className = 'error';
-                            notif.innerHTML = `
+                            notif.className = \"error\";
+                            notif.innerHTML = \"
                                 <div class=\"error__icon\">
                                     <svg fill=\"none\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\">
                                         <path d=\"m13 13h-2v-6h2zm0 4h-2v-2h2zm-1-15c-1.3132 0-2.61358.25866-3.82683.7612-1.21326.502
@@ -167,7 +169,7 @@
                                     </svg>
                                 </div>
                                 <div class=\"error__title\">$message</div>
-                            `;
+                            \";
                             notificationContainer.appendChild(notif);
                             setTimeout(function() { notif.style.display = 'none'; }, 4000); // Fermer la notification après 2 secondes
                         }
