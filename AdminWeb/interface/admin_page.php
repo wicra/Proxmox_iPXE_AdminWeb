@@ -301,26 +301,24 @@
                                 </form>
                             </td>
 
-                            <td class=\"col_etat\">
-                            $pc_state
-                            </td>
-                            
-                            ";
-                                // <h4>$pc_state</h4>
-
-                                // if($pc_state == $eteint){
-                                //     echo"
-                                //         <form method=\"post\" action=\"conf/conf_wake_on_lan.php\" id=\"demarage_choix_admin_form_{$host_name}\">
-                                //             <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                //             <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                //             <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
-                                //             <button type=\"submit\">Wake Up</button>
-                                //         </form>
-                                //     </td>";
-                                // }else(
-                                //     echo ("");
-                                // )
-                    
+                            <td class=\"col_etat\">";
+                                if($pc_state == $eteint){
+                                    echo"
+                                        <div class=\"col_etat_conteneur\">
+                                            <h4 class=\"etat\">$pc_state</h4>
+                                            <form method=\"post\" action=\"conf/conf_wake_on_lan.php\" id=\"demarage_choix_admin_form_{$host_name}\">
+                                                <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                                <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                                <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
+                                                <button class=\"col_etat_bouton\"  type=\"submit\"><i class=\"fa-solid fa-power-off\"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>";
+                                }
+                            else{
+                                echo "$pc_state
+                                    </td>";
+                            }
 
                     echo"   <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
 
