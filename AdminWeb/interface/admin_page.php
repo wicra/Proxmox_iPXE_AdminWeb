@@ -15,6 +15,11 @@
         session_destroy();
         header('location: ../index.php');
     }
+        // Rafraîchir la page
+        if(isset($_POST['refresh'])){
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
+        }
 ?>
 
 <!DOCTYPE html>
@@ -70,15 +75,12 @@
                     }
                 </script>
                 <!-- REFRESH PAGE -->
+                 
                 <form action="" method="post">
                     <button class="nav_refresh" name="refresh" id='refresh'>
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
-                    <?php
-                        if(isset($_POST['refresh'])){
-                            header("Refresh:0");
-                        }
-                    ?>
+                    
                 </form>
 
                 <!-- DECONNECTION -->
