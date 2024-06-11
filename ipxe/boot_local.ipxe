@@ -1,6 +1,6 @@
 #!ipxe
 dhcp
-set serverip http://10.10.62.210
+set serverip http://10.10.62.29
 set pveversion 8.1-1
 
 set opts "vga=791 video=vesafb:ywrap,mtrr ramdisk_size=16777216 rw quiet initrd=initrd"

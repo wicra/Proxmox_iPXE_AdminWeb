@@ -374,7 +374,6 @@ th{
 
 .col_etat_bouton:active{
     background-color: var(--Couleur4);
-    
 }
 
 .col_name,.col_mac,.col_ip_fixe,.col_modif_ip,
@@ -650,7 +649,8 @@ th{
     gap: 0vw;
     background-color: var(--Couleur5);
     border-radius: 0.5rem;
-    padding: 1vh 4vw;
+    padding: 0vh 4vw;
+    margin: 1vh 0;
 }
 
 #configForm h4{
