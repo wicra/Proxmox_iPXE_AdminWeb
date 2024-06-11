@@ -15,11 +15,11 @@
         session_destroy();
         header('location: ../index.php');
     }
-        // Rafraîchir la page
-        if(isset($_POST['refresh'])){
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
-        }
+    // Rafraîchir la page
+    if(isset($_POST['refresh'])){
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>
