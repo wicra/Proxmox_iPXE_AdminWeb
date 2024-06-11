@@ -15,12 +15,9 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Vérifier si le checkbox est coché
         if (isset($_POST['boot']) && $_POST['boot'] === 'on') {
-            
             $newContent = $uncommentedContent;
-            
         } else {
             $newContent = $commentedContent ;
-            
         }
         // Écrire le nouveau contenu 
         file_put_contents($configFileUnknown, $newContent);
@@ -31,7 +28,6 @@
         } else {
             $checkboxState = '';
         }
-       
     }
 ?>
 

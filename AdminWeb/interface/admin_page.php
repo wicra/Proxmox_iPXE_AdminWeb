@@ -15,9 +15,11 @@
         session_destroy();
         header('location: ../index.php');
     }
-    // Rafraîchir la page
+
+
     if(isset($_POST['refresh'])){
-        header("Location: " . $_SERVER['REQUEST_URI']);
+        header("Refresh:0");
+        //header("location: " . $_SERVER['REQUEST_URI']);
         exit();
     }
 ?>
@@ -75,12 +77,15 @@
                     }
                 </script>
                 <!-- REFRESH PAGE -->
-                 
                 <form action="" method="post">
                     <button class="nav_refresh" name="refresh" id='refresh'>
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
-                    
+                    <?php
+                        // if(isset($_POST['refresh'])){
+                        //     header("Refresh:0");
+                        // }
+                    ?>
                 </form>
 
                 <!-- DECONNECTION -->
@@ -99,7 +104,7 @@
                         if(isset($_POST['reshell'])){
                             shell_exec('../shell/boot_server_dhcp.sh');
                         }
-                    ?>
+                    ?> 
                 </form>  
                 
                 <!-- USER CONNECTE -->
@@ -297,8 +302,10 @@
                             </td>
 
                             <td class=\"col_etat\">
-                                $pc_state
-                            </td>";
+                            $pc_state
+                            </td>
+                            
+                            ";
                                 // <h4>$pc_state</h4>
 
                                 // if($pc_state == $eteint){
@@ -310,7 +317,9 @@
                                 //             <button type=\"submit\">Wake Up</button>
                                 //         </form>
                                 //     </td>";
-                                // }
+                                // }else(
+                                //     echo ("");
+                                // )
                     
 
                     echo"   <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
