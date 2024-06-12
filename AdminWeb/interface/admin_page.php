@@ -46,6 +46,17 @@
     </head>
 
     <body>
+        <!--- TESTE ECRANT DE CHARGEMENT -->
+        <script>
+            // Vérifie quand la page a fini de se charger
+            window.addEventListener('load', function() {
+                // Masquer l'écran de chargement
+                document.querySelectorAll('execute_titre').style.display = 'none';
+                // Afficher le contenu
+                document.querySelectorAll('body').style.display = 'block';
+            });
+        </script>
+
         <!-- NAV BARRE -->
         <div class="execute_scrip_conteneur">
             <h1 class="execute_titre">déploiement d'images</h1>
@@ -102,7 +113,7 @@
                     <button type="submit" class="nav_button_shell"  name='reshell' >
                         <i class="fa-solid fa-power-off"></i>
                     </button>
-                    <?php
+                    <?php 
                         if(isset($_POST['reshell'])){
                             shell_exec('../shell/boot_server_dhcp.sh');
                         }
@@ -205,7 +216,7 @@
                             <tr class=\"tableau\">
                                 <th class=\"col_header_name\" >hôte</th>
                                 <th class=\"col_header_etat\">Etat</th>
-                                <th class=\"col_header_os\">OS</th>
+                                <th class=\"col_header_disk\">Disk</th>
                                 <th class=\"col_header_mac\">@ MAC</th>
                                 <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
                                 <th class=\"col_header_demarage\">Demarage</th>
@@ -334,7 +345,21 @@
                                 ;
                             }
 
-                    echo"   <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>
+                    echo"   <td class=\"col_disk\">
+                                <form action=\"conf/conf_choix_disk.php\" method=\"post\">
+                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                    <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
+
+                                    <label for=\"choices\">Disk :</label>
+                                    <select id=\"choices\" name=\"choice\">
+                                        <option value=\"disk1\">Disk 1</option>
+                                        <option value=\"disk2\">Disk 2</option>
+                                        <option value=\"disk3\">Disk 3</option>
+                                    </select>
+                                    
+                                    <button type=\"submit\">Envoyer</button>
+                                </form>
+                            </td>
 
                             <td class=\"col_mac\">{$hardware_ethernet}</td>
 

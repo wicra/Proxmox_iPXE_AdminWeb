@@ -329,7 +329,7 @@ th{
 }
 
 .col_header_name,.col_header_demarage,.col_header_mac,.col_header_ip_fixe,
-.col_header_os,.col_header_etat,.tab_historique_header_nom,
+.col_header_disk,.col_header_etat,.tab_historique_header_nom,
 .tab_historique_header_mac,.tab_historique_header_bouton,.col_header_delete_host{
     padding: 2vh 0vw;
     text-align: center;
@@ -387,7 +387,7 @@ th{
 }
 
 .col_name,.col_mac,.col_ip_fixe,.col_modif_ip,
-.col_os,.col_etat,.col_demarage,.col_delete_host{
+.col_disk,.col_etat,.col_demarage,.col_delete_host{
     margin: 0;
     padding: 0vh 0vw;
     text-align: center;
