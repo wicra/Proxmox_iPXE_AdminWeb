@@ -10,11 +10,11 @@
     $ip_address = $_POST['ip_address'];
     // Nouveau contenu à ajouter dans le fichier dhcpd_hosts.conf
     $new_host_entry = "host {$host_name} {
-        hardware ethernet {$mac_address};
-        fixed-address {$ip_address};
-        # PXE Boot
-        include \"/etc/dhcp/condition_pxe_boot_choix.conf\";
-    }";
+    hardware ethernet {$mac_address};
+    fixed-address {$ip_address};
+    # PXE Boot
+    include \"/etc/dhcp/condition_pxe_boot_choix.conf\";
+}";
 
     // Chemin vers le fichier dhcpd_hosts.conf
     include("../include/link.php");

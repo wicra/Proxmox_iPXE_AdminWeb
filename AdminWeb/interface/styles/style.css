@@ -289,6 +289,7 @@ body{
     overflow-y: auto;
     position: relative;
     max-height: 500px;
+    margin: 4vh 0 4vh 0;
 }
 
 table{
@@ -509,7 +510,7 @@ th{
 
 /*TABLEAU ATTRIBUTION DHCP */
 .tableau_historique_dhcp{
-    padding: 5vh 0;
+    margin: 4vh 0 4vh 0;
 }
 
 .tab_historique_mac,.tab_historique_bouton{
@@ -660,7 +661,7 @@ th{
     background-color: var(--Couleur5);
     border-radius: 0.5rem;
     padding: 0vh 4vw;
-    margin: 1vh 0;
+    margin: 4vh 0 4vh 0;
 }
 
 #configForm h4{
@@ -845,7 +846,7 @@ th{
     background-color: var(--Couleur5);
     border-radius: 0.5rem;
     padding: 3vh 1vw 1vh 1vw;
-    margin: 0 0 2vh 0;
+    margin: 4vh 0 4vh 0;
 }
 .formulaire_range_ip {
     margin-bottom: 20px;
