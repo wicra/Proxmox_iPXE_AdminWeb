@@ -305,6 +305,7 @@
 
                             <td class=\"col_etat\">";
                                 if($pc_state == $eteint){
+                                    // ALLUMER LE PC
                                     echo"
                                         <div class=\"col_etat_conteneur\">
                                             <h4 class=\"etat\">$pc_state</h4>
@@ -318,8 +319,19 @@
                                     </td>";
                                 }
                             else{
-                                echo "$pc_state
+                                // ETEINDRE LE PC
+                                echo "  
+                                    <div class=\"col_etat_conteneur\">
+                                            <h4 class=\"etat\">$pc_state</h4>
+                                            <form method=\"post\" action=\"conf/conf_shut_down.php\" id=\"demarage_choix_admin_form_{$host_name}\">
+                                                <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                                <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                                <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
+                                                <button class=\"col_shut_down_bouton\"  type=\"submit\"><i class=\"fa-solid fa-power-off\"></i></button>
+                                            </form>
+                                        </div>
                                     </td>";
+                                ;
                             }
 
                     echo"   <td class=\"col_os\"><i class=\"fa-brands fa-windows\"></i></td>

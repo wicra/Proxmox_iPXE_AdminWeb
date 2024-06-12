@@ -12,7 +12,7 @@
     $checkboxState = (strpos($currentContent, '#include') === 0) ? '' : 'checked';
 
     // Vérifier si le formulaire a été soumis
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_boot_state'])) {
         // Vérifier si le checkbox est coché
         if (isset($_POST['boot']) && $_POST['boot'] === 'on') {
             $newContent = $uncommentedContent;
@@ -33,15 +33,15 @@
 
 <!-- FORMULAIRE DEMARRAGE MACHINE INCONNUE -->
 <form id="configForm" method="post">
+    <!-- input caché que l'etat du switch ne se soumet que si seulement ce champ est soumis (evite le bug avec dhcpd_attribution) -->
+    <input type="hidden" name="change_boot_state" value="1">
+
     <h4>démarrer les machines inconnue en : </h4>
     <div class="checkbox-wrapper-unique">
-        <!-- Input du type checkbox avec le nom, l'identifiant et la classe appropriés -->
         <input name="boot" id="boot_unique" type="checkbox" class="switch-unique" <?php echo $checkboxState; ?>>
-        <!-- Label pour le switch -->
+        
         <label for="boot_unique">
-            <!-- Texte caché pour le switch -->
             <span class="switch-x-text-unique"></span>
-            <!-- Texte pour les états du switch -->
             <span class="switch-x-toggletext-unique">
                 <span class="switch-x-unchecked-unique"><span class="switch-x-hiddenlabel-unique">Unchecked: </span>local</span>
                 <span class="switch-x-checked-unique"><span class="switch-x-hiddenlabel-unique">Checked: </span>Reseau</span>
@@ -61,4 +61,3 @@
         document.getElementById('configForm').submit();
     });
 </script>
-

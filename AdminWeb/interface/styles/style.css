@@ -363,17 +363,27 @@ th{
 }
 
 .col_etat_bouton{
-    background-color: var(--Couleur5);
+    background-color: var(--Couleur4);
     border: none;
     cursor: pointer;
     padding: 0.5vh 0.5vw;
     font-size: 11px;
     border-radius: 0.5rem;
-    color: var(--CouleurFont);
+    color: var(--CouleurPrimaire);
 }
 
 .col_etat_bouton:active{
     background-color: var(--Couleur4);
+}
+
+.col_shut_down_bouton{
+    background-color: var(--CouleurSecondaire);
+    border: none;
+    cursor: pointer;
+    padding: 0.5vh 0.5vw;
+    font-size: 11px;
+    border-radius: 0.5rem;
+    color: var(--CouleurPrimaire);
 }
 
 .col_name,.col_mac,.col_ip_fixe,.col_modif_ip,

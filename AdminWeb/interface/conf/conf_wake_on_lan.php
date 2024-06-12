@@ -30,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Envoi du paquet magique
     if (wake_on_lan($mac_address)) {
-        echo "Magic packet sent to {$mac_address} to wake up {$host_name} at IP {$ip_address}.";
+        echo "Packet magique envoyer a {$mac_address} pour allumer {$host_name} avec l'adresse ip {$ip_address}.";
     } else {
-        echo "Failed to send magic packet to {$mac_address}.";
+        echo "Erreur d'envoie du packet magique a {$mac_address}. Pc non compatible ou WOL desactivé";
     }
 }
 ?>
