@@ -85,7 +85,7 @@ lease 10.10.62.163 {
   binding state active;
   next binding state free;
   rewind binding state free;
-  hardware ethernet bc:24:11:fd:cb:47;
+  hardware ethernet fa:ca:de:6c:55:dd;
   uid "\001\274$\021\375\313G";
   set vendor-class-identifier = "MSFT 5.0";
   client-hostname "oooh";

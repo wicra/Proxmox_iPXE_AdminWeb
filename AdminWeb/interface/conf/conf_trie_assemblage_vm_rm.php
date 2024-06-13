@@ -33,7 +33,8 @@ foreach ($hosts as $host) {
         continue;
     }
 
-    $mac_end = getMacEnding($mac_match[1]);
+    $mac = trim($mac_match[1]);
+    $mac_end = getMacEnding($mac);
     
     // Stocker le host dans le tableau associatif
     if (!isset($hosts_by_mac_end[$mac_end])) {
@@ -42,10 +43,27 @@ foreach ($hosts as $host) {
     $hosts_by_mac_end[$mac_end][] = $host;
 }
 
-// Réorganiser les hosts en fonction de la fin de l'adresse MAC
+// Réorganiser les hosts en fonction de la fin de l'adresse MAC et de l'adresse MAC commencant par fa:ca:de
 $updated_hosts = [];
+
 foreach ($hosts_by_mac_end as $mac_end => $hosts_group) {
-    $updated_hosts = array_merge($updated_hosts, $hosts_group);
+    $fa_cade_hosts = [];
+    $other_hosts = [];
+
+    // Séparer les hosts en deux groupes
+    foreach ($hosts_group as $host) {
+        preg_match('/hardware ethernet ([^;]+);/', $host, $mac_match);
+        $mac = trim($mac_match[1]);
+
+        if (strpos($mac, 'fa:ca:de') === 0) {
+            $fa_cade_hosts[] = $host;
+        } else {
+            $other_hosts[] = $host;
+        }
+    }
+
+    // Ajouter d'abord les autres hosts, puis ceux commencant par fa:ca:de
+    $updated_hosts = array_merge($updated_hosts, $other_hosts, $fa_cade_hosts);
 }
 
 // Écrire le résultat dans le même fichier
@@ -55,5 +73,4 @@ if (file_put_contents($filename, $result_content) === false) {
 }
 
 echo "Les hosts ont été triés par la fin de l'adresse MAC et écrits dans $filename avec succès.\n";
-
 ?>

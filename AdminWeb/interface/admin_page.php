@@ -296,7 +296,7 @@
 
                     $pc_state = verifEtat($file ,$fixed_address,$actif,$eteint);
                     $result = checkIncludeAndHostName($file_path_admin, $host_name, "/etc/dhcp/condition_pxe_boot_choix.conf");
-                    $verif_vm = verify_mac_address($host_name,"bc:24:11", $file_path_admin);
+                    $verif_vm = verify_mac_address($host_name,"fa:ca:de", $file_path_admin);
 
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
