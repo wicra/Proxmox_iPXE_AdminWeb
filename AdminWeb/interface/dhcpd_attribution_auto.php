@@ -112,6 +112,7 @@
             $connection = $recent_connections[$mac_address];
             $hostname = $connection['hostname'];
             
+
             notif( "Attibution réussi");
             // Obtenir la prochaine IP disponible
             $ip_address = get_next_available_ip($IP_RANGE_START, $IP_RANGE_END, $existing_ips);
@@ -184,7 +185,7 @@
                     <td class="tab_historique_nom"><?= htmlspecialchars($connection['hostname']) ?></td>
                     <td class="tab_historique_mac"><?= htmlspecialchars($mac_address) ?></td>
                     
-                    <td class="tab_historique_bouton">
+                    <td action="conf/conf_trie_assemblage_vm_rm.php" class="tab_historique_bouton">
                         <form  method="POST">
                             <input type="hidden" name="mac_address" value="<?= htmlspecialchars($mac_address) ?>">
                             <button  type="submit">Attribuer IP</button>

@@ -256,4 +256,11 @@ qm create 205 --sockets 1 --cores $nbcpu --memory $memory --net0 virtio,bridge=v
 # Lancement script renommageMachine
 sudo -u $username /home/$username/RenommageMachine.sh
 
+
+#Changement ip static en dynamique
+sed -ri "s/iface vmbr0 inet static/iface vmbr0 inet dhcp/g" /etc/network/interfaces
+sed -ri "s/address.*//g" /etc/network/interfaces
+sed -ri "s/getway.*//g" /etc/network/interfaces
+
+
 reboot now

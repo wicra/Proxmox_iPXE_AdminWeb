@@ -14,30 +14,37 @@
 
     <body>
         <?php
-            include('interface/include/connection_db.env.php');
+        //echo password_hash("admin", PASSWORD_DEFAULT);
+        session_start();
 
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                session_start();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $login = htmlspecialchars(trim($_POST["login"]));
+            $password = htmlspecialchars(trim($_POST["password"]));
 
-                $login = htmlspecialchars(trim($_POST["login"])); // Nettoie et récupère le nom d'utilisateur.
-                $password = sha1(htmlspecialchars(trim($_POST["password"]))); // Nettoie et récupère le mot de pass cripté
+            $file = fopen('interface/include/users.env.txt', 'r');
+            $is_valid_user = false;
 
-                // Requête SQL pour vérifier l'utilisateur dans la table identifiant.
-                $sql = "SELECT * FROM users_admin WHERE login = '$login' AND password = '$password'";
-                $result  = mysqli_query($conn, $sql);
+            if ($file) {
+                while (($line = fgets($file)) !== false) {
+                    list($stored_login, $stored_password_hash) = explode(':', trim($line));
 
-                if (mysqli_num_rows($result) > 0) {
-                    $user = mysqli_fetch_assoc($result);
-                    $_SESSION['login'] = $login ;
-                    $_SESSION['password'] = $password ;
-                    
-                    header("location: interface/chargement.php");
-                    exit(); 
-                } else {
-                    header("location: index.php");
-                    exit(); 
-                };
+                    if ($login === $stored_login && password_verify($password, $stored_password_hash)) {
+                        $is_valid_user = true;
+                        break;
+                    }
+                }
+                fclose($file);
             }
+
+            if ($is_valid_user) {
+                $_SESSION['login'] = $login;
+                header("location: interface/chargement.php");
+                exit();
+            } else {
+                header("location: index.php");
+                exit();
+            }
+        }
         ?>
 
         <!--- FORMULAIRE DE CONNEXION -->
@@ -45,13 +52,13 @@
             <i class="fa-solid fa-eye-low-vision"></i>
 
             <div class="formulaire_conteneur">
-                <form  class="formulaire" action="index.php" method="post">
+                <form class="formulaire" action="index.php" method="post">
                     <div class="login_password">
-                        <input  class="formulaire_login" type="text" id="login" name="login" placeholder="Login" />
-                        <input  class="formulaire_password" type="password" id="password" name="password" placeholder="Password" required />
+                        <input class="formulaire_login" type="text" id="login" name="login" placeholder="Login" />
+                        <input class="formulaire_password" type="password" id="password" name="password" placeholder="Password" required />
                     </div>
 
-                    <button class="button" type="submit" style="background-color: var(--Couleur5) ;">
+                    <button class="button" type="submit" style="background-color: var(--Couleur5);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
                             <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25
                             0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"></path>
@@ -60,21 +67,22 @@
                         </svg>
                         CONNEXION
                     </button>
-                </form>                 
+                </form>
             </div>
 
             <a id="afficherFormulaire" href="interface/include/formulaire_connection.php">me connecter</a>
         </div>
-        
-        <script>
-            /////////////////////////////////////////////////////////
-            //     SCRIP JS AFFICHANGE FORMULAIRE DE CONNEXION     //
-            /////////////////////////////////////////////////////////
+
+
+            <script>
+                /////////////////////////////////////////////////////////
+                //     SCRIP JS AFFICHANGE FORMULAIRE DE CONNEXION     //
+                /////////////////////////////////////////////////////////        
             $(document).ready(function() {
                 $('#afficherFormulaire').click(function(event) {
-                    event.preventDefault(); 
+                    event.preventDefault();
                     $('.formulaire_conteneur').show();
-                    $(this).hide(); 
+                    $(this).hide();
                 });
             });
         </script>

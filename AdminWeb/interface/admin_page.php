@@ -122,20 +122,20 @@
                 
                 <!-- USER CONNECTE -->
                 <?php
-                    include('include/connection_db.env.php');
+                    // include('include/connection_db.env.php');
                 
-                    $username = mysqli_real_escape_string($conn, $_SESSION["login"]);
-                    $requete = "SELECT login = '$username' FROM users_admin  ";
-                    $result = mysqli_query($conn, $requete);
-                    $user_connect =$_SESSION["login"];
-                    if ($result) {
-                        echo "
-                            <div class=\"nav_user\">
-                                <i class=\"fa-solid fa-user-tie\"></i>
-                                <h1 class=\"nav_user_connect\">$user_connect</h1>
-                            </div>                            
-                        " ;
-                    };
+                    // $username = mysqli_real_escape_string($conn, $_SESSION["login"]);
+                    // $requete = "SELECT login = '$username' FROM users_admin  ";
+                    // $result = mysqli_query($conn, $requete);
+                    // $user_connect =$_SESSION["login"];
+                    // if ($result) {
+                    //     echo "
+                    //         <div class=\"nav_user\">
+                    //             <i class=\"fa-solid fa-user-tie\"></i>
+                    //             <h1 class=\"nav_user_connect\">$user_connect</h1>
+                    //         </div>                            
+                    //     " ;
+                    // };
                 ?>
             </div>
         </div>  
