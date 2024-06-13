@@ -137,6 +137,9 @@
                     //     " ;
                     // };
                 ?>
+
+                <!-- AJOUT USERS OU SUPPRESSION USERS -->  
+                <a class="user_add_del" href="connexion/users_add_del.php"><i class="fa-solid fa-user-plus"></i></a>
             </div>
         </div>  
         

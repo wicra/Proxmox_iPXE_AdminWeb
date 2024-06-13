@@ -267,6 +267,17 @@ body{
     margin: 0;
 }
 
+.fa-user-plus{
+    background-color: var(--Couleur5);
+    border: none;
+    cursor: pointer;
+    padding: 0.7vh 0.5vw;
+    font-size: 20px;
+    border-radius: 0.5rem;
+    color: var(--CouleurFont);
+    text-decoration: none;
+}
+
 .button_deconnection{
     padding: 0.5vh 0.5vw;
     font-size: 20px;
