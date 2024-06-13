@@ -28,8 +28,9 @@
                     </div>
                     
                     <div class="conteneur_bouton_inscription">
-                        <button type="submit" name="action" value="register">S'inscrire</button>
+                        
                         <i id="icon_suppression" class="fa-solid fa-user-xmark"></i>
+                        <button type="submit" name="action" value="register">S' inscrire</button>
                         <i id="retour_page_admin_inscription" class="fa-solid fa-house-user"></i>
                     </div>
                 </form>                
@@ -43,8 +44,9 @@
                         <input class="formulaire_password" type="password" id="password_delete" name="password_delete" required><br><br>
                     </div>
                     <div class="conteneur_bouton_inscription">
-                        <button type="submit" name="action" value="delete">Supprimer</button>
+                        
                         <i id="icon_inscription" class="fa-solid fa-user-plus"></i>
+                        <button type="submit" name="action" value="delete">Supprimer</button>
                         <i id="retour_page_admin_suppression" class="fa-solid fa-house-user"></i>
                     </div>
                 </form>
@@ -86,16 +88,16 @@
 
             .suppression_login_password, .inscription_login_password {
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 align-items: center;
-                gap: 1vw;
+                
                 padding: 5vh 0;
             }
 
             .conteneur_bouton_inscription {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: center;
                 gap: 2vw;
             }
 
@@ -107,6 +109,10 @@
                 font-size: 20px;
                 border-radius: 0.5rem;
                 color: var(--CouleurFont);
+            }
+
+            .suppression_login_password input,.inscription_login_password input{
+                margin: 0.5vw;
             }
         </style>
 
@@ -131,12 +137,15 @@
         </script>
 
         <?php
+
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($_POST['action'] === 'register') {
                 $login = htmlspecialchars(trim($_POST["login"]));
                 $password = htmlspecialchars(trim($_POST["password"]));
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
-                $file = fopen('users.env.txt', 'a');
+                $file = fopen('users.env.php', 'a');
                 if ($file) {
                     fwrite($file, "$login:$password_hash\n");
                     fclose($file);
@@ -148,7 +157,7 @@
                 $login_delete = htmlspecialchars(trim($_POST["login_delete"]));
                 $password_delete = htmlspecialchars(trim($_POST["password_delete"]));
                 $users = [];
-                $file = fopen('users.env.txt', 'r+');
+                $file = fopen('users.env.php', 'r+');
                 if ($file) {
                     while (($line = fgets($file)) !== false) {
                         list($stored_login, $password_hash) = explode(':', trim($line), 2);

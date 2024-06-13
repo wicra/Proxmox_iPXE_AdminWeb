@@ -21,7 +21,7 @@
             $login = htmlspecialchars(trim($_POST["login"]));
             $password = htmlspecialchars(trim($_POST["password"]));
 
-            $file = fopen('interface/connexion/users.env.txt', 'r');
+            $file = fopen('interface/connexion/users.env.php', 'r');
             $is_valid_user = false;
 
             if ($file) {
