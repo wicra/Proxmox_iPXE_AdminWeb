@@ -1,7 +1,7 @@
-
 <?php
-    /////////////////////////////////////////////////////////
-    //         SCRIP D'ATTRIBUTION DE NOUVELLE HOST       //
+    //////////////////////////////////////////////////////////
+    // SCRIP D'ATTRIBUTION DE NOUVELLE HOST ET SUPPRESSION  //
+    //  CONNEXION LEASES APRES ATTRIB                       //
     /////////////////////////////////////////////////////////
 
     // Fichier de log DHCP/var/lib/dhcp/ et /etc/dhcp/
@@ -9,7 +9,6 @@
 
     // Variable de plage d'adresses IP fixe (à adapter)
     include("include/range_ip_fixe.php");
-
 
     // Vérification existence des fichiers
     if (!file_exists($LEASES_FILE)) {
@@ -19,7 +18,7 @@
         notif("Erreur : Le fichier $DHCP_CONF n'existe pas.\n");
     }
 
-    // Lire le contenu  de bail DHCP
+    // Lire le contenu de bail DHCP
     $leases_content = file_get_contents($LEASES_FILE);
 
     // Vérifier si la lecture
@@ -105,25 +104,29 @@
         }
     }
 
+    // Fonction pour supprimer les connexions existantes pour une adresse MAC dans le fichier leases
+    function remove_mac_from_leases($mac_address, $leases_content) {
+        $pattern = '/lease [0-9.]+ {[^}]*hardware ethernet ' . preg_quote($mac_address, '/') . ';[^}]*}/s';
+        return preg_replace($pattern, '', $leases_content);
+    }
+
     // Si le formulaire est soumis pour attribuer une IP
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
         $mac_address = $_POST['mac_address'];
         if (isset($recent_connections[$mac_address])) {
             $connection = $recent_connections[$mac_address];
             $hostname = $connection['hostname'];
-            
 
-            notif( "Attibution réussi");
+            notif("Attibution réussi");
+
             // Obtenir la prochaine IP disponible
             $ip_address = get_next_available_ip($IP_RANGE_START, $IP_RANGE_END, $existing_ips);
             if ($ip_address === false) {
-                notif( "Erreur : Aucune adresse IP disponible dans la plage définie.\n");
+                notif("Erreur : Aucune adresse IP disponible dans la plage définie.\n");
             } else {
                 // Ajouter l'entrée au fichier de configuration DHCP
                 $file_handle = fopen($DHCP_CONF, 'a');
                 if ($file_handle !== false) {
-                    
-
                     fwrite($file_handle, "host $hostname {\r\n");
                     fwrite($file_handle, "    hardware ethernet $mac_address;\r\n");
                     fwrite($file_handle, "    fixed-address $ip_address;\r\n");
@@ -154,13 +157,20 @@
                     // fwrite($file_handle, "        }\n");
                     // fwrite($file_handle, "    }\n");
                     // fwrite($file_handle, "}\n\n");
-
                     fclose($file_handle);
-                    // echo "IP $ip_address attribuée pour le client $hostname : $mac_address avec succès.<br>";
+
                     // Ajouter l'IP à la liste des IPs existantes
                     $existing_ips[] = $ip_address;
+
                     // Retirer l'entrée des connexions récentes pour ne pas l'afficher de nouveau
                     unset($recent_connections[$mac_address]);
+
+                    // Supprimer les connexions existantes pour cette adresse MAC dans le fichier leases
+                    $updated_leases_content = remove_mac_from_leases($mac_address, $leases_content);
+
+                    // Écrire le contenu mis à jour dans le fichier leases
+                    file_put_contents($LEASES_FILE, $updated_leases_content);
+
                     include("conf/conf_trie_assemblage_vm_rm.php");
                 } else {
                     notif("Erreur : Impossible d'ouvrir le fichier $DHCP_CONF pour écriture.\n");
@@ -185,15 +195,14 @@
                 <tr>
                     <td class="tab_historique_nom"><?= htmlspecialchars($connection['hostname']) ?></td>
                     <td class="tab_historique_mac"><?= htmlspecialchars($mac_address) ?></td>
-                    
                     <td action="conf/conf_trie_assemblage_vm_rm.php" class="tab_historique_bouton">
-                        <form  method="POST">
+                        <form method="POST">
                             <input type="hidden" name="mac_address" value="<?= htmlspecialchars($mac_address) ?>">
-                            <button  type="submit">Attribuer IP</button>
+                            <button type="submit">Attribuer IP</button>
                         </form>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-<?php endif;?>
+<?php endif; ?>

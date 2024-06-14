@@ -1234,6 +1234,7 @@ th{
     padding: 0.25em;
     text-align: center;
     position: absolute;
+    z-index: 6;
     top: 40px;
     left: 0;
     opacity: 0;
