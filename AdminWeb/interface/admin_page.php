@@ -351,7 +351,12 @@
                     echo"   <td class=\"col_disk\">";
                                 // VM OU PAS
                                 if ($verif_vm === "oui") {
-                                    echo "<i class=\"fa-solid fa-hand-pointer\"></i>"; 
+                                    echo "<div class=\"tooltip_container\">
+                                                <i class=\"fa-solid fa-hand-pointer\"></i>-----<i class=\"fa-solid fa-hand-pointer fa-flip-horizontal\"></i>
+                                                <div class=\"tooltip\">
+                                                    <p>Disk sur sa machine physique au dessus <i class=\"fa-regular fa-heart\"></i></p>
+                                                </div>
+                                            </div>"; 
                                 }
                                 else{
                                     echo  "
@@ -393,7 +398,14 @@
                             <td class=\"col_demarage\">";
                                 // VM OU PAS
                                 if ($verif_vm === "oui") {
-                                    echo "<i class=\"fa-solid fa-hand-pointer\"></i>"; 
+                                    echo "<div class=\"tooltip_container\">
+                                            <i class=\"fa-solid fa-hand-pointer\"></i>
+                                            <div class=\"tooltip\">
+                                                <p>Demarage sur sa machine physique, au dessus <i class=\"fa-regular fa-heart\"></i></p>
+                                            </div>
+                                        </div>"; 
+                                    
+
                                 }
                                 else{
                                     echo  " 
