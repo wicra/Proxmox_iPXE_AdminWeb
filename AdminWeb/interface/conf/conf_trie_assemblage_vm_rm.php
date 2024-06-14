@@ -1,10 +1,10 @@
 <?php
+    /////////////////////////////////////////////////////////
+    //      SCRIP  TRIE DHCP HOST EN PAIRE DE RM ET VM     //
+    /////////////////////////////////////////////////////////
 
-    // Lire le contenu du fichier
     include("include/link.php");
-
     $file_content = file_get_contents($file_path_trie);
-
     if ($file_content === false) {
         die("Erreur de lecture du fichier $file_path_trie\n");
     }
@@ -77,6 +77,6 @@
     echo "<script>
             console.log(\"Les hosts ont été triés par la fin de l'adresse 
             MAC et écrits dans dhcpd_hosts.conf avec succès.\")
-        </script>";
+    </script>";
 ?>
 

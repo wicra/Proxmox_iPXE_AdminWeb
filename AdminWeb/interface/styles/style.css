@@ -102,7 +102,7 @@ body{
     padding: 1vh;
     border-radius: 5px;
     border: solid var(--CouleurFont);
-    padding: 1.2rem 2rem;
+    padding: 1rem 1rem;
     border-radius: 0.5rem;
 }
 
@@ -326,7 +326,7 @@ th{
 }
 
 .col_name a{
-    color: var(--Couleur5);
+    color: var(--Couleur4);
 }
 
 .fa-pen-to-square{
@@ -454,7 +454,7 @@ th{
     font-weight: 500;
     border-radius: 0.5rem;
     font-size: 15px;
-    padding: 0.2vh 1vw;
+    padding: 0.5vh 0.5vw;
     cursor: pointer;
     text-align: center;
     margin-right: 0.5rem;
@@ -623,6 +623,7 @@ th{
     transition: opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
     transition: transform 0.125s ease-out, opacity 0.125s ease-out;
     transition: transform 0.125s ease-out, opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
+    color: var(--CouleurFont);
 }
 
 .checkbox-wrapper-35 .switch + label .switch-x-unchecked {
@@ -763,6 +764,7 @@ th{
     transition: opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
     transition: transform 0.125s ease-out, opacity 0.125s ease-out;
     transition: transform 0.125s ease-out, opacity 0.125s ease-out, -webkit-transform 0.125s ease-out;
+    color:var(--CouleurFont);
 }
 
 .checkbox-wrapper-unique .switch-unique + label .switch-x-unchecked-unique {
@@ -820,7 +822,6 @@ th{
     z-index: 3;
     top: 2vw;
     right: 5.5vw;
-
 }
 
 .error__icon {
@@ -894,7 +895,6 @@ th{
 
 
 
-
 /*ECRAN DE CHARGEMENT*/
 .loadingspinner {
     --square: 26px;
@@ -913,9 +913,9 @@ th{
     margin-top: 10px;
     margin-bottom: 30px;
     position: relative;
-  }
+}
   
-  .loadingspinner div {
+.loadingspinner div {
     display: inline-block;
     background: darkorange;
       /*background: var(--text-color);*/
@@ -929,44 +929,44 @@ th{
     margin: 0px;
     font-size: 6pt;
     color: black;
-  }
+}
   
-  .loadingspinner #square1 {
+.loadingspinner #square1 {
     left: calc( 0 * var(--offset) );
     top: calc( 0 * var(--offset) );
     animation: square1 var(--duration) var(--delay) var(--timing-function) infinite,
                  squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
-  }
+}
   
-  .loadingspinner #square2 {
+.loadingspinner #square2 {
     left: calc( 0 * var(--offset) );
     top: calc( 1 * var(--offset) );
     animation: square2 var(--duration) var(--delay) var(--timing-function) infinite,
                 squarefadein var(--in-duration) calc(1 * var(--in-delay)) var(--in-timing-function) both;
-  }
+}
   
-  .loadingspinner #square3 {
+.loadingspinner #square3 {
     left: calc( 1 * var(--offset) );
     top: calc( 1 * var(--offset) );
     animation: square3 var(--duration) var(--delay) var(--timing-function) infinite,
                  squarefadein var(--in-duration) calc(2 * var(--in-delay)) var(--in-timing-function) both;
-  }
+}
   
-  .loadingspinner #square4 {
+.loadingspinner #square4 {
     left: calc( 2 * var(--offset) );
     top: calc( 1 * var(--offset) );
     animation: square4 var(--duration) var(--delay) var(--timing-function) infinite,
                  squarefadein var(--in-duration) calc(3 * var(--in-delay)) var(--in-timing-function) both;
-  }
+}
   
-  .loadingspinner #square5 {
+.loadingspinner #square5 {
     left: calc( 3 * var(--offset) );
     top: calc( 1 * var(--offset) );
     animation: square5 var(--duration) var(--delay) var(--timing-function) infinite,
                  squarefadein var(--in-duration) calc(4 * var(--in-delay)) var(--in-timing-function) both;
-  }
+}
   
-  @keyframes square1 {
+@keyframes square1 {
     0% {
       left: calc( 0 * var(--offset) );
       top: calc( 0 * var(--offset) );
@@ -981,9 +981,9 @@ th{
       left: calc( 0 * var(--offset) );
       top: calc( 1 * var(--offset) );
     }
-  }
+}
   
-  @keyframes square2 {
+@keyframes square2 {
     0% {
       left: calc( 0 * var(--offset) );
       top: calc( 1 * var(--offset) );
@@ -1018,9 +1018,9 @@ th{
       left: calc( 0 * var(--offset) );
       top: calc( 0 * var(--offset) );
     }
-  }
+}
   
-  @keyframes square3 {
+@keyframes square3 {
     0%,100% {
       left: calc( 1 * var(--offset) );
       top: calc( 1 * var(--offset) );
@@ -1065,9 +1065,9 @@ th{
       left: calc( 1 * var(--offset) );
       top: calc( 1 * var(--offset) );
     }
-  }
+}
   
-  @keyframes square4 {
+@keyframes square4 {
     0% {
       left: calc( 2 * var(--offset) );
       top: calc( 1 * var(--offset) );
@@ -1097,9 +1097,9 @@ th{
       left: calc( 3 * var(--offset) );
       top: calc( 1 * var(--offset) );
     }
-  }
+}
   
-  @keyframes square5 {
+@keyframes square5 {
     0% {
       left: calc( 3 * var(--offset) );
       top: calc( 1 * var(--offset) );
@@ -1129,9 +1129,9 @@ th{
       left: calc( 2 * var(--offset) );
       top: calc( 1 * var(--offset) );
     }
-  }
+}
   
-  @keyframes squarefadein {
+@keyframes squarefadein {
     0% {
       transform: scale(0.75);
       opacity: 0.0;
@@ -1141,4 +1141,69 @@ th{
       transform: scale(1.0);
       opacity: 1.0;
     }
-  }
+}
+
+
+
+/* FORMULAIRE INSCRIPTION ET SUPPRESSION */
+
+.formulaire_inscription_suppression {
+    padding: 12vh 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.titre_suppression, .titre_inscription {
+    color: var(--Couleur5);
+    font-size: 120px;
+    margin: 0;
+    padding: 0;
+}
+
+#formulaire_suppression {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.formulaire_inscription {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.suppression_login_password, .inscription_login_password {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    padding: 2vh 0;
+}
+
+.conteneur_bouton_inscription {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2vw;
+}
+
+#icon_inscription, #icon_suppression, .conteneur_bouton_inscription button, #retour_page_admin_inscription, #retour_page_admin_suppression {
+    background-color: var(--Couleur5);
+    border: none;
+    cursor: pointer;
+    padding: 0.5vh 0.5vw;
+    font-size: 20px;
+    border-radius: 0.5rem;
+    color: var(--CouleurFont);
+}
+
+.suppression_login_password input,.inscription_login_password input{
+    margin: 0.5vw;
+}
