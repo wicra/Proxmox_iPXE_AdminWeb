@@ -348,21 +348,28 @@
                                 ;
                             }
 
-                    echo"   <td class=\"col_disk\">
-                                <form action=\"conf/conf_choix_disk.php\" method=\"post\">
-                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                    <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
+                    echo"   <td class=\"col_disk\">";
+                                // VM OU PAS
+                                if ($verif_vm === "oui") {
+                                    echo "<i class=\"fa-solid fa-hand-pointer\"></i>"; 
+                                }
+                                else{
+                                    echo  "
+                                    <form action=\"conf/conf_choix_disk.php\" method=\"post\">
+                                        <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                        <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
 
-                                    <label for=\"choices\">Disk :</label>
-                                    <select id=\"choices\" name=\"choice\">
-                                        <option value=\"disk1\">Disk 1</option>
-                                        <option value=\"disk2\">Disk 2</option>
-                                        <option value=\"disk3\">Disk 3</option>
-                                    </select>
-                                    
-                                    <button type=\"submit\">Envoyer</button>
-                                </form>
-                            </td>
+                                        <label for=\"choices\">Disk :</label>
+                                        <select id=\"choices\" name=\"choice\">
+                                            <option value=\"disk1\">Disk 1</option>
+                                            <option value=\"disk2\">Disk 2</option>
+                                            <option value=\"disk3\">Disk 3</option>
+                                        </select>
+                                        
+                                        <button type=\"submit\">Envoyer</button>
+                                    </form>";
+                                }
+                    echo"   </td>
 
                             <td class=\"col_mac\">{$hardware_ethernet}</td>
 
@@ -386,7 +393,7 @@
                             <td class=\"col_demarage\">";
                                 // VM OU PAS
                                 if ($verif_vm === "oui") {
-                                    echo "<i class=\"fa-solid fa-vr-cardboard\"> vm</i>"; 
+                                    echo "<i class=\"fa-solid fa-hand-pointer\"></i>"; 
                                 }
                                 else{
                                     echo  " 

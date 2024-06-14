@@ -161,6 +161,7 @@
                     $existing_ips[] = $ip_address;
                     // Retirer l'entrée des connexions récentes pour ne pas l'afficher de nouveau
                     unset($recent_connections[$mac_address]);
+                    include("conf/conf_trie_assemblage_vm_rm.php");
                 } else {
                     notif("Erreur : Impossible d'ouvrir le fichier $DHCP_CONF pour écriture.\n");
                 }

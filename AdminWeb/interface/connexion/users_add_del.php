@@ -23,8 +23,8 @@
                 <h3 class="titre_inscription">Inscription</h3>
                 <form action="users_add_del.php" method="post">
                     <div class="inscription_login_password">
-                        <input class="formulaire_login" type="text" id="login" name="login" required><br><br>
-                        <input class="formulaire_password" type="password" id="password" name="password" required><br><br>
+                        <input class="formulaire_login" type="text" id="login" name="login" placeholder="Login" required><br><br>
+                        <input class="formulaire_password" type="password" id="password" name="password" placeholder="password" required><br><br>
                     </div>
                     
                     <div class="conteneur_bouton_inscription">
@@ -40,8 +40,8 @@
                 <h3 class="titre_suppression">Suppression</h3>
                 <form action="users_add_del.php" method="post">
                     <div class="suppression_login_password">
-                        <input class="formulaire_login" type="text" id="login_delete" name="login_delete" required><br><br>
-                        <input class="formulaire_password" type="password" id="password_delete" name="password_delete" required><br><br>
+                        <input class="formulaire_login" type="text" id="login_delete" name="login_delete"  placeholder="Login" required><br><br>
+                        <input class="formulaire_password" type="password" id="password_delete" name="password_delete" placeholder="password" required><br><br>
                     </div>
                     <div class="conteneur_bouton_inscription">
                         
