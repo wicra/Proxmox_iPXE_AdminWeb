@@ -182,3 +182,13 @@ chmod 555 /var/www/html/AdminWeb/shell/boot_server_dhcp.sh
 
 #Modif proprietaire range_ip_fixe.php
 chown www-data:www-data /var/www/html/AdminWeb/interface/include/range_ip_fixe.php
+
+
+
+
+
+
+
+
+#Modif proprietaire dhcpd.leases
+chown www-data:www-data /var/lib/dhcp/dhcpd.leases

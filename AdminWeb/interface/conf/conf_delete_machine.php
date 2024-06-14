@@ -10,7 +10,7 @@
     $ip_address = $_POST['ip_address'];
 
     // Chemin vers le fichier dhcpd_hosts.conf
-    $file_path_conf = '../../../dhcp/dhcpd_hosts.conf'; // Assurez-vous que le chemin est correct
+    include("../include/link.php");
 
     // Lecture du contenu du fichier
     $file_content = file_get_contents($file_path_conf);

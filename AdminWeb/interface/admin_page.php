@@ -661,3 +661,17 @@
         </script>
     </body>
 </html>
+
+
+<?php
+
+    function getmicrotime(){
+        list($usec, $sec) = explode(" ",microtime());
+        return ((float)$usec + (float)$sec);
+    }
+    $debut = getmicrotime(); 
+
+
+    $fin = getmicrotime();
+    echo "Page générée en ".round($fin-$debut, 3) ." secondes.<br />";
+?>
