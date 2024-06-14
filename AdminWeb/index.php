@@ -10,6 +10,9 @@
 
         <!-- CSS -->
         <link rel="stylesheet" href="interface/styles/style.css">
+
+        <!-- FAVICON -->
+        <link id="favicon" rel="icon"  href="interface/img/connexion.png">
     </head>
 
     <body>
