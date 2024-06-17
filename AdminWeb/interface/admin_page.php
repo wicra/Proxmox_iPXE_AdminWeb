@@ -18,7 +18,8 @@
 
 
     if(isset($_POST['refresh'])){
-        header("Refresh:0");
+        //header("Refresh:0");
+        header('location: chargement.php');
         //header("location: " . $_SERVER['REQUEST_URI']);
         exit();
     }
@@ -49,16 +50,6 @@
     </head>
 
     <body>
-        <!--- TESTE ECRANT DE CHARGEMENT -->
-        <script>
-            // Vérifie quand la page a fini de se charger
-            window.addEventListener('load', function() {
-                // Masquer l'écran de chargement
-                document.querySelectorAll('execute_titre').style.display = 'none';
-                // Afficher le contenu
-                document.querySelectorAll('body').style.display = 'block';
-            });
-        </script>
 
         <!-- NAV BARRE -->
         <div class="execute_scrip_conteneur">

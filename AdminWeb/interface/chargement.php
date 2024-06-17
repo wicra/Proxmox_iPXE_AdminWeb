@@ -35,7 +35,7 @@
     <script> // Attendre 4 secondes avant de rediriger 
         setTimeout(function() {
             window.location.href = 'admin_page.php';
-        }, 10000); 
+        }),100; 
     </script>
 
 
