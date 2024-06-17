@@ -304,6 +304,12 @@
                 }
 
                 /////////////////////////////////////////////////////////
+                //            SCANNER LES IMAGES DISPONIBLE            //
+                /////////////////////////////////////////////////////////
+                shell_exec('../shell/diskScan.sh');
+                $disks = file('../shell/diskScan.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES); 
+
+                /////////////////////////////////////////////////////////
                 //          AFFICHAGE COMPTENUE DANS LE TABLEAU        //
                 /////////////////////////////////////////////////////////
                 foreach ($matches as $match) {
@@ -311,13 +317,20 @@
                     $hardware_ethernet = $match[2];
                     $fixed_address = $match[3];
 
+                    // variable de pc_state
                     $actif="<i style = \"color : var(--Couleur4);\" class=\"fa-solid fa-circle-check\"></i>";
                     $eteint="<i style = \"color : var(--CouleurSecondaire);\" class=\"fa-solid fa-plug\"></i>";
 
+                    // verif etat du pc
                     $pc_state = verifEtat($file ,$fixed_address,$actif,$eteint);
+
+                    // Verif demarage pc inconnue
                     $result = checkIncludeAndHostName($file_path_admin, $host_name, "/etc/dhcp/condition_pxe_boot_choix.conf");
+
+                    // Vm ou pas
                     $verif_vm = verify_mac_address($host_name,"fa:ca:de", $file_path_admin);
 
+                    // Ajouter un lien si pc actif 
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
 
@@ -368,25 +381,26 @@
                     echo"   <td class=\"col_disk\">";
                                 // VM OU PAS
                                 if ($verif_vm === "oui") {
-                                    echo "<div class=\"tooltip_container\">
-                                                <i class=\"fa-solid fa-hand-pointer\"></i>-----<i class=\"fa-solid fa-hand-pointer fa-flip-horizontal\"></i>
-                                                <div class=\"tooltip\">
-                                                    <p>Disk sur sa machine physique au dessus <i class=\"fa-regular fa-heart\"></i></p>
-                                                </div>
-                                            </div>"; 
+                    echo           "<div class=\"tooltip_container\">
+                                            <i class=\"fa-solid fa-hand-pointer\"></i>-----<i class=\"fa-solid fa-hand-pointer fa-flip-horizontal\"></i>
+                                            <div class=\"tooltip\">
+                                                <p>Disk sur sa machine physique au dessus <i class=\"fa-regular fa-heart\"></i></p>
+                                            </div>
+                                    </div>"; 
                                 }
                                 else{
-                                    echo  "
+                    echo  "
                                     <form action=\"conf/conf_choix_disk.php\" method=\"post\">
                                         <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
                                         <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
 
                                         <label for=\"choices\">Disk :</label>
-                                        <select id=\"choices\" name=\"choice\">
-                                            <option value=\"disk1\">Disk 1</option>
-                                            <option value=\"disk2\">Disk 2</option>
-                                            <option value=\"disk3\">Disk 3</option>
-                                        </select>
+                                        <select id=\"choices\" name=\"choice\">";
+                                            // Afficher chaque element du fichier diskSan.txt en option
+                                            foreach ($disks as $disk) {
+                                                echo "<option value=\"{$disk}\">" . ucfirst($disk) . "</option>";
+                                            } 
+                    echo"               </select>
                                         
                                         <button type=\"submit\">Envoyer</button>
                                     </form>";

@@ -202,7 +202,6 @@ body{
 }
 
 .nav_button_shell{
-    background-color: var(--Couleur5);
     border: none;
     cursor: pointer;
     padding: 0.5vh 0.5vw;
@@ -294,20 +293,22 @@ body{
 }
 
 /* STATUS BOUTON DEMARAGE DHCP*/
-.nav_button_shell {
-    font-size: 24px;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-}
+
 .active {
-    background-color: green;
-    color: white;
+    background-color: var(--CouleurSecondaire);
+    color: var(--CouleurPrimaire);
 }
 .inactive {
-    background-color: red;
-    color: white;
+    background-color: var(--Couleur4);
+    color: var(--CouleurPrimaire);
 }
+.active:hover {
+    background-color: var(--Couleur4);
+}
+.inactive:hover  {
+    background-color: var(--CouleurSecondaire);
+}
+
 
 /* TABLEAU D'HOTE */
 .tableau_conteneur{

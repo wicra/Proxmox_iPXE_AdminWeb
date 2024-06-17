@@ -177,12 +177,17 @@ cp -r /root/AdminWeb/ /var/www/html/
 chmod 555 /var/www/html/AdminWeb/shell/ipScan.sh
 chmod 777 /var/www/html/AdminWeb/shell/ipScan.txt
 
-#Modif droit reboot dhcp
+#Modif droit diskScan
+chmod 555 /var/www/html/AdminWeb/shell/diskScan.sh
+chmod 777 /var/www/html/AdminWeb/shell/diskScan.txt
+
+#Modif droit boot , stop , status dhcp
 chmod 555 /var/www/html/AdminWeb/shell/boot_server_dhcp.sh
+# chmod 555 /var/www/html/AdminWeb/shell/stop_server_dhcp.sh
+# chmod 555 /var/www/html/AdminWeb/shell/status_server_dhcp.sh
 
 #Modif proprietaire range_ip_fixe.php
 chown www-data:www-data /var/www/html/AdminWeb/interface/include/range_ip_fixe.php
-
 
 
 
