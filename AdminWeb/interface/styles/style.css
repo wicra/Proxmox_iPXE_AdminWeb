@@ -415,10 +415,10 @@ th{
     color: var(--CouleurPrimaire);
 }
 
-.fa-hand-pointer{
+.fa-circle-arrow-up{
     color: var(--Couleur4);
-    font-size: 25px;
-    font-weight: 500;
+    font-size: 20px;
+
 }
 
 .col_name,.col_mac,.col_ip_fixe,.col_modif_ip,
@@ -1246,10 +1246,11 @@ th{
 
   .tooltip {
     width: 170px;
-    height: 18px;
+    height: 15px;
     background-color: var(--CouleurSecondaire);
-    padding: 0.25em;
+    padding: 0.20em;
     text-align: center;
+    text-transform: lowercase;
     position: absolute;
     z-index: 6;
     top: 40px;
@@ -1266,8 +1267,8 @@ th{
     content: "";
     position: absolute;
     bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0%;
+    transform: translateX(100%);
     border-width: 8px 7px 0;
     border-style: solid;
     border-color: var(--CouleurSecondaire) transparent transparent transparent;

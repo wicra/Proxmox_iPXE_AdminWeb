@@ -104,14 +104,15 @@
                 
                 <!-- REBOOT SERVER DHCP -->
                 <form method="post">
-                    <button type="submit" class="nav_button_shell <?php echo getDHCPStatusClass(); ?>" name="reshell">
-                        <i class="fa-solid fa-power-off"></i>
-                    </button>
-                    <?php 
-                        //if(isset($_POST['reshell'])){
-                        //    shell_exec('../shell/boot_server_dhcp.sh');
-                        //}
-                    ?> 
+                    <div class="tooltip_container">
+                        <button type="submit" class="nav_button_shell <?php echo getDHCPStatusClass(); ?>" name="reshell">
+                            <i class="fa-solid fa-power-off"></i>
+                        </button>
+
+                        <div class="tooltip">
+                            <p>Server Dhcp</p>
+                        </div>
+                    </div>
                 </form>
 
                 <?php 
@@ -382,7 +383,7 @@
                                 // VM OU PAS
                                 if ($verif_vm === "oui") {
                     echo           "<div class=\"tooltip_container\">
-                                            <i class=\"fa-solid fa-hand-pointer\"></i>-----<i class=\"fa-solid fa-hand-pointer fa-flip-horizontal\"></i>
+                                            <i class=\"fa-solid fa-circle-arrow-up\"></i>
                                             <div class=\"tooltip\">
                                                 <p>Disk sur sa machine physique au dessus <i class=\"fa-regular fa-heart\"></i></p>
                                             </div>
@@ -390,19 +391,17 @@
                                 }
                                 else{
                     echo  "
-                                    <form action=\"conf/conf_choix_disk.php\" method=\"post\">
+                                    <form class=\"disk_choix\" action=\"conf/conf_choix_disk.php\" method=\"post\">
                                         <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
                                         <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
 
-                                        <label for=\"choices\">Disk :</label>
                                         <select id=\"choices\" name=\"choice\">";
                                             // Afficher chaque element du fichier diskSan.txt en option
                                             foreach ($disks as $disk) {
                                                 echo "<option value=\"{$disk}\">" . ucfirst($disk) . "</option>";
                                             } 
                     echo"               </select>
-                                        
-                                        <button type=\"submit\">Envoyer</button>
+                                        <i class=\"fa-solid fa-check option_disk_submit style=\"cursor: pointer;\"></i>
                                     </form>";
                                 }
                     echo"   </td>
@@ -430,7 +429,7 @@
                                 // VM OU PAS
                                 if ($verif_vm === "oui") {
                                     echo "<div class=\"tooltip_container\">
-                                            <i class=\"fa-solid fa-hand-pointer\"></i>
+                                        <i class=\"fa-solid fa-circle-arrow-up\"></i>
                                             <div class=\"tooltip\">
                                                 <p>Demarage sur sa machine physique, au dessus <i class=\"fa-regular fa-heart\"></i></p>
                                             </div>
@@ -629,7 +628,7 @@
                 });
 
                 /////////////////////////////////////////////////////////
-                //    MASQER LE FORMULAIRE DE CHANGEMENT HOST NAME    //
+                //    MASQUER LE FORMULAIRE DE CHANGEMENT HOST NAME    //
                 /////////////////////////////////////////////////////////
                 $('.edit_host_form').on('submit', function(event) {
                     event.preventDefault();
@@ -687,6 +686,14 @@
                             }
                         });
                     });
+                });
+
+                /////////////////////////////////////////////////////////
+                //           SOUMMISSION FORMULAIRE CHOIX DISK         //
+                /////////////////////////////////////////////////////////
+                $('i.option_disk_submit').click(function() {
+                    // Déclencher le clic sur le bouton de soumission du formulaire
+                    $(this).closest('.disk_choix').submit();
                 });
             });
         </script>
