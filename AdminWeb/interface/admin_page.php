@@ -103,16 +103,39 @@
                 </form>    
                 
                 <!-- REBOOT SERVER DHCP -->
-                <form  method='post'>
-                    <button type="submit" class="nav_button_shell"  name='reshell' >
+                <form method="post">
+                    <button type="submit" class="nav_button_shell <?php echo getDHCPStatusClass(); ?>" name="reshell">
                         <i class="fa-solid fa-power-off"></i>
                     </button>
                     <?php 
-                        if(isset($_POST['reshell'])){
+                        //if(isset($_POST['reshell'])){
+                        //    shell_exec('../shell/boot_server_dhcp.sh');
+                        //}
+                    ?> 
+                </form>
+
+                <?php 
+                    function getDHCPStatusClass() {
+                        $status = shell_exec('../shell/status_server_dhcp.sh');
+                        return trim($status) == 'active' ? 'active' : 'inactive';
+                    }
+
+                    if (isset($_POST['reshell'])) {
+                        $currentStatus = trim(shell_exec('../shell/status_server_dhcp.sh'));
+                        if ($currentStatus == 'active') {
+                            shell_exec('../shell/stop_server_dhcp.sh');
+                        } else {
                             shell_exec('../shell/boot_server_dhcp.sh');
                         }
-                    ?> 
-                </form>  
+
+                        // Rediriger pour éviter la resoumission du formulaire
+                        header("Location: " . $_SERVER['PHP_SELF']);
+                        exit();
+                    }
+                ?> 
+            
+                    
+                
                 
                 <!-- USER CONNECTE -->
                 <?php

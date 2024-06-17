@@ -293,6 +293,22 @@ body{
     cursor: pointer;
 }
 
+/* STATUS BOUTON DEMARAGE DHCP*/
+.nav_button_shell {
+    font-size: 24px;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+.active {
+    background-color: green;
+    color: white;
+}
+.inactive {
+    background-color: red;
+    color: white;
+}
+
 /* TABLEAU D'HOTE */
 .tableau_conteneur{
     display: flex;
