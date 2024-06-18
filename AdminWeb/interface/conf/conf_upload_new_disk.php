@@ -3,14 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulaire d'upload de fichier RAW</title>
+    <style>
+        #drop_zone {
+            border: 2px dashed #bbb;
+            border-radius: 5px;
+            padding: 25px;
+            text-align: center;
+            font: 20pt bold 'Vollkorn';
+            color: #bbb;
+        }
+    </style>
 </head>
 <body>
     <h2>Upload de fichier RAW</h2>
     <form action="conf_upload_new_disk.php" method="post" enctype="multipart/form-data">
         <label for="fileUpload">Sélectionnez un fichier .raw à télécharger :</label><br>
         <input type="file" name="fileUpload" id="fileUpload" accept=".raw"><br><br>
+        <div id="drop_zone">Ou déposez votre fichier .raw ici</div><br><br>
         <input type="submit" value="Télécharger">
     </form>
+
+    <script>
+        /////////////////////////////////////////////////////////
+        //                  GLISSER DEPOSER                    //
+        /////////////////////////////////////////////////////////
+        const dropZone = document.getElementById('drop_zone');
+        const fileInput = document.getElementById('fileUpload');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = 'green';
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            dropZone.style.borderColor = '#bbb';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#bbb';
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+            }
+        });
+    </script>
 </body>
 </html>
 
