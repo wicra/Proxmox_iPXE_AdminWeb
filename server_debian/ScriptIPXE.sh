@@ -164,7 +164,7 @@ systemctl restart nfs-kernel-server
 #      Deplacement site       # 
 ###############################
 
-#insatallation de sudo et conig www-data pour les droits d'execution du site
+#insatallation de sudo et conig www-data pour les droits d'execution du site avec les commandes autorisé
 apt install sudo
 echo "www-data ALL=(ALL) NOPASSWD: /usr/bin/nmap,/usr/bin/ls,/usr/bin/mv,/usr/bin/systemctl restart isc-dhcp-server,/usr/bin/systemctl stop isc-dhcp-server,/usr/bin/systemctl is-active isc-dhcp-server" >> /etc/sudoers
 chown www-data:www-data /etc/dhcp/dhcpd_hosts.conf
@@ -172,32 +172,39 @@ chown www-data:www-data /etc/dhcp/dhcpd_hosts.conf
 #deplacement du site et changer les droits
 cp -r /root/AdminWeb/ /var/www/html/
 
-
-#Modif droit ipScan
+###############################
+#      Modif droit ipScan     # 
+###############################
 chmod 555 /var/www/html/AdminWeb/shell/ipScan.sh
 chmod 777 /var/www/html/AdminWeb/shell/ipScan.txt
 
-#Modif droit diskScan
+###############################
+#      Modif droit diskScan   # 
+###############################
 chmod 555 /var/www/html/AdminWeb/shell/diskScan.sh
 chmod 777 /var/www/html/AdminWeb/shell/diskScan.txt
 
-#Modif droit boot , stop , status dhcp
+###############################
+#   Modif droit boot , stop   #
+#    status dhcp              # 
+###############################
 chmod 555 /var/www/html/AdminWeb/shell/boot_server_dhcp.sh
 chmod 555 /var/www/html/AdminWeb/shell/stop_server_dhcp.sh
 chmod 555 /var/www/html/AdminWeb/shell/status_server_dhcp.sh
 
-#Modif proprietaire range_ip_fixe.php
+##################################
+# Modif propte range_ip_fixe.php # 
+##################################
 chown www-data:www-data /var/www/html/AdminWeb/interface/include/range_ip_fixe.php
 
-#Modif droit script ajout disk
+##################################
+#  Modif droit script ajout disk # 
+##################################
 chmod 555 /var/www/html/AdminWeb/interface/conf/conf_upload_new_disk.php
 chmod 555 /var/www/html/AdminWeb/shell/upload_new_disk.sh
 chown www-data:www-data /var/www/html/AdminWeb/ipload_new_disk_tmp
 
-
-
-
-
-
-#Modif proprietaire dhcpd.leases
+##################################
+# Modif proprietaire dhcpd.leases # 
+##################################
 #chown www-data:www-data /var/lib/dhcp/dhcpd.leases
