@@ -33,9 +33,15 @@
 
         // Envoi du paquet magique
         if (wake_on_lan($mac_address)) {
-            echo "Packet magique envoyer a {$mac_address} pour allumer {$host_name} avec l'adresse ip {$ip_address}.";
+            header('location: ../chargement.php');
+            //echo "Packet magique envoyer a {$mac_address} pour allumer {$host_name} avec l'adresse ip {$ip_address}.";
+            exit;
+            
         } else {
-            echo "Erreur d'envoie du packet magique a {$mac_address}. Pc non compatible ou WOL desactivé";
+            header('location: ../chargement.php');
+            //echo "Erreur d'envoie du packet magique a {$mac_address}. Pc non compatible ou WOL desactivé";
+            exit;
+           
            
         }
     }
