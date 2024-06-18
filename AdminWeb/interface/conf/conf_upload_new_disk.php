@@ -18,7 +18,7 @@
 <?php
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fileUpload"])) {
-    $uploadDir = "images/"; // Dossier où les fichiers seront téléchargés (doit être accessible en écriture)
+    $uploadDir = "../../upload_new_disk_tmp/"; // Dossier où les fichiers seront téléchargés
 
     // Récupérer les informations du fichier
     $fileName = $_FILES["fileUpload"]["name"];
@@ -34,6 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fileUpload"])) {
             // Déplacer le fichier téléchargé vers le dossier de destination
             $destination = $uploadDir . $fileName;
             if (move_uploaded_file($fileTmp, $destination)) {
+                //deplacer vers le repertoir /images/
+                chell_exec('../../shell/upload_new_disk.sh');
+
                 echo "Le fichier $fileName a été téléchargé avec succès dans $uploadDir.";
             } else {
                 echo "Erreur lors du téléchargement du fichier.";
