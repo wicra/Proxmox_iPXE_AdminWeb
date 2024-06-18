@@ -2,25 +2,73 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+            <!-- ICON -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="../styles/style.css">
     <title>Formulaire d'upload de fichier RAW</title>
     <style>
+        .formulaire_upload{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
         #drop_zone {
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            gap: 2vw;
+            display: flex;
             border: 2px dashed #bbb;
-            border-radius: 5px;
-            padding: 25px;
+            border-radius: 0.5rem;
+            padding: 0vh 0;
             text-align: center;
-            font: 20pt bold 'Vollkorn';
             color: #bbb;
         }
+
+        #drop_zone  h3{
+            font-size:15px;
+            
+        }
+        .upload_input_contenaire{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #upload_submit,#fileUpload{
+            background-color: var(--Couleur5);
+            border: none;
+            cursor: pointer;
+            padding: 0.2vh 1vw;
+            margin: 0 0.5vw;
+            border-radius: 0.5rem;
+            color: var(--CouleurFont);
+        }
+        .fa-file-arrow-up{
+            font-size: 35px;
+        }
+
+
     </style>
 </head>
 <body>
-    <h2>Upload de fichier RAW</h2>
-    <form action="conf_upload_new_disk.php" method="post" enctype="multipart/form-data">
-        <label for="fileUpload">Sélectionnez un fichier .raw à télécharger :</label><br>
-        <input type="file" name="fileUpload" id="fileUpload" accept=".raw"><br><br>
-        <div id="drop_zone">Ou déposez votre fichier .raw ici</div><br><br>
-        <input type="submit" value="Télécharger">
+
+    <form class="formulaire_upload" action="conf/conf_upload_new_disk.php" method="post" enctype="multipart/form-data">
+        
+
+        <div id="drop_zone">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <h3>déposez votre fichier .raw ici Ou </h3>
+            
+            <div class="upload_input_contenaire">
+                <input type="file" name="fileUpload" id="fileUpload" accept=".raw"><br><br>
+                <input type="submit" value="Télécharger" id="upload_submit">            
+            </div>
+        </div><br><br>
     </form>
 
     <script>
@@ -73,9 +121,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fileUpload"])) {
             $destination = $uploadDir . $fileName;
             if (move_uploaded_file($fileTmp, $destination)) {
                 //deplacer vers le repertoir /images/
-                chell_exec('../../shell/upload_new_disk.sh');
-
+                //chell_exec('../../shell/upload_new_disk.sh');
                 echo "Le fichier $fileName a été téléchargé avec succès dans $uploadDir.";
+                
             } else {
                 echo "Erreur lors du téléchargement du fichier.";
             }
@@ -109,7 +157,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fileUpload"])) {
                 break;
         }
     }
-} else {
-    echo "Erreur : veuillez soumettre un fichier.";
 }
 ?>

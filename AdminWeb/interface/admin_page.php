@@ -161,6 +161,7 @@
         <div id="conteneur_admin_conf">
             <?php include("conf/conf_ip_range.php");?>
             <?php include("conf/conf_boot_unknown.php");?>
+            <?php include("conf/conf_upload_new_disk.php");?>
         </div>
 
         <!-- CONTENEUR ANIMATION MODIF IP REUSSI -->
