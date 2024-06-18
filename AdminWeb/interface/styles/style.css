@@ -34,7 +34,7 @@
     --CouleurFont:#f0ead2;
     --CouleurPrimaire: #393e41;
     --CouleurSecondaire: #d7716b;
-    --Couleur4: #f5f12a;
+    --Couleur4: #6ede8a;
     --Couleur5: #a98467;
     --Couleur6: #a9927d;
     --CouleurHover: #d68b45d0;
@@ -309,6 +309,11 @@ body{
     background-color: var(--CouleurSecondaire);
 }
 
+.inactive:active,.active:active {
+    box-shadow: rgb(201, 46, 70) 0px 0px 0px 0px;
+    transform: translateY(5px);
+    transition: 200ms;
+}
 
 /* TABLEAU D'HOTE */
 .tableau_conteneur{
@@ -415,6 +420,13 @@ th{
     color: var(--CouleurPrimaire);
 }
 
+.col_shut_down_bouton:active {
+
+    box-shadow: rgb(201, 46, 70) 0px 0px 0px 0px;
+    transform: translateY(5px);
+    transition: 200ms;
+}
+
 .fa-circle-arrow-up{
     color: var(--Couleur4);
     font-size: 20px;
@@ -517,6 +529,19 @@ th{
     transform: rotate(360deg);
     }
 }
+
+
+
+/* DISK CHOIX*/
+#choices{
+    background-color: var(--CouleurFont);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.1vh 0;
+    color: var(--CouleurPrimaire);
+    font-family: var(--FontSeconfaire);
+}
+
 
 /* ANIMATION IP CHANGER AVEC SUCCES  */
 .emoji-container {
@@ -1234,7 +1259,6 @@ th{
 
 
 
-
 /* TOOLTIP*/
 .tooltip_container {
     font-size: 18px;
@@ -1242,9 +1266,9 @@ th{
     position: relative;
     cursor: pointer;
     display: inline-block;
-  }
+}
 
-  .tooltip {
+.tooltip {
     width: 170px;
     height: 15px;
     background-color: var(--CouleurSecondaire);
@@ -1261,9 +1285,9 @@ th{
     
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     transition: opacity 0.3s ease-in-out;
-  }
+}
   
-  .tooltip::before {
+.tooltip::before {
     content: "";
     position: absolute;
     bottom: -8px;
@@ -1273,26 +1297,26 @@ th{
     border-style: solid;
     border-color: var(--CouleurSecondaire) transparent transparent transparent;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
-  }
+}
   
-  .tooltip p {
+.tooltip p {
     margin: 0;
     color: var(--CouleurFont);
     font-size: 15px;
-  }
+}
   
-  .tooltip_container:hover .tooltip {
+.tooltip_container:hover .tooltip {
     top: -10px;
     opacity: 1;
     visibility: visible;
     animation: goPopup 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-  }
+}
   
-  .tooltip_container:hover .tooltip p {
+.tooltip_container:hover .tooltip p {
     animation: bounce 2s ease-in-out infinite;
-  }
+}
   
-  @keyframes goPopup {
+@keyframes goPopup {
     0% {
       transform: translateY(0) scaleY(0);
       opacity: 0;
@@ -1307,9 +1331,9 @@ th{
       opacity: 1;
       height: 40px;
     }
-  }
+}
   
-  @keyframes bounce {
+@keyframes bounce {
     0%,
     20%,
     50%,
@@ -1323,5 +1347,5 @@ th{
     60% {
       transform: translateY(-2px);
     }
-  }
+}
   

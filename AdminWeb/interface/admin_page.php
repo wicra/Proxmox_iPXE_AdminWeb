@@ -20,7 +20,6 @@
     if(isset($_POST['refresh'])){
         //header("Refresh:0");
         header('location: chargement.php');
-        //header("location: " . $_SERVER['REQUEST_URI']);
         exit();
     }
 ?>
@@ -134,9 +133,6 @@
                         exit();
                     }
                 ?> 
-            
-                    
-                
                 
                 <!-- USER CONNECTE -->
                 <?php

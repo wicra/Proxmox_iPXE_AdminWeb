@@ -8,4 +8,5 @@
     $choice = $_POST['choice'];
 
     echo $host_name . " " . $ip_address ." " . $choice;
+    echo "script changement du fichier montageDisk "
 ?>

@@ -123,7 +123,7 @@
                 });
 
                 $('#retour_page_admin_inscription, #retour_page_admin_suppression').click(function() {
-                    window.location.href = '../admin_page.php';
+                    window.location.href = '../chargement.php';
                 });
             });
         </script>

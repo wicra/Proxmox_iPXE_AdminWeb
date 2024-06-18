@@ -36,6 +36,7 @@
             echo "Packet magique envoyer a {$mac_address} pour allumer {$host_name} avec l'adresse ip {$ip_address}.";
         } else {
             echo "Erreur d'envoie du packet magique a {$mac_address}. Pc non compatible ou WOL desactivé";
+           
         }
     }
 ?>
