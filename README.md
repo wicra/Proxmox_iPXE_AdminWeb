@@ -29,10 +29,12 @@ Créez un répertoire files contenant les fichiers suivants :
 - `condition_pxe_boot_local.conf`
 - `dhcpd_hosts.conf`
 - `dhcpd.conf`
-- `initrd`
-- `linux26`
 - `ScriptIpxe.sh`
 - Le répertoire `AdminWeb`
+
+> **Ses deux fichiers correspond a l'iso proxmox**:pour les crée suivez ce projet [pve-iso-2-pxe.sh](https://github.com/morph027/pve-iso-2-pxe/).
+- `initrd`
+- `linux26`
 
 (fichier disponible sur ce projet)
 > **Important**: Pensez à convertir tous vos fichiers en format Linux. Voici un script qui pourra vous aider : [dos2unix_recursive](https://github.com/wicra/dos2unix_recursive).
@@ -47,3 +49,10 @@ Exécutez le script pour créer l’ISO :
 ./preseed-creator2.sh -i VotreVersionDebian.iso -p preseed.cfg -o NomDeVotreNouvelleISO.iso -r /chemin/repertoire/files
 ```
 > **Dernière Étape**: Mettre l'ISO sur une clé bootable et l'installer. Il vous reste simplement à configurer le réseau lors de l'installation.
+
+
+### 6. Administration du Système
+
+Une fois que tout est mis en place, il vous suffit d'ouvrir un navigateur et d'accéder à votre interface d'administration via l'adresse suivante :
+
+- `http://IP_de_Votre_Serveur/var/www/html/AdminWeb`
