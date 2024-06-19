@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-            <!-- ICON -->
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <!-- ICON -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
         <!-- CSS -->
         <link rel="stylesheet" href="../styles/style.css">
@@ -57,9 +57,8 @@
 </head>
 <body>
 
-    <form class="formulaire_upload" action="conf/conf_upload_new_disk.php" method="post" enctype="multipart/form-data">
-        
-
+    <form class="formulaire_upload"action="" method="post" enctype="multipart/form-data">
+    
         <div id="drop_zone">
             <i class="fa-solid fa-file-arrow-up"></i>
             <h3>déposez votre fichier .raw ici Ou </h3>
@@ -72,6 +71,10 @@
     </form>
 
     <script>
+        $('#upload_submit').click(function() {
+            // Déclencher le clic sur le bouton de soumission du formulaire
+            $(this).closest('.formulaire_upload').submit();
+        });
         /////////////////////////////////////////////////////////
         //                  GLISSER DEPOSER                    //
         /////////////////////////////////////////////////////////
@@ -104,7 +107,7 @@
 <?php
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fileUpload"])) {
-    $uploadDir = "../../upload_new_disk_tmp/"; // Dossier où les fichiers seront téléchargés
+    $uploadDir = "../upload_new_disk_tmp/"; // Dossier où les fichiers seront téléchargés
 
     // Récupérer les informations du fichier
     $fileName = $_FILES["fileUpload"]["name"];
