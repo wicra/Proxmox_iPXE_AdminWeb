@@ -49,16 +49,16 @@
     </head>
 
     <body>
-
         <!-- NAV BARRE -->
         <div class="execute_scrip_conteneur">
             <h1 class="execute_titre">déploiement d'images</h1>
 
             <div class="nav_barre">
-                <!-- IP RANGE MASQUAGE/ AFFICHAGE  -->
-                <button class="nav_button_ip_range" id="nav_button_ip_range" type="button"  onclick="masquer_ip_range()">Range ip</button>
+                <!-- INTERFACE CONF MASQUAGE/ AFFICHAGE  -->
+                <button class="nav_button_ip_range" id="nav_button_ip_range" type="button"  onclick="masquer_interface_conf()">Range ip</button>
                 <script>
-                    function masquer_ip_range(){
+                    // MASQUER AU CLICK DU BOUTON OU AFFICHER 
+                    function masquer_interface_conf(){
                         var element = document.getElementById('conteneur_admin_conf');
                         if(element.style.display === 'none'){
                             element.style.display = 'block';
@@ -67,6 +67,27 @@
                             element.style.display = 'none'
                         }
                     }
+                    
+                    // MASQUER APRES INACTIVITE
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var targetElement = document.getElementById('conteneur_admin_conf');
+                        var timeout;
+
+                        function hideElement() {
+                            targetElement.style.display = 'none';
+                        }
+                        function resetTimer() {
+                            clearTimeout(timeout);
+                            timeout = setTimeout(hideElement, 5000);
+                        }
+                        targetElement.addEventListener('mouseover', function() {
+                            resetTimer();
+                        });
+                        targetElement.addEventListener('mouseout', function() {
+                            resetTimer();
+                        });
+                        resetTimer();
+                    });
                 </script>
 
                 <!-- ATTRIBUTION MASQUAGE/ AFFICHAGE TABLEAU -->
@@ -82,16 +103,12 @@
                         }
                     }
                 </script>
+
                 <!-- REFRESH PAGE -->
                 <form action="" method="post">
                     <button class="nav_refresh" name="refresh" id='refresh'>
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
-                    <?php
-                        // if(isset($_POST['refresh'])){
-                        //     header("Refresh:0");
-                        // }
-                    ?>
                 </form>
 
                 <!-- DECONNECTION -->
@@ -134,24 +151,6 @@
                     }
                 ?> 
                 
-                <!-- USER CONNECTE -->
-                <?php
-                    // include('include/connection_db.env.php');
-                
-                    // $username = mysqli_real_escape_string($conn, $_SESSION["login"]);
-                    // $requete = "SELECT login = '$username' FROM users_admin  ";
-                    // $result = mysqli_query($conn, $requete);
-                    // $user_connect =$_SESSION["login"];
-                    // if ($result) {
-                    //     echo "
-                    //         <div class=\"nav_user\">
-                    //             <i class=\"fa-solid fa-user-tie\"></i>
-                    //             <h1 class=\"nav_user_connect\">$user_connect</h1>
-                    //         </div>                            
-                    //     " ;
-                    // };
-                ?>
-
                 <!-- AJOUT USERS OU SUPPRESSION USERS -->  
                 <a class="user_add_del" href="connexion/users_add_del.php"><i class="fa-solid fa-user-plus"></i></a>
             </div>

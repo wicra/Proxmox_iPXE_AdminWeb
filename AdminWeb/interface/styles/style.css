@@ -1,4 +1,9 @@
-/*SCROOLLBAR*/
+/*
+///////////////////////////
+//     SCROOLLBAR        //
+///////////////////////////
+*/
+
 ::-webkit-scrollbar{
 	width: 13px;
 }
@@ -13,7 +18,11 @@
 	border-radius: 4px;
 }
 
-/* FONT */
+/*
+///////////////////////////
+//         FONT         //
+///////////////////////////
+*/
 @font-face {
     font-family: 'Abel';
     src: url('../fonts/Abel-Regular.ttf');
@@ -29,7 +38,11 @@
     src: url('../fonts/Monoton-Regular.ttf');
 }
 
-/* COULEUR */ 
+/*
+///////////////////////////
+//       COULEUR         //
+///////////////////////////
+*/
 :root {
     --CouleurFont:#f0ead2;
     --CouleurPrimaire: #393e41;
@@ -43,7 +56,11 @@
     --FontOccasionnelle:'Monoton';
 }
 
-/* BODY */
+/*
+///////////////////////////
+//          BODY         //
+///////////////////////////
+*/
 body{
     background-color: var(--CouleurPrimaire);
     color: var(--CouleurFont);
@@ -51,7 +68,11 @@ body{
     padding: 8vh 5vw;
 }
 
-/*BIENVENUE*/
+/*
+///////////////////////////
+//        BIENVENUE      //
+///////////////////////////
+*/
 .bienvenue{
     padding: 12vh 0;
     display: flex;
@@ -77,8 +98,11 @@ body{
     padding: 3vh 0;
 }
 
-
-/*FORMULAIRE DE CONNECTION */
+/*
+//////////////////////////////
+// FORMULAIRE DE CONNECTION //
+//////////////////////////////
+*/
 .formulaire_conteneur{
     display: none;
 }
@@ -106,8 +130,11 @@ body{
     border-radius: 0.5rem;
 }
 
-
-/* BUTTON DE CONNECTION */
+/*
+////////////////////////////
+//   BUTTON DE CONNECTION //
+////////////////////////////
+*/
 .connection_bouton {
     all: unset;
     position: relative;
@@ -154,7 +181,11 @@ body{
     transition: 200ms;
 }
 
-/* FOMULAIRE CHANGE HOST NAME */
+/*
+//////////////////////////////////
+//   FOMULAIRE CHANGE HOST NAME //
+/////////////////////////////////
+*/
 .edit_host_form{
     display: none;
     
@@ -178,7 +209,11 @@ body{
     color: var(--CouleurFont);
 }
 
-/*  NAV BARRE */
+/*
+/////////////////////
+//     NAV BARRE   //
+/////////////////////
+*/
 .execute_scrip_conteneur{
     display:flex;
     align-items:center;
@@ -236,34 +271,11 @@ body{
     color: var(--CouleurFont);
 }
 
-.nav_user{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--CouleurFont);
-    background-color: var(--Couleur5);
-    font-family: var(--FontSeconfaire);
-    padding: 0.5vh 0.5vw;
-    font-size: 20px;
-    border-radius: 0.5rem;
-    gap: 1vw;
-}
-
-.nav_user:hover,.nav_button_ip_range:hover,.nav_button_shell:hover,.nav_refresh:hover,
+.nav_button_ip_range:hover,.nav_button_shell:hover,.nav_refresh:hover,
 .nav_button_attribution:hover,.tab_historique_bouton form button:hover,.fa-check:hover,
  .fa-hand-point-left:hover,.bouton_range_ip:hover {
     background-color: var(--CouleurHover);
     cursor: pointer;
-}
-
-.nav_user i{
-    font-size: 20px;
-    margin: 0;
-}
-
-.nav_user_connect{
-    font-size: 20px;
-    margin: 0;
 }
 
 .fa-user-plus{
@@ -292,8 +304,11 @@ body{
     cursor: pointer;
 }
 
-/* STATUS BOUTON DEMARAGE DHCP*/
-
+/*
+//////////////////////////////////
+//  STATUS BOUTON DEMARAGE DHCP //
+//////////////////////////////////
+*/
 .active {
     background-color: var(--CouleurSecondaire);
     color: var(--CouleurPrimaire);
@@ -315,7 +330,11 @@ body{
     transition: 200ms;
 }
 
-/* TABLEAU D'HOTE */
+/*
+////////////////////////
+//    TABLEAU D'HOTE  //
+////////////////////////
+*/
 .tableau_conteneur{
     display: flex;
     flex-direction: column;
@@ -441,7 +460,6 @@ th{
     font-size: 15px;
 }
 
-
 .col_demarage{
     display: flex;
     align-items: center;
@@ -482,7 +500,11 @@ th{
     margin: 0.6vh 0vw;
 }
 
-/* BOUTON */
+/*
+////////////////////////
+//       BOUTON       //
+////////////////////////
+*/
 .button {
     color: var(--couleurFont);
     background-color: var(--Couleur5);
@@ -530,9 +552,11 @@ th{
     }
 }
 
-
-
-/* DISK CHOIX*/
+/*
+////////////////////////
+//    DISK CHOIX      //
+////////////////////////
+*/
 #choices{
     background-color: var(--CouleurFont);
     border: none;
@@ -542,8 +566,11 @@ th{
     font-family: var(--FontSeconfaire);
 }
 
-
-/* ANIMATION IP CHANGER AVEC SUCCES  */
+/*
+//////////////////////////////////////
+// ANIMATION IP CHANGER AVEC SUCCES //
+//////////////////////////////////////
+*/
 .emoji-container {
     position:  absolute;
     z-index: 2;
@@ -568,7 +595,11 @@ th{
     }
 }
 
-/*TABLEAU ATTRIBUTION DHCP */
+/*
+///////////////////////////////
+//  TABLEAU ATTRIBUTION DHCP //
+///////////////////////////////
+*/
 .tableau_historique_dhcp{
     margin: 4vh 0 4vh 0;
 }
@@ -592,7 +623,11 @@ th{
     color: var(--CouleurFont);
 }
 
-/* CHECKBOX TABLEAU */
+/*
+///////////////////////
+//  CHECKBOX TABLEAU //
+///////////////////////
+*/
 .checkbox-wrapper-35 .switch {
     display: none;
 }
@@ -714,7 +749,11 @@ th{
     transform: none;
 }
 
-/* CHECKBOX BOOT UNKNOWN */
+/*
+////////////////////////////
+//  CHECKBOX BOOT UNKNOWN //
+///////////////////////////
+*/
 #configForm{
     display: flex;
     align-items: center;
@@ -855,7 +894,11 @@ th{
     transform: none;
 }
 
-/* NOTIF */
+/*
+//////////////////
+//     NOTIF    //
+//////////////////
+*/
 .error {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     width: 320px;
@@ -901,8 +944,11 @@ th{
     fill: var(--Couleur5);
 }
 
-
-/* FORMULAIRE CONF RANGE IP */
+/*
+////////////////////////////////
+//  FORMULAIRE CONF RANGE IP  //
+////////////////////////////////
+*/
 .conteneur_formulaire_range_ip{
     background-color: var(--Couleur5);
     border-radius: 0.5rem;
@@ -942,9 +988,11 @@ th{
     color: var(--CouleurFont);
 }
 
-
-
-/*ECRAN DE CHARGEMENT*/
+/*
+////////////////////////////////
+//     ECRAN DE CHARGEMENT    //
+////////////////////////////////
+*/
 .loadingspinner {
     --square: 26px;
     --offset: 30px;
@@ -1192,10 +1240,11 @@ th{
     }
 }
 
-
-
-/* FORMULAIRE INSCRIPTION ET SUPPRESSION */
-
+/*
+///////////////////////////////////////////
+// FORMULAIRE INSCRIPTION ET SUPPRESSION //
+///////////////////////////////////////////
+*/
 .formulaire_inscription_suppression {
     padding: 12vh 0;
     display: flex;
@@ -1258,8 +1307,11 @@ th{
 }
 
 
-
-/* TOOLTIP*/
+/*
+///////////////////
+//    TOOLTIP    //
+///////////////////
+*/
 .tooltip_container {
     font-size: 18px;
     color: #333;
@@ -1349,3 +1401,51 @@ th{
     }
 }
   
+
+/*
+/////////////////////////////////
+//  FORMULAIRE UPLOAD NEW DISK //
+/////////////////////////////////
+*/
+.formulaire_upload{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#drop_zone {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 2vw;
+    display: flex;
+    border: 2px dashed #bbb;
+    border-radius: 0.5rem;
+    padding: 0vh 0;
+    text-align: center;
+    color: #bbb;
+}
+
+#drop_zone  h3{
+    font-size:15px;
+    
+}
+.upload_input_contenaire{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#upload_submit,#fileUpload{
+    background-color: var(--Couleur5);
+    border: none;
+    cursor: pointer;
+    padding: 0.2vh 1vw;
+    margin: 0 0.5vw;
+    border-radius: 0.5rem;
+    color: var(--CouleurFont);
+}
+.fa-file-arrow-up{
+    font-size: 35px;
+}
