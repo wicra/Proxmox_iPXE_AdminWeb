@@ -21,7 +21,7 @@
                 $destination = $uploadDir . $fileName;
                 if (move_uploaded_file($fileTmp, $destination)) {
                     //deplacer vers le repertoir /images/
-                    chell_exec('../../shell/upload_new_disk.sh');
+                    shell_exec('../../shell/upload_new_disk.sh');
                     notif( "Le fichier $fileName a été téléchargé avec succès dans $uploadDir.");
                     
                 } else {
