@@ -392,10 +392,15 @@
                                         <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
 
                                         <select id=\"choices\" name=\"choice\">";
-                                            // Afficher chaque element du fichier diskSan.txt en option
-                                            foreach ($disks as $disk) {
-                                                echo "<option value=\"{$disk}\">" . ucfirst($disk) . "</option>";
+                                            if (empty($disks)) {
+                                                echo "<option value=\"\">indisponible</option>";
                                             } 
+                                            else {
+                                                // Afficher chaque element du fichier diskSan.txt en option
+                                                foreach ($disks as $disk) {
+                                                    echo "<option value=\"{$disk}\">" . ucfirst($disk) . "</option>";
+                                                }
+                                            }
                     echo"               </select>
                                         <i class=\"fa-solid fa-check option_disk_submit style=\"cursor: pointer;\"></i>
                                     </form>";

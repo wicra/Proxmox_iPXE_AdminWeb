@@ -22,7 +22,7 @@
                 if (move_uploaded_file($fileTmp, $destination)) {
                     //deplacer vers le repertoir /images/
                     chell_exec('../../shell/upload_new_disk.sh');
-                    echo "Le fichier $fileName a été téléchargé avec succès dans $uploadDir.";
+                    notif( "Le fichier $fileName a été téléchargé avec succès dans $uploadDir.");
                     
                 } else {
                     echo "Erreur lors du téléchargement du fichier.";
