@@ -752,19 +752,11 @@
                 });
             });
         </script>
+
+        <!-- FOOTER -->
+        <footer>
+            <h4>Interface d'administration réseaux et de distribution d'image et de disque.</h4>
+            <a href="https://github.com/wicra/Proxmox_iPXE_AdminWeb" target="_blank">Wicramachine sergio</a>
+        </footer>
     </body>
 </html>
-
-
-<?php
-
-    function getmicrotime(){
-        list($usec, $sec) = explode(" ",microtime());
-        return ((float)$usec + (float)$sec);
-    }
-    $debut = getmicrotime(); 
-
-
-    $fin = getmicrotime();
-    echo "Page générée en ".round($fin-$debut, 3) ." secondes.<br />";
-?>
