@@ -22,13 +22,16 @@
     </head>
 
     <body>
-        <div class="loadingspinner">
-            <div id="square1"></div>
-            <div id="square2"></div>
-            <div id="square3"></div>
-            <div id="square4"></div>
-            <div id="square5"></div>
+        <div class="conteneur_loadingspinner">
+            <div class="loadingspinner">
+                <div id="square1"></div>
+                <div id="square2"></div>
+                <div id="square3"></div>
+                <div id="square4"></div>
+                <div id="square5"></div>
+            </div>            
         </div>
+
 
         <script> // Attendre 0 secondes avant de rediriger 
             setTimeout(function() {

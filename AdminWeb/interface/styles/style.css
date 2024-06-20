@@ -201,7 +201,7 @@ body{
 
 .fa-check ,.fa-hand-point-left{
     background-color: var(--Couleur5);
-    border: none;
+    border: solid 1px var(--CouleurFont);
     cursor: pointer;
     padding: 0.2vh 1vw;
     margin: 0 0.5vw;
@@ -229,7 +229,7 @@ body{
 
 .nav_button_ip_range{
     background-color: var(--Couleur5);
-    border: none;
+    border: solid 1px var(--CouleurFont);
     cursor: pointer;
     padding: 1vh 1vw;
     border-radius: 0.5rem;
@@ -254,7 +254,7 @@ body{
 
 .nav_button_attribution{
     background-color: var(--Couleur5);
-    border: none;
+    border: solid 1px var(--CouleurFont);
     cursor: pointer;
     padding: 1vh 1vw;
     border-radius: 0.5rem;
@@ -263,7 +263,7 @@ body{
 
 .nav_refresh{
     background-color: var(--Couleur5);
-    border: none;
+    border: solid 1px var(--CouleurFont);
     cursor: pointer;
     padding: 0.5vh 0.5vw;
     font-size: 20px;
@@ -280,7 +280,7 @@ body{
 
 .fa-user-plus{
     background-color: var(--Couleur5);
-    border: none;
+    border: solid 1px var(--CouleurFont);
     cursor: pointer;
     padding: 0.7vh 0.5vw;
     font-size: 20px;
@@ -293,7 +293,7 @@ body{
     padding: 0.5vh 0.5vw;
     font-size: 20px;
     border-radius: 0.5rem;
-    border: 0 ;
+    border: solid 1px var(--CouleurFont);
     font-size: 20px;
     color: var(--CouleurFont);
     background-color: var(--Couleur5);
@@ -312,10 +312,12 @@ body{
 .active {
     background-color: var(--CouleurSecondaire);
     color: var(--CouleurPrimaire);
+    border: solid 1px var(--CouleurFont);
 }
 .inactive {
     background-color: var(--Couleur4);
     color: var(--CouleurPrimaire);
+    border: solid 1px var(--CouleurFont);
 }
 .active:hover {
     background-color: var(--Couleur4);
@@ -616,7 +618,7 @@ th{
 
 .tab_historique_bouton form button{
     background-color: var(--Couleur5);
-    border: none;
+    border: solid 1px var(--CouleurFont);
     cursor: pointer;
     padding: 0.2vh 1vw;
     border-radius: 0.5rem;
@@ -981,7 +983,7 @@ th{
 }
 .bouton_range_ip{
     background-color: var(--CouleurPrimaire);
-    border: none;
+    border: solid 1px var(--CouleurFont);
     cursor: pointer;
     padding: 0.2vh 1vw;
     border-radius: 0.5rem;
@@ -993,9 +995,15 @@ th{
 //     ECRAN DE CHARGEMENT    //
 ////////////////////////////////
 */
+.conteneur_loadingspinner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .loadingspinner {
-    --square: 26px;
-    --offset: 30px;
+    --square: 50px;
+    --offset: 74px;
     --duration: 2.4s;
     --delay: 0.2s;
     --timing-function: ease-in-out;
@@ -1014,7 +1022,7 @@ th{
   
 .loadingspinner div {
     display: inline-block;
-    background: darkorange;
+    background: var(--Couleur5);
       /*background: var(--text-color);*/
       /*box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);*/
     border: none;
@@ -1025,7 +1033,7 @@ th{
     padding: 0px;
     margin: 0px;
     font-size: 6pt;
-    color: black;
+    color: var(--CouleurPrimaire);
 }
   
 .loadingspinner #square1 {
@@ -1294,7 +1302,7 @@ th{
 
 #icon_inscription, #icon_suppression, .conteneur_bouton_inscription button, #retour_page_admin_inscription, #retour_page_admin_suppression {
     background-color: var(--Couleur5);
-    border: none;
+    border: solid 1px var(--CouleurFont);
     cursor: pointer;
     padding: 0.5vh 0.5vw;
     font-size: 20px;
@@ -1478,6 +1486,7 @@ input[type=file] {
     background-color: var(--Couleur5);
     padding: 0.1vh 0.2vw;
     border-radius: 50%;
+    border: solid 1px var(--CouleurFont);
     display: grid;
     place-items: center;
     cursor: pointer;
