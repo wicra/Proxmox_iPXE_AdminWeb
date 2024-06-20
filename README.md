@@ -31,8 +31,8 @@ Créez un répertoire files contenant les fichiers suivants :
 - `dhcpd.conf`
 - `ScriptIpxe.sh`
 
-> **Avant de l'ajouter**: crée un fichier `users.env.php` dans `interface/conf/connexion/` puis ajouter dasn ce fichier `VotreLogin:VotreMotDePasseCripte`.
-Pour avoir un motdepasse cripter: 
+> **Avant d'ajouter le site d'administration**: Créez un fichier `users.env.php` dans `interface/conf/connexion/` et ajoutez dans ce fichier `VotreLogin:VotreMotDePasseCripte`.
+Pour obtenir un mot de passe crypté, utilisez le script suivant :
 ```php
 <?php>
     echo password_hash("VotreMotDePasseCripte", PASSWORD_DEFAULT);
@@ -41,7 +41,7 @@ Pour avoir un motdepasse cripter:
 
 - Le répertoire `AdminWeb`
 
-> **Ses deux fichiers correspond a l'iso proxmox**: pour les crée suivez ce projet [pve-iso-2-pxe.sh](https://github.com/morph027/pve-iso-2-pxe/).
+> **Ses deux fichiers ci-dessous correspond a l'iso proxmox**: pour les crée suivez ce projet [pve-iso-2-pxe.sh](https://github.com/morph027/pve-iso-2-pxe/).
 - `initrd`
 - `linux26`
 
