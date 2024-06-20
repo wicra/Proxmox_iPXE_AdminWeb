@@ -78,7 +78,7 @@
                         }
                         function resetTimer() {
                             clearTimeout(timeout);
-                            timeout = setTimeout(hideElement, 5000);
+                            timeout = setTimeout(hideElement, 50000);
                         }
                         targetElement.addEventListener('mouseover', function() {
                             resetTimer();

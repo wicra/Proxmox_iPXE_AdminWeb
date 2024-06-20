@@ -30,9 +30,18 @@ Créez un répertoire files contenant les fichiers suivants :
 - `dhcpd_hosts.conf`
 - `dhcpd.conf`
 - `ScriptIpxe.sh`
+
+> **Avant de l'ajouter**: crée un fichier `users.env.php` dans `interface/conf/connexion/` puis ajouter dasn ce fichier `VotreLogin:VotreMotDePasseCripte`.
+Pour avoir un motdepasse cripter: 
+```php
+<?php>
+    echo password_hash("VotreMotDePasseCripte", PASSWORD_DEFAULT);
+?>
+```
+
 - Le répertoire `AdminWeb`
 
-> **Ses deux fichiers correspond a l'iso proxmox**:pour les crée suivez ce projet [pve-iso-2-pxe.sh](https://github.com/morph027/pve-iso-2-pxe/).
+> **Ses deux fichiers correspond a l'iso proxmox**: pour les crée suivez ce projet [pve-iso-2-pxe.sh](https://github.com/morph027/pve-iso-2-pxe/).
 - `initrd`
 - `linux26`
 
