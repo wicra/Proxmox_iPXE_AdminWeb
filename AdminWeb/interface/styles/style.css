@@ -1420,11 +1420,11 @@ th{
     justify-content: center;
     gap: 2vw;
     display: flex;
-    border: 2px dashed #bbb;
+    border: 2px dashed var(--CouleurFont);
     border-radius: 0.5rem;
     padding: 0vh 0;
     text-align: center;
-    color: #bbb;
+    color: var(--CouleurFont);
 }
 
 #drop_zone  h3{

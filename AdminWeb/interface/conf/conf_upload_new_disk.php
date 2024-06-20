@@ -91,7 +91,7 @@
 
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
-            dropZone.style.borderColor = 'green';
+            dropZone.style.borderColor = '#67b77b';
         });
 
         dropZone.addEventListener('dragleave', (e) => {
@@ -100,7 +100,7 @@
 
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropZone.style.borderColor = '#bbb';
+            dropZone.style.borderColor = '#67b77b';
 
             const files = e.dataTransfer.files;
             if (files.length > 0) {
