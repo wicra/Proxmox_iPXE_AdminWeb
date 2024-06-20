@@ -65,11 +65,15 @@
 <form class="formulaire_upload"action="" method="post" enctype="multipart/form-data">
     <div id="drop_zone">
         <i class="fa-solid fa-file-arrow-up"></i>
-        <h3>déposez votre fichier .raw ici Ou </h3>
+        <h3>déposez votre fichier <strong><u><i>.raw</i></u></strong>  ici Ou </h3>
         
         <div class="upload_input_contenaire">
-            <input type="file" name="fileUpload" id="fileUpload" accept=".raw"><br><br>
-            <input type="submit" value="Télécharger" id="upload_submit">            
+            <label for="fileUpload">
+                <span><i class="fa-solid fa-upload"></i>Importez</span>
+                <input type="file" name="fileUpload" id="fileUpload" accept=".raw"><br><br>
+            </label>
+            
+            <input type="submit" value="Ajouter" id="upload_submit">            
         </div>
     </div><br><br>
 </form>

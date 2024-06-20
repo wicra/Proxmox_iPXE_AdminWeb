@@ -1414,6 +1414,10 @@ th{
     flex-direction: column;
 }
 
+input[type=file] {
+    display: none;
+}
+
 #drop_zone {
     width: 100%;
     align-items: center;
@@ -1428,8 +1432,8 @@ th{
 }
 
 #drop_zone  h3{
-    font-size:15px;
-    
+    font-size:15px; 
+    margin: 0;  
 }
 .upload_input_contenaire{
     display: flex;
@@ -1437,15 +1441,28 @@ th{
     justify-content: center;
 }
 
-#upload_submit,#fileUpload{
+#upload_submit,#fileUpload,.upload_input_contenaire label span{
     background-color: var(--Couleur5);
-    border: none;
     cursor: pointer;
     padding: 0.2vh 1vw;
     margin: 0 0.5vw;
     border-radius: 0.5rem;
     color: var(--CouleurFont);
+    font-size: 15px;
+    font-family: var(--FontPrimaire);
+    border: solid 1px var(--CouleurFont);
 }
+
+.upload_input_contenaire label{
+    margin: 2vh 0 0 0 ;
+
+
+}
+.fa-upload{
+    font-size: 15px;
+    padding: 0 1vw 0 0;
+}
+
 .fa-file-arrow-up{
     font-size: 35px;
 }
