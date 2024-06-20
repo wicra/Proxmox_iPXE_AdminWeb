@@ -1,6 +1,9 @@
 
 <!-- LIEN DE REDIRECTION CENTRALISE  -->
 <?php
+    /////////////////////////////////////////////////////////
+    //                   LIEN POUR DEV                     //
+    /////////////////////////////////////////////////////////
     $file_path_conf = '../../../dhcp/dhcpd_hosts.conf';
     $file_path_admin = '../../dhcp/dhcpd_hosts.conf';
     $file_path_trie = '../../dhcp/dhcpd_hosts.conf';
@@ -10,6 +13,9 @@
     $config_file_auto = 'include/range_ip_fixe.php';
     $configFileUnknown = "../../dhcp/add_boot_ipxe_unknown.conf";
 
+    /////////////////////////////////////////////////////////
+    //            LIEN DEPLOIEMENT VERS SERVER             //
+    /////////////////////////////////////////////////////////
     // $file_path_conf = "/etc/dhcp/dhcpd_hosts.conf";
     // $file_path_admin = "/etc/dhcp/dhcpd_hosts.conf";
     // $file_path_trie = '/etc/dhcp/dhcpd_hosts.conf';

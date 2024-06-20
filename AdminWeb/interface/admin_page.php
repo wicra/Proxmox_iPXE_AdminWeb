@@ -328,7 +328,7 @@
                     $verif_vm = verify_mac_address($host_name,"fa:ca:de", $file_path_admin);
 
                     // Ajouter un lien si pc actif 
-                    $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\">" : "";
+                    $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\" target=\"_blank\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
 
                     echo "<tr class=\"tableau\" >
