@@ -334,9 +334,31 @@ body{
 
 /*
 ////////////////////////
+//    CONF SERVER     //
+////////////////////////
+*/
+.admin_conf_titre{
+    font-size: 35px;
+    text-transform: uppercase;
+    font-family: var(--FontSeconfaire);
+    text-align: right;
+    margin: 0;
+    padding: 4vh 0 1vh 0;
+}
+
+/*
+////////////////////////
 //    TABLEAU D'HOTE  //
 ////////////////////////
 */
+.tableau_hosts_dhcp_titre{
+    font-size: 35px;
+    text-transform: uppercase;
+    font-family: var(--FontSeconfaire);
+    text-align: right;
+    margin: 0;
+    padding: 4vh 0 1vh 0;
+}
 .tableau_conteneur{
     display: flex;
     flex-direction: column;
@@ -602,6 +624,15 @@ th{
 //  TABLEAU ATTRIBUTION DHCP //
 ///////////////////////////////
 */
+.tableau_historique_dhcp_titre{
+    font-size: 35px;
+    text-transform: uppercase;
+    font-family: var(--FontSeconfaire);
+    text-align: right;
+    margin: 0;
+    padding: 4vh 0 1vh 0;
+}
+
 .tableau_historique_dhcp{
     margin: 4vh 0 4vh 0;
 }

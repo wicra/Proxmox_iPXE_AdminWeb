@@ -182,27 +182,31 @@
 
 <!--- TABLEAU DES PC INCONNUE QU'ON SOUHAITE ATTRIBUER UN IP --->
 <?php if(!empty($recent_connections)): ?>
-    <table class="tableau_historique_dhcp" id="tableau_historique_dhcp">
-        <thead>
-            <tr>
-                <th class="tab_historique_header_nom">Nom d'hôte</th>
-                <th class="tab_historique_header_mac">Adresse MAC</th>
-                <th class="tab_historique_header_bouton">Attribuer une IP</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($recent_connections as $mac_address => $connection): ?>
+    <div id="conteneur_tableau_historique_dhcp">
+        <h1 class="tableau_historique_dhcp_titre">Attb Nouvelle client</h1>
+        <table class="tableau_historique_dhcp" id="tableau_historique_dhcp">
+            <thead>
                 <tr>
-                    <td class="tab_historique_nom"><?= htmlspecialchars($connection['hostname']) ?></td>
-                    <td class="tab_historique_mac"><?= htmlspecialchars($mac_address) ?></td>
-                    <td action="conf/conf_trie_assemblage_vm_rm.php" class="tab_historique_bouton">
-                        <form method="POST">
-                            <input type="hidden" name="mac_address" value="<?= htmlspecialchars($mac_address) ?>">
-                            <button type="submit">Attribuer IP</button>
-                        </form>
-                    </td>
+                    <th class="tab_historique_header_nom">Nom d'hôte</th>
+                    <th class="tab_historique_header_mac">Adresse MAC</th>
+                    <th class="tab_historique_header_bouton">Attribuer une IP</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($recent_connections as $mac_address => $connection): ?>
+                    <tr>
+                        <td class="tab_historique_nom"><?= htmlspecialchars($connection['hostname']) ?></td>
+                        <td class="tab_historique_mac"><?= htmlspecialchars($mac_address) ?></td>
+                        <td action="conf/conf_trie_assemblage_vm_rm.php" class="tab_historique_bouton">
+                            <form method="POST">
+                                <input type="hidden" name="mac_address" value="<?= htmlspecialchars($mac_address) ?>">
+                                <button type="submit">Attribuer IP</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
 <?php endif; ?>

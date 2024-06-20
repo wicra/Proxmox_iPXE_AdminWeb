@@ -94,9 +94,9 @@
                 <button class="nav_button_attribution" id="nav_button_attribution" type="button"  onclick="masquer()">Attribution ip</button>
                 <script>
                     function masquer(){
-                        var element = document.getElementById('tableau_historique_dhcp');
+                        var element = document.getElementById('conteneur_tableau_historique_dhcp');
                         if(element.style.display === 'none'){
-                            element.style.display = 'table';
+                            element.style.display = 'block';
 
                         }else{
                             element.style.display = 'none'
@@ -207,8 +207,9 @@
             </div>
         </div>  
         
-        <!-- CONFIGURATION PLAGE ADRESSE -->
+        <!-- CONFIGURATION SERVER -->
         <div id="conteneur_admin_conf">
+            <h1 class="admin_conf_titre">Configuration serveur</h1>
             <?php include("conf/conf_ip_range.php");?>
             <?php include("conf/conf_boot_unknown.php");?>
             <?php include("conf/conf_upload_new_disk.php");?>
@@ -278,18 +279,19 @@
             $pattern = '/host\s+([a-zA-Z0-9_-]+)\s*\{[^}]*hardware\s+ethernet\s+([0-9a-f:]+);[^}]*fixed-address\s+([0-9.]+);[^}]*\}/mi';
 
             if (preg_match_all($pattern, $config, $matches, PREG_SET_ORDER)) {
-                echo "<div class=\"tableau_conteneur\">
-                        
-                        <table >
-                            <tr class=\"tableau\">
-                                <th class=\"col_header_name\" >hôte</th>
-                                <th class=\"col_header_etat\">Etat</th>
-                                <th class=\"col_header_disk\">Disk</th>
-                                <th class=\"col_header_mac\">@ MAC</th>
-                                <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
-                                <th class=\"col_header_demarage\">Demarage</th>
-                                <th class=\"col_header_delete_host\">Sup</th>
-                            </tr>";
+                echo "<div class=\"tableau_hosts_dhcp\">
+                        <h1 class=\"tableau_hosts_dhcp_titre\">Les clients connus</h1>
+                        <div class=\"tableau_conteneur\">
+                            <table >
+                                <tr class=\"tableau\">
+                                    <th class=\"col_header_name\" >hôte</th>
+                                    <th class=\"col_header_etat\">Etat</th>
+                                    <th class=\"col_header_disk\">Disk</th>
+                                    <th class=\"col_header_mac\">@ MAC</th>
+                                    <th class=\"col_header_ip_fixe\">@ IP_fixe</th>
+                                    <th class=\"col_header_demarage\">Demarage</th>
+                                    <th class=\"col_header_delete_host\">Sup</th>
+                                </tr>";
 
                 /////////////////////////////////////////////////////////
                 //             FONCTION DE VERIF VM OU PAS            //
@@ -382,149 +384,150 @@
                     $link = ($pc_state == $actif) ? "<a href=\"https://{$fixed_address}:8006\" target=\"_blank\">" : "";
                     $link_close = ($pc_state == $actif) ? "</a>" : "";
 
-                    echo "<tr class=\"tableau\" >
-                            <td class=\"col_name\">
-                                <i class=\"fa-solid fa-pen-to-square open_edit_host_name\"></i>
-                                <h4 class=\"host_name\">$link{$host_name}$link_close</h4>
-                        
-                                <form class=\"edit_host_form\" method=\"post\" id=\"edit_host_form_{$host_name}\">
-                                    <input type=\"hidden\" name=\"old_host_name\" value=\"{$host_name}\">
-                                    <input class=\"new_host_name\" type=\"text\" name=\"new_host_name\" placeholder=\"New\"  minlength=\"1\" maxlength=\"15\" required>
-                                    <i class=\"fa-solid fa-check valide_edit_host_name\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
-                                    <i class=\"fa-solid fa-hand-point-left close_host_name_form\"></i>
-                                </form>
-                            </td>
+                    echo    "<tr class=\"tableau\" >
+                                <td class=\"col_name\">
+                                    <i class=\"fa-solid fa-pen-to-square open_edit_host_name\"></i>
+                                    <h4 class=\"host_name\">$link{$host_name}$link_close</h4>
+                            
+                                    <form class=\"edit_host_form\" method=\"post\" id=\"edit_host_form_{$host_name}\">
+                                        <input type=\"hidden\" name=\"old_host_name\" value=\"{$host_name}\">
+                                        <input class=\"new_host_name\" type=\"text\" name=\"new_host_name\" placeholder=\"New\"  minlength=\"1\" maxlength=\"15\" required>
+                                        <i class=\"fa-solid fa-check valide_edit_host_name\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
+                                        <i class=\"fa-solid fa-hand-point-left close_host_name_form\"></i>
+                                    </form>
+                                </td>
 
-                            <td class=\"col_etat\">";
-                                if($pc_state == $eteint){
-                                    // ALLUMER LE PC
-                                    echo"
-                                        <div class=\"col_etat_conteneur\">
-                                            <h4 class=\"etat\">$pc_state</h4>
-                                            <form method=\"post\" action=\"conf/conf_wake_on_lan.php\" id=\"demarage_choix_admin_form_{$host_name}\">
-                                                <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                                <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                                <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
-                                                <button class=\"col_etat_bouton\"  type=\"submit\"><i class=\"fa-solid fa-power-off\"></i></button>
-                                            </form>
-                                        </div>
-                                    </td>";
-                                }
-                            else{
-                                // ETEINDRE LE PC
-                                echo "  
-                                    <div class=\"col_etat_conteneur\">
-                                            <h4 class=\"etat\">$pc_state</h4>
-                                            <form method=\"post\" action=\"conf/conf_shut_down.php\" id=\"demarage_choix_admin_form_{$host_name}\">
-                                                <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                                <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                                <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
-                                                <button class=\"col_shut_down_bouton\"  type=\"submit\"><i class=\"fa-solid fa-power-off\"></i></button>
-                                            </form>
-                                        </div>
-                                    </td>";
-                                ;
-                            }
-
-                    echo"   <td class=\"col_disk\">";
-                                // VM OU PAS
-                                if ($verif_vm === "oui") {
-                    echo           "<div class=\"tooltip_container\">
-                                            <i class=\"fa-solid fa-circle-arrow-up\"></i>
-                                            <div class=\"tooltip\">
-                                                <p>Disk sur sa machine physique au dessus <i class=\"fa-regular fa-heart\"></i></p>
+                                <td class=\"col_etat\">";
+                                    if($pc_state == $eteint){
+                                        // ALLUMER LE PC
+                                        echo"
+                                            <div class=\"col_etat_conteneur\">
+                                                <h4 class=\"etat\">$pc_state</h4>
+                                                <form method=\"post\" action=\"conf/conf_wake_on_lan.php\" id=\"demarage_choix_admin_form_{$host_name}\">
+                                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                                    <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
+                                                    <button class=\"col_etat_bouton\"  type=\"submit\"><i class=\"fa-solid fa-power-off\"></i></button>
+                                                </form>
                                             </div>
-                                    </div>"; 
-                                }
+                                        </td>";
+                                    }
                                 else{
-                    echo  "
-                                    <form class=\"disk_choix\" action=\"conf/conf_choix_disk.php\" method=\"post\">
-                                        <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                        <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
-
-                                        <select id=\"choices\" name=\"choice\">";
-                                            if (empty($disks)) {
-                                                echo "<option value=\"\">indisponible</option>";
-                                            } 
-                                            else {
-                                                // Afficher chaque element du fichier diskSan.txt en option
-                                                foreach ($disks as $disk) {
-                                                    echo "<option value=\"{$disk}\">" . ucfirst($disk) . "</option>";
-                                                }
-                                            }
-                    echo"               </select>
-                                        <i class=\"fa-solid fa-check option_disk_submit style=\"cursor: pointer;\"></i>
-                                    </form>";
+                                    // ETEINDRE LE PC
+                                    echo "  
+                                        <div class=\"col_etat_conteneur\">
+                                                <h4 class=\"etat\">$pc_state</h4>
+                                                <form method=\"post\" action=\"conf/conf_shut_down.php\" id=\"demarage_choix_admin_form_{$host_name}\">
+                                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                                    <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
+                                                    <button class=\"col_shut_down_bouton\"  type=\"submit\"><i class=\"fa-solid fa-power-off\"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>";
+                                    ;
                                 }
-                    echo"   </td>
 
-                            <td class=\"col_mac\">{$hardware_ethernet}</td>
+                        echo"   <td class=\"col_disk\">";
+                                    // VM OU PAS
+                                    if ($verif_vm === "oui") {
+                        echo           "<div class=\"tooltip_container\">
+                                                <i class=\"fa-solid fa-circle-arrow-up\"></i>
+                                                <div class=\"tooltip\">
+                                                    <p>Disk sur sa machine physique au dessus <i class=\"fa-regular fa-heart\"></i></p>
+                                                </div>
+                                        </div>"; 
+                                    }
+                                    else{
+                        echo  "
+                                        <form class=\"disk_choix\" action=\"conf/conf_choix_disk.php\" method=\"post\">
+                                            <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                            <input type=\"hidden\" name=\"ip_address\" vvalue=\"{$fixed_address}\">
 
-                            <td class=\"col_ip_fixe\">
-                                <div class=\"col_conteneur_ip_conf\">
-                                    <h4 class=\"ip_address\">{$fixed_address}</h4>
+                                            <select id=\"choices\" name=\"choice\">";
+                                                if (empty($disks)) {
+                                                    echo "<option value=\"\">indisponible</option>";
+                                                } 
+                                                else {
+                                                    // Afficher chaque element du fichier diskSan.txt en option
+                                                    foreach ($disks as $disk) {
+                                                        echo "<option value=\"{$disk}\">" . ucfirst($disk) . "</option>";
+                                                    }
+                                                }
+                        echo"               </select>
+                                            <i class=\"fa-solid fa-check option_disk_submit style=\"cursor: pointer;\"></i>
+                                        </form>";
+                                    }
+                        echo"   </td>
 
-                                    <i class=\"fa-solid fa-pen-to-square open_change_ip\"></i>
-                                    <div class=\"formulaire_ip_conteneur\">
-                                        <form class=\"ip_change_form\">
+                                <td class=\"col_mac\">{$hardware_ethernet}</td>
+
+                                <td class=\"col_ip_fixe\">
+                                    <div class=\"col_conteneur_ip_conf\">
+                                        <h4 class=\"ip_address\">{$fixed_address}</h4>
+
+                                        <i class=\"fa-solid fa-pen-to-square open_change_ip\"></i>
+                                        <div class=\"formulaire_ip_conteneur\">
+                                            <form class=\"ip_change_form\">
+                                                <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
+                                                <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
+                                                <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
+                                                <i class=\"fa-solid fa-check valide_change_ip\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
+                                                <i class=\"fa-solid fa-hand-point-left close_change_ip\"></i>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class=\"col_demarage\">";
+                                    // VM OU PAS
+                                    if ($verif_vm === "oui") {
+                                        echo "<div class=\"tooltip_container\">
+                                            <i class=\"fa-solid fa-circle-arrow-up\"></i>
+                                                <div class=\"tooltip\">
+                                                    <p>Demarage sur sa machine physique, au dessus <i class=\"fa-regular fa-heart\"></i></p>
+                                                </div>
+                                            </div>"; 
+                                        
+
+                                    }
+                                    else{
+                                        echo  " 
+                                        <form class=\"demarage_choix_admin\" method=\"post\" id=\"demarage_choix_admin_form_{$host_name}\">
                                             <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
                                             <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                            <input class=\"formulaire_ip\" type=\"text\" name=\"new_ip\" placeholder=\"Nouvelle IP\">
-                                            <i class=\"fa-solid fa-check valide_change_ip\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
-                                            <i class=\"fa-solid fa-hand-point-left close_change_ip\"></i>
-                                        </form>
-                                    </div>
-                                </div>
-                            </td>
-
-                            <td class=\"col_demarage\">";
-                                // VM OU PAS
-                                if ($verif_vm === "oui") {
-                                    echo "<div class=\"tooltip_container\">
-                                        <i class=\"fa-solid fa-circle-arrow-up\"></i>
-                                            <div class=\"tooltip\">
-                                                <p>Demarage sur sa machine physique, au dessus <i class=\"fa-regular fa-heart\"></i></p>
+                                            <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
+                                            <button class=\"col_choix_admin\" type=\"submit\" name=\"demarage_choix_admin\" style=\"display: none;\"></button>
+                                            <div class=\"checkbox-wrapper-35\">
+                                                    <input name=\"switch\" id=\"switch_{$host_name}\" type=\"checkbox\" class=\"switch\" data-host-name=\"{$host_name}\" ";
+                                                    if ($result === 1) {
+                                                        echo "checked"; // Si $result est 1, le switch est activé par défaut
+                                                    }
+                                                    echo ">
+                                                    <label for=\"switch_{$host_name}\">
+                                                        <span class=\"switch-x-text\"></span>
+                                                        <span class=\"switch-x-toggletext\">
+                                                            <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>local</span>
+                                                            <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>reseau</span>
+                                                        </span>
+                                                    </label>
                                             </div>
-                                        </div>"; 
-                                    
+                                        </form>";} 
+                                echo "</td>
 
-                                }
-                                else{
-                                    echo  " 
-                                    <form class=\"demarage_choix_admin\" method=\"post\" id=\"demarage_choix_admin_form_{$host_name}\">
+                                <td class=\"col_delete_host\">
+                                    <form class=\"delete_host_form\" method=\"post\" id=\"delete_host_form\">
                                         <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
                                         <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
                                         <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
-                                        <button class=\"col_choix_admin\" type=\"submit\" name=\"demarage_choix_admin\" style=\"display: none;\"></button>
-                                        <div class=\"checkbox-wrapper-35\">
-                                                <input name=\"switch\" id=\"switch_{$host_name}\" type=\"checkbox\" class=\"switch\" data-host-name=\"{$host_name}\" ";
-                                                if ($result === 1) {
-                                                    echo "checked"; // Si $result est 1, le switch est activé par défaut
-                                                }
-                                                echo ">
-                                                <label for=\"switch_{$host_name}\">
-                                                    <span class=\"switch-x-text\"></span>
-                                                    <span class=\"switch-x-toggletext\">
-                                                        <span class=\"switch-x-unchecked\"><span class=\"switch-x-hiddenlabel\">Unchecked: </span>local</span>
-                                                        <span class=\"switch-x-checked\"><span class=\"switch-x-hiddenlabel\">Checked: </span>reseau</span>
-                                                    </span>
-                                                </label>
-                                        </div>
-                                    </form>";} 
-                            echo "</td>
-
-                            <td class=\"col_delete_host\">
-                                <form class=\"delete_host_form\" method=\"post\" id=\"delete_host_form\">
-                                    <input type=\"hidden\" name=\"host_name\" value=\"{$host_name}\">
-                                    <input type=\"hidden\" name=\"mac_address\" value=\"{$hardware_ethernet}\">
-                                    <input type=\"hidden\" name=\"ip_address\" value=\"{$fixed_address}\">
-                                    <button class=\"col_delete_host_form\" type=\"submit\" name=\"delete_host_button\" style=\"display: none;\"></button>
-                                    <i class=\"fa-solid fa-trash\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
-                                </form>
-                            </td>
-                        </tr>";
+                                        <button class=\"col_delete_host_form\" type=\"submit\" name=\"delete_host_button\" style=\"display: none;\"></button>
+                                        <i class=\"fa-solid fa-trash\" style=\"cursor: pointer;\" data-host-name=\"{$host_name}\"></i>
+                                    </form>
+                                </td>
+                            </tr>";
                 }
-                echo "</table>
+                echo "      </table>
+                        </div>
                     </div>";
             } else {
                 notif("Aucun hôte trouvé dans le fichier de configuration.");
