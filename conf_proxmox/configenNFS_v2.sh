@@ -60,10 +60,7 @@ mkdir /home/$username/PROJECTEST
 chown $username:$username /home/$username/PROJECTEST
 mkdir /mnt/stockage
 chown $username:$username /mnt/stockage
-#autorisation ssh
-mkdir /home/$username/.ssh
-chown $username:$username /home/$username/.ssh
-cp /mnt/stockage/authorized_keys /home/$username/.ssh
+
 
 #Modifier un paramètre dans le fichier /etc/systemd/logind.conf
 # Remplacer "#NAutoVTs=6"  par : "NAutoVTs=1"
@@ -103,6 +100,11 @@ apt -y install sshfs ntfs-3g chntpw vim nfs-common
 
 
 mount $ipstockage:/images /mnt/stockage
+
+#autorisation ssh
+mkdir /root/.ssh
+cp /mnt/stockage/authorized_keys /root/.ssh
+
 echo "liste des disques disponibles sur le serveur de stockage"
 ls -l /mnt/stockage
 read -p "Quel est le nom du disque à charger ?" DisqueChargement
@@ -173,9 +175,9 @@ echo "sudo qm set 205 --delete scsi0" >> /home/$username/MontageDisk.sh
 echo "#Creation du partage via NFS" >> /home/$username/MontageDisk.sh
 echo "sudo mount $ipstockage:/images /mnt/stockage/" >> /home/$username/MontageDisk.sh 
 echo "#Importation du disque format .raw vers la machine cible" >> /home/$username/MontageDisk.sh
-echo "sudo qm disk import 205 /mnt/stockage/\$1 local-lvm --format raw">> /home/$username/MontageDisk.sh >> /home/$username/MontageDisk.sh
+echo "sudo qm disk import 205 /mnt/stockage/\$1 local --format raw">> /home/$username/MontageDisk.sh >> /home/$username/MontageDisk.sh
 echo "#Connecte le disque sur Proxmox" >> /home/$username/MontageDisk.sh
-echo "sudo qm set 205 --scsi0 local-lvm:vm-205-disk-0" >> /home/$username/MontageDisk.sh
+echo "sudo qm set 205 --scsi0 local:205/vm-205-disk-0.raw" >> /home/$username/MontageDisk.sh
 echo "sudo qm set 205 -boot order='scsi0;net0'" >> /home/$username/MontageDisk.sh
 echo "#démontage du disque" >> /home/$username/MontageDisk.sh
 echo "sudo umount /mnt/stockage/" >> /home/$username/MontageDisk.sh

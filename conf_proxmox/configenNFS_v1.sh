@@ -60,10 +60,7 @@ mkdir /home/$username/PROJECTEST
 chown $username:$username /home/$username/PROJECTEST
 mkdir /mnt/stockage
 chown $username:$username /mnt/stockage
-#autorisation ssh
-mkdir /home/$username/.ssh
-chown $username:$username /home/$username/.ssh
-cp /mnt/stockage/authorized_keys /home/$username/.ssh
+
 
 #Modifier un paramètre dans le fichier /etc/systemd/logind.conf
 # Remplacer "#NAutoVTs=6"  par : "NAutoVTs=1"
@@ -103,6 +100,10 @@ apt -y install sshfs ntfs-3g chntpw vim nfs-common
 
 
 mount $ipstockage:/images /mnt/stockage
+#autorisation ssh
+mkdir /root/.ssh
+cp /mnt/stockage/authorized_keys /root/.ssh
+
 echo "liste des disques disponibles sur le serveur de stockage"
 ls -l /mnt/stockage
 read -p "Quel est le nom du disque à charger ?" DisqueChargement
