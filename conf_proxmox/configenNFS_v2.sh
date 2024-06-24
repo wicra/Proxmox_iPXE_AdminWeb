@@ -102,8 +102,8 @@ apt -y install sshfs ntfs-3g chntpw vim nfs-common
 mount $ipstockage:/images /mnt/stockage
 
 #autorisation ssh
-mkdir /root/.ssh
-cp /mnt/stockage/authorized_keys /root/.ssh
+# mkdir /root/.ssh
+# cp /mnt/stockage/authorized_keys /root/.ssh
 
 echo "liste des disques disponibles sur le serveur de stockage"
 ls -l /mnt/stockage
