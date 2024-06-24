@@ -208,3 +208,8 @@ chown www-data:www-data /var/www/html/AdminWeb/ipload_new_disk_tmp
 # Modif proprietaire dhcpd.leases # 
 ##################################
 #chown www-data:www-data /var/lib/dhcp/dhcpd.leases
+
+########################################
+#  Deplacement du fichier answer.toml  # 
+########################################
+cp /root/answer.toml /var/www/html/proxmox
