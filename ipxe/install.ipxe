@@ -10,11 +10,7 @@ menu Please choose an operating system to boot
     
 choose --default normal --timeout 5000 target && goto ${target}
 :normal
-#    set kernel "${serverip}/proxmox/linux26 ${opts} splash=silent"
-
-set kernel ${serverip}/proxmox/linux26 ro ramdisk_size=16777216 rw quiet splash=silent proxmox-start-auto-installer
-    goto init
-:init
+kernel ${serverip}/proxmox/linux26 ro ramdisk_size=16777216 rw quiet splash=silent proxmox-start-auto-installer
 initrd ${serverip}/proxmox/initrd
-chain ${kernel}
+boot
 
