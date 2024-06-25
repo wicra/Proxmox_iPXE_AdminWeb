@@ -225,7 +225,7 @@ cat <<EOT > /var/www/html/proxmox/answer.toml
 keyboard = "fr"
 country = "fr"
 fqdn = "teste.fr"
-mailto = "cedric.devos@ac-lille.fr"
+mailto = "mail@gmail.com"
 timezone = "Europe/Paris"
 root_password = "Password"
 root_ssh_keys = [
