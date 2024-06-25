@@ -209,7 +209,35 @@ chown www-data:www-data /var/www/html/AdminWeb/ipload_new_disk_tmp
 ##################################
 #chown www-data:www-data /var/lib/dhcp/dhcpd.leases
 
+
+
 ########################################
-#  Deplacement du fichier answer.toml  # 
+#  Configuration de la connexion SSH  # 
 ########################################
-cp /root/answer.toml /var/www/html/proxmox
+# Générer une paire de clés SSH avec les paramètres par défaut
+ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa
+# Lire le contenu de la clé publique
+SSH_KEY=$(cat ~/.ssh/id_rsa.pub)
+
+# Créer le fichier answer.toml avec le contenu souhaité
+cat <<EOT > /var/www/html/proxmox/answer.toml
+[global]
+keyboard = "fr"
+country = "fr"
+fqdn = "teste.fr"
+mailto = "cedric.devos@ac-lille.fr"
+timezone = "Europe/Paris"
+root_password = "Password"
+root_ssh_keys = [
+    "$SSH_KEY"
+]
+
+[network]
+source = "from-dhcp"
+
+[disk-setup]
+filesystem = "ext4"
+disk_list = ["nvme0n1"]
+EOT
+
+
