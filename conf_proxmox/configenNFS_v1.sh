@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Chemin du fichier de validation
+VALIDATION_FILE="/root/.intallation_prox_effectuee.txt"
+
+# Vérifier si le fichier de validation existe
+if [ -f "$VALIDATION_FILE" ]; then
+    echo "Le script a déjà été exécuté."
+    cat $VALIDATION_FILE
+    exit 0
+else
+    # Créer le fichier de validation et ajouter du contenu
+    echo "Installation de Proxmox effectuée avec succès le $(date)" > "$VALIDATION_FILE"
+fi
+
+
 #*************************************************************************************
 #*                                                                                   *
 #*  configuration du proxmox                                                         *

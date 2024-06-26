@@ -216,6 +216,11 @@ chown www-data:www-data /var/www/html/AdminWeb/ipload_new_disk_tmp
 ########################################
 # Générer une paire de clés SSH avec les paramètres par défaut
 ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa
+
+# Ca permet de ne pas avoir le pass phrase au premier connexion
+echo "Host *" > /root/.ssh/config
+echo "  StrictHostKeyChecking no" >> /root/.ssh/config
+
 # Lire le contenu de la clé publique
 SSH_KEY=$(cat ~/.ssh/id_rsa.pub)
 
@@ -225,7 +230,7 @@ cat <<EOT > /var/www/html/proxmox/answer.toml
 keyboard = "fr"
 country = "fr"
 fqdn = "teste.fr"
-mailto = "mail@gmail.com"
+mailto = "exemple@gmail.com"
 timezone = "Europe/Paris"
 root_password = "Password"
 root_ssh_keys = [
