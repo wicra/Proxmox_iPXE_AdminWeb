@@ -166,7 +166,7 @@ systemctl restart nfs-kernel-server
 
 #insatallation de sudo et conig www-data pour les droits d'execution du site avec les commandes autorisé
 apt install sudo
-echo "www-data ALL=(ALL) NOPASSWD: /usr/bin/chown  modele:modele /image/*.raw,/usr/bin/nmap,/usr/bin/ls,/usr/bin/mv /var/www/html/AdminWeb/upload_new_disk_tmp/* /images/,/usr/bin/systemctl restart isc-dhcp-server,/usr/bin/systemctl stop isc-dhcp-server,/usr/bin/systemctl is-active isc-dhcp-server" >> /etc/sudoers
+echo "www-data ALL=(ALL) NOPASSWD: /usr/bin/chown modele:modele /image/*,/usr/bin/nmap,/usr/bin/ls,/usr/bin/mv /var/www/html/AdminWeb/upload_new_disk_tmp/* /images/,/usr/bin/systemctl restart isc-dhcp-server,/usr/bin/systemctl stop isc-dhcp-server,/usr/bin/systemctl is-active isc-dhcp-server" >> /etc/sudoers
 chown www-data:www-data /etc/dhcp/dhcpd_hosts.conf
 
 #deplacement du site et changer les droits
@@ -209,7 +209,11 @@ chown www-data:www-data /var/www/html/AdminWeb/ipload_new_disk_tmp
 ##################################
 #chown www-data:www-data /var/lib/dhcp/dhcpd.leases
 
-
+##################################
+#       Modif droit login       # 
+##################################
+chown www-data:www-data /var/www/html/AdminWeb/interface/connexion/users.env.php
+chmod 644 /var/www/html/AdminWeb/interface/connexion/users.env.php
 
 ########################################
 #  Configuration de la connexion SSH  # 
