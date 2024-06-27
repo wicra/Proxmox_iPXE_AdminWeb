@@ -277,5 +277,7 @@ sed -ri "s/iface vmbr0 inet static/iface vmbr0 inet dhcp/g" /etc/network/interfa
 sed -ri "s/address.*//g" /etc/network/interfaces
 sed -ri "s/getway.*//g" /etc/network/interfaces
 
+#Wake on lan
+/sbin/ethtool -s $ifname wol g
 
 reboot now
