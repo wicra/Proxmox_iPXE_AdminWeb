@@ -225,6 +225,12 @@
         <!-- CONTENEUR NOTIF -->
         <div id="notification-container"></div>
         
+        <!-- CONFIGURATION ANSWER.TOML -->
+        <div id="conteneur_answer_toml_conf">
+            <h1 class="answer_toml_conf_titre">Configuration de Answer.toml</h1>
+            <?php include("conf/conf_answer_toml.php");?>
+        </div>
+        
         <!-- AJOUT TABLEAU DISTORIQUE DHCP -->
         <?php include("dhcpd_attribution_auto.php");?>
         
