@@ -133,6 +133,22 @@ cp /root/install.ipxe /var/www/html/
 cp /root/boot_choix.ipxe /var/www/html/
 cp /root/boot_local.ipxe /var/www/html/
 
+########################################
+#        Creation de l'iso proxmox     # 
+########################################
+apt install genisoimage
+
+# dépot proxmox necessaire pour l'installation de proxmox-auto-install-assistant
+echo "deb [arch=amd64] http://download.proxmox.com/debian/pve bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
+wget https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
+apt update && apt install proxmox-auto-install-assistant
+
+#création de l'iso proxmox personnalisé
+proxmox-auto-install-assistant prepare-iso /root/proxmox-ve.iso --fetch-from http --url "http://$ipmachine/proxmox/answer.toml" --output proxmox-ve-ameliore.iso
+
+#extraction de l'iso proxmox en initrd et linux26
+bash pve-iso-2-pxe.sh /root/proxmox-ve-ameliore.iso
+
 ###############################
 #           Script            # 
 #        Machine              #
@@ -152,8 +168,8 @@ echo "/images *(rw,sync,no_subtree_check)" >> /etc/exports
 
 # Fichier initrd & Linux26 a déplacer dans /var/www/proxmox
 mkdir /var/www/html/proxmox
-cp /root/initrd /var/www/html/proxmox
-cp /root/linux26 /var/www/html/proxmox
+cp /root/pxeboot/initrd /var/www/html/proxmox
+cp /root/pxeboot/linux26 /var/www/html/proxmox
 
 # Redémarrer le services NFS
 systemctl restart nfs-kernel-server
@@ -166,7 +182,7 @@ systemctl restart nfs-kernel-server
 
 #insatallation de sudo et conig www-data pour les droits d'execution du site avec les commandes autorisé
 apt install sudo
-echo "www-data ALL=(ALL) NOPASSWD: /usr/bin/chown modele:modele /image/*,/usr/bin/nmap,/usr/bin/ls,/usr/bin/mv /var/www/html/AdminWeb/upload_new_disk_tmp/* /images/,/usr/bin/systemctl restart isc-dhcp-server,/usr/bin/systemctl stop isc-dhcp-server,/usr/bin/systemctl is-active isc-dhcp-server" >> /etc/sudoers
+echo "www-data ALL=(ALL) NOPASSWD: /usr/bin/chown,/usr/bin/nmap,/usr/bin/ls,/usr/bin/mv /var/www/html/AdminWeb/upload_new_disk_tmp/* /images/,/usr/bin/systemctl restart isc-dhcp-server,/usr/bin/systemctl stop isc-dhcp-server,/usr/bin/systemctl is-active isc-dhcp-server" >> /etc/sudoers
 chown www-data:www-data /etc/dhcp/dhcpd_hosts.conf
 
 #deplacement du site et changer les droits
@@ -250,19 +266,5 @@ filesystem = "ext4"
 disk_list = ["nvme0n1"]
 EOT
 
-########################################
-#        Creation de l'iso proxmox     # 
-########################################
-apt install genisoimage
 
-# dépot proxmox necessaire pour l'installation de proxmox-auto-install-assistant
-echo "deb [arch=amd64] [URL]http://download.proxmox.com/debian/pve[/URL] bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
-wget https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
-apt update && apt install proxmox-auto-install-assistant
-
-#création de l'iso proxmox personnalisé
-proxmox-auto-install-assistant prepare-iso /root/proxmox-ve.iso --fetch-from http --url "http://$ipmachine/proxmox/answer.toml" --output proxmox-ve-ameliore.iso
-
-#extraction de l'iso proxmox en initrd et linux26
-./pve-iso-2-pxe.sh /root/proxmox-ve-ameliore.iso
 
