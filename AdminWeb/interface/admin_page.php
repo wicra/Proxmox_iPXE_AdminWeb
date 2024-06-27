@@ -151,9 +151,41 @@
                     </div>
                 </form>
 
-                <?php 
+                <!-- MASQUAGE / AFFICHAGE FORMULAIRE ANSWER.TOML -->
+                <button class="nav_button_form_answer_toml" id="nav_button_form_answer_toml" type="button"  onclick="masquer_formulaire_answer_toml()">Answer.toml</button>
+                <script>
+                    function masquer_formulaire_answer_toml(){
+                        var element = document.getElementById('conteneur_answer_toml_conf');
+                        if(element.style.display === 'none'){
+                            element.style.display = 'block';
 
-                ?> 
+                        }else{
+                            element.style.display = 'none'
+                        }
+                    }
+
+                    // MASQUER APRES INACTIVITE
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var targetElement = document.getElementById('conteneur_answer_toml_conf');
+                        var timeout;
+
+                        function hideElement() {
+                            targetElement.style.display = 'none';
+                        }
+                        function resetTimer() {
+                            clearTimeout(timeout);
+                            timeout = setTimeout(hideElement, 50000);
+                        }
+                        targetElement.addEventListener('mouseover', function() {
+                            resetTimer();
+                        });
+                        targetElement.addEventListener('mouseout', function() {
+                            resetTimer();
+                        });
+                        resetTimer();
+                    });
+                </script>
+
                 
                 <!-- AJOUT USERS OU SUPPRESSION USERS -->  
                 <a class="user_add_del" href="connexion/users_add_del.php"><i class="fa-solid fa-user-plus"></i></a>

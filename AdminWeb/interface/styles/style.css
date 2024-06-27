@@ -259,6 +259,15 @@ body {
   color: var(--CouleurFont);
 }
 
+.nav_button_form_answer_toml{
+  background-color: var(--Couleur5);
+  border: solid 1px var(--CouleurFont);
+  cursor: pointer;
+  padding: 1vh 1vw;
+  border-radius: 0.5rem;
+  color: var(--CouleurFont);
+}
+
 .nav_refresh {
   background-color: var(--Couleur5);
   border: solid 1px var(--CouleurFont);
@@ -1603,20 +1612,32 @@ input[type="file"] {
 //  FORMULAIRE ANSWER.TOML  //
 /////////////////////////////
 */
+.answer_toml_conf_titre{
+  font-size: 35px;
+  text-transform: uppercase;
+  font-family: var(--FontSeconfaire);
+  text-align: right;
+  margin: 0;
+  padding: 4vh 0 1vh 0;
+}
+
 .container-formulaire {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 10px;
+  max-width: 100%;
+  margin: 4vh 0 4vh 0;
+  padding: 3vh 4vw;
   border: 1px solid var(--CouleurFont);
+  background-color: var(--Couleur5);
   border-radius: 5px;
-  font-size: 0.9em;
+  font-size: 15px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
 }
 
 .section-formulaire {
   flex: 1 1 30%;
-  margin-right: 20px;
+  margin: 0 1vw;
 }
 
 .section-formulaire h3 {
@@ -1638,11 +1659,10 @@ input[type="file"] {
 .row-formulaire input[type="text"],
 .row-formulaire input[type="email"],
 .row-formulaire input[type="password"] {
-  width: calc(100% - 12px);
-  padding: 5px;
-  border: 1px solid var(--CouleurFont);
-  border-radius: 3px;
-  font-size: 0.9em;
+  width: 100px;
+  padding: 0.2vh 1vw;
+  border-radius: 0.5rem;
+  border: none;
 }
 
 .input_form_answer_toml[type="submit"] {
@@ -1660,6 +1680,20 @@ input[type="file"] {
   background-color: var(--CouleurHover);
 }
 
+.button_form_answer_toml{
+  background-color: var(--CouleurPrimaire);
+  cursor: pointer;
+  padding: 0.2vh 1vw;
+  margin: 3vh 0 0 0;
+  border-radius: 0.5rem;
+  color: var(--CouleurFont);
+  font-size: 15px;
+  font-family: var(--FontPrimaire);
+  border: solid 1px var(--CouleurFont);
+}
+.button_form_answer_toml:hover{
+  background-color: var(--CouleurHover);
+}
 /*
 ///////////////////////
 //       FOOTER      //

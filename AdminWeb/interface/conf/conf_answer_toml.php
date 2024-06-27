@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <form method="post" class="container-formulaire">
         <div class="section-formulaire">
-            <h3>Configuration Globale</h3>
+            
             <div class="row-formulaire">
                 <label>Clavier :</label>
                 <input class="input_form_answer_toml" type="text" name="keyboard" value="$keyboard" required>
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="section-formulaire">
-            <h3>Configuration Réseau</h3>
+            
             <div class="row-formulaire">
                 <label>Email :</label>
                 <input class="input_form_answer_toml"  type="email" name="mailto" value="$mailto" required>
@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="section-formulaire">
-            <h3>Configuration des Disques</h3>
+       
             <div class="row-formulaire">
                 <label>Système de fichiers :</label>
                 <input class="input_form_answer_toml"  type="text" name="filesystem" value="$filesystem" required>
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
 
-        <input type="submit" value="Mettre à jour le fichier de configuration">
+        <input class="button_form_answer_toml" type="submit" value="Mettre à jour le fichier de configuration">
     </form>
     EOT;
 }
