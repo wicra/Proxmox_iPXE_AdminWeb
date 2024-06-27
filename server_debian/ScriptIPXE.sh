@@ -250,4 +250,19 @@ filesystem = "ext4"
 disk_list = ["nvme0n1"]
 EOT
 
+########################################
+#        Creation de l'iso proxmox     # 
+########################################
+apt install genisoimage
+
+# dépot proxmox necessaire pour l'installation de proxmox-auto-install-assistant
+echo "deb [arch=amd64] [URL]http://download.proxmox.com/debian/pve[/URL] bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
+wget https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
+apt update && apt install proxmox-auto-install-assistant
+
+#création de l'iso proxmox personnalisé
+proxmox-auto-install-assistant prepare-iso /root/proxmox-ve.iso --fetch-from http --url "http://$ipmachine/proxmox/answer.toml" --output proxmox-ve-ameliore.iso
+
+#extraction de l'iso proxmox en initrd et linux26
+./pve-iso-2-pxe.sh /root/proxmox-ve-ameliore.iso
 

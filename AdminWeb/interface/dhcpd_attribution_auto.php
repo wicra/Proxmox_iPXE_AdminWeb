@@ -104,11 +104,12 @@
         }
     }
 
-    // Fonction pour supprimer les connexions existantes pour une adresse MAC dans le fichier leases
-    function remove_mac_from_leases($mac_address, $leases_content) {
-        $pattern = '/lease [0-9.]+ {[^}]*hardware ethernet ' . preg_quote($mac_address, '/') . ';[^}]*}/s';
-        return preg_replace($pattern, '', $leases_content);
-    }
+    // A DECOMENTER SI BESOIN DE SUPPRIMER LES MACHINES UNE FOIS ATTRIBUE
+    // FONCTION POUR SUPPRIMER les connexions existantes pour une adresse MAC dans le fichier leases
+    // function remove_mac_from_leases($mac_address, $leases_content) {
+    //     $pattern = '/lease [0-9.]+ {[^}]*hardware ethernet ' . preg_quote($mac_address, '/') . ';[^}]*}/s';
+    //     return preg_replace($pattern, '', $leases_content);
+    // }
 
     // Si le formulaire est soumis pour attribuer une IP
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mac_address'])) {
@@ -165,11 +166,12 @@
                     // Retirer l'entrée des connexions récentes pour ne pas l'afficher de nouveau
                     unset($recent_connections[$mac_address]);
 
+                    // A DECOMENTER SI BESOIN DE SUPPRIMER LES MACHINES UNE FOIS ATTRIBUE
                     // Supprimer les connexions existantes pour cette adresse MAC dans le fichier leases
-                    $updated_leases_content = remove_mac_from_leases($mac_address, $leases_content);
-
+                    //$updated_leases_content = remove_mac_from_leases($mac_address, $leases_content);
+                    
                     // Écrire le contenu mis à jour dans le fichier leases
-                    file_put_contents($LEASES_FILE, $updated_leases_content);
+                    //file_put_contents($LEASES_FILE, $updated_leases_content);
 
                     include("conf/conf_trie_assemblage_vm_rm.php");
                 } else {
