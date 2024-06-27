@@ -3,7 +3,6 @@
     //                        SESSION                     //
     /////////////////////////////////////////////////////////
     session_start();
-
     // Verif si user connecter si la variable $_SESSION comptien le username 
     if(!isset($_SESSION["login"])){
         header("location: ../index.php");
@@ -16,10 +15,32 @@
         header('location: ../index.php');
     }
 
-
+    /////////////////////////////////////////////////////////
+    //                        REFRESH                     //
+    /////////////////////////////////////////////////////////
     if(isset($_POST['refresh'])){
         //header("Refresh:0");
         header('location: chargement.php');
+        exit();
+    }
+
+    /////////////////////////////////////////////////////////
+    //              DHCP STATUS / STOP / START             //
+    /////////////////////////////////////////////////////////
+    function getDHCPStatusClass() {
+        $status = shell_exec('../shell/status_server_dhcp.sh');
+        return trim($status) == 'active' ? 'active' : 'inactive';
+    }
+
+    if (isset($_POST['reshell'])) {
+        $currentStatus = trim(shell_exec('../shell/status_server_dhcp.sh'));
+        if ($currentStatus == 'active') {
+            shell_exec('../shell/stop_server_dhcp.sh');
+        } else {
+            shell_exec('../shell/boot_server_dhcp.sh');
+        }
+        // Rediriger pour éviter la resoumission du formulaire
+        header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
 ?>
@@ -30,7 +51,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        
         <title>Interface Conf</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -132,23 +152,7 @@
                 </form>
 
                 <?php 
-                    function getDHCPStatusClass() {
-                        $status = shell_exec('../shell/status_server_dhcp.sh');
-                        return trim($status) == 'active' ? 'active' : 'inactive';
-                    }
 
-                    if (isset($_POST['reshell'])) {
-                        $currentStatus = trim(shell_exec('../shell/status_server_dhcp.sh'));
-                        if ($currentStatus == 'active') {
-                            shell_exec('../shell/stop_server_dhcp.sh');
-                        } else {
-                            shell_exec('../shell/boot_server_dhcp.sh');
-                        }
-
-                        // Rediriger pour éviter la resoumission du formulaire
-                        header("Location: " . $_SERVER['PHP_SELF']);
-                        exit();
-                    }
                 ?> 
                 
                 <!-- AJOUT USERS OU SUPPRESSION USERS -->  
