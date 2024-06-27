@@ -152,10 +152,10 @@
                 </form>
 
                 <!-- MASQUAGE / AFFICHAGE FORMULAIRE ANSWER.TOML -->
-                <button class="nav_button_form_answer_toml" id="nav_button_form_answer_toml" type="button"  onclick="masquer_formulaire_answer_toml()">Answer.toml</button>
+                <button class="nav_button_formulaire_conf_proxmox" id="nav_button_formulaire_conf_proxmox" type="button"  onclick="masquer_formulaire_conf_proxmox()">conf</button>
                 <script>
-                    function masquer_formulaire_answer_toml(){
-                        var element = document.getElementById('conteneur_answer_toml_conf');
+                    function masquer_formulaire_conf_proxmox(){
+                        var element = document.getElementById('conteneur_formulaire_conf_proxmox');
                         if(element.style.display === 'none'){
                             element.style.display = 'block';
 
@@ -166,7 +166,7 @@
 
                     // MASQUER APRES INACTIVITE
                     document.addEventListener("DOMContentLoaded", function() {
-                        var targetElement = document.getElementById('conteneur_answer_toml_conf');
+                        var targetElement = document.getElementById('conteneur_formulaire_conf_proxmox');
                         var timeout;
 
                         function hideElement() {
@@ -257,10 +257,11 @@
         <!-- CONTENEUR NOTIF -->
         <div id="notification-container"></div>
         
-        <!-- CONFIGURATION ANSWER.TOML -->
-        <div id="conteneur_answer_toml_conf">
-            <h1 class="answer_toml_conf_titre">Configuration de Answer.toml</h1>
+        <!-- FORMULAIRE CONFIGURATION AUTOMATIQUE PROXMOX -->
+        <div id="conteneur_formulaire_conf_proxmox">
+            <h1 class="answer_toml_conf_titre">Configuration proxmox</h1>
             <?php include("conf/conf_answer_toml.php");?>
+            <?php include("conf/conf_auto_config_proxmox.php");?>
         </div>
         
         <!-- AJOUT TABLEAU DISTORIQUE DHCP -->
