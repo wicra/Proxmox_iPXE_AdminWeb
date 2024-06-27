@@ -12,6 +12,7 @@
     $config_file_dhcp = '../../dhcp/dhcpd_range.conf';
     $config_file_auto = 'include/range_ip_fixe.php';
     $configFileUnknown = "../../dhcp/add_boot_ipxe_unknown.conf";
+    $answer_toml = "../../conf_proxmox/answer.toml"
 
     /////////////////////////////////////////////////////////
     //            LIEN DEPLOIEMENT VERS SERVER             //
@@ -24,4 +25,5 @@
     // $config_file_dhcp = "/etc/dhcp/dhcpd_range.conf";
     // $config_file_auto = "include/range_ip_fixe.php";
     // $configFileUnknown = "/etc/dhcp/add_boot_ipxe_unknown.conf";
+    // $answer_toml = "/var/www/html/proxmox/answer.toml"
 ?>

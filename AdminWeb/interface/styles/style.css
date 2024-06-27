@@ -1599,6 +1599,68 @@ input[type="file"] {
 }
 
 /*
+//////////////////////////////
+//  FORMULAIRE ANSWER.TOML  //
+/////////////////////////////
+*/
+.container-formulaire {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid var(--CouleurFont);
+  border-radius: 5px;
+  font-size: 0.9em;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.section-formulaire {
+  flex: 1 1 30%;
+  margin-right: 20px;
+}
+
+.section-formulaire h3 {
+  border-bottom: 1px solid var(--CouleurFont);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
+.row-formulaire {
+  margin-bottom: 10px;
+}
+
+.row-formulaire label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.row-formulaire input[type="text"],
+.row-formulaire input[type="email"],
+.row-formulaire input[type="password"] {
+  width: calc(100% - 12px);
+  padding: 5px;
+  border: 1px solid var(--CouleurFont);
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.input_form_answer_toml[type="submit"] {
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: none;
+  background-color: var(--CouleurSecondaire);
+  color: var(--CouleurFont);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.input_form_answer_toml[type="submit"]:hover {
+  background-color: var(--CouleurHover);
+}
+
+/*
 ///////////////////////
 //       FOOTER      //
 ///////////////////////
