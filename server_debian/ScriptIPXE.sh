@@ -202,7 +202,8 @@ chown www-data:www-data /var/www/html/AdminWeb/interface/include/range_ip_fixe.p
 ##################################
 chmod 555 /var/www/html/AdminWeb/interface/conf/conf_upload_new_disk.php
 chmod 555 /var/www/html/AdminWeb/shell/upload_new_disk.sh
-chown www-data:www-data /var/www/html/AdminWeb/ipload_new_disk_tmp
+chown www-data:www-data /var/www/html/AdminWeb/upload_new_disk_tmp
+chmod 755 /var/www/html/AdminWeb/upload_new_disk_tmp
 
 ##################################
 # Modif proprietaire dhcpd.leases # 
