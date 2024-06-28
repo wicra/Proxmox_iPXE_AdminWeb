@@ -177,11 +177,11 @@ apt install proxmox-auto-install-assistant
 
 
 #création de l'iso proxmox personnalisé
-proxmox-auto-install-assistant prepare-iso /root/proxmox-ve.iso --fetch-from http --url "http://$ipmachine/proxmox/answer.toml" --output proxmox-ve-ameliore.iso
+proxmox-auto-install-assistant prepare-iso /root/proxmox-ve.iso --fetch-from http --url "http://$ipmachine/proxmox/answer.toml" --output /root/proxmox-ve-ameliore.iso
 
 
 #extraction de l'iso proxmox en initrd et linux26
-bash pve-iso-2-pxe.sh /root/proxmox-ve-ameliore.iso
+bash /root/pve-iso-2-pxe.sh /root/proxmox-ve-ameliore.iso
 
 
 ###############################
@@ -189,9 +189,6 @@ bash pve-iso-2-pxe.sh /root/proxmox-ve-ameliore.iso
 #        Machine              #
 #            Stockage         #
 ###############################
-
-
-
 
 # Installation de "NFS-KERNEL-SERVER"
 # apt install nfs-kernel-server
@@ -334,8 +331,8 @@ mkdir /root/contener_clients_demon
 #Création de script d'ajout de nouvelle client ipxe
 echo "#!/bin/bash" > /root/new_client_demon.sh
 echo 'touch /root/contener_clients_demon/$1' >> /root/new_client_demon.sh
-echo "CONDITION=ps aux | grep /root/demon_ssh.sh | wc -l" >> /root/new_client_demon.sh
-echo 'if $CONDITION = 1 ;' >> /root/new_client_demon.sh
+echo 'CONDITION=$(ps aux | grep /root/demon_ssh.sh | wc -l)' >> /root/new_client_demon.sh
+echo 'if [ $CONDITION -eq 1 ];' >> /root/new_client_demon.sh
 echo "bash /root/demon_ssh.sh" >> /root/new_client_demon.sh
 echo "fi" >> /root/new_client_demon.sh
 
@@ -350,4 +347,18 @@ echo "/root/new_client_demon.sh rwix," >> /etc/apparmor.d/usr.sbin.dhcpd
 echo "/usr/bin/touch ix," >> /etc/apparmor.d/usr.sbin.dhcpd
 echo "/root/contener_clients_demon/ rw," >> /etc/apparmor.d/usr.sbin.dhcpd
 echo "/root/contener_clients_demon/** rw," >> /etc/apparmor.d/usr.sbin.dhcpd
+
+echo "/root/demon_ssh.sh rwix," >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/echo ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/scp ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/ssh ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/exit ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/basename ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/sleep ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+
+echo "/usr/bin/ps ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/grep ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/wc ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+echo "/usr/bin/bash ix" >> /etc/apparmor.d/usr.sbin.dhcpd
+
 echo "}" >> /etc/apparmor.d/usr.sbin.dhcpd

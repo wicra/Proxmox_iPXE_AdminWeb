@@ -4,7 +4,7 @@
 # Chemin vers le dossier contenant les fichiers nommés avec des adresses IP
 IP_DIR="/root/contener_clients_demon"
 SSH_USER="root"
-SCRIPT="/var/www/html/proxmox/configenNFS_v1.sh"
+SCRIPT="/root/configenNFS_v1.sh"
 
 # Vérifie que le dossier existe et est lisible
 if [ ! -d "$IP_DIR" ]; then
