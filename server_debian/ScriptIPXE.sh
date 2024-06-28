@@ -320,6 +320,9 @@ filesystem = "ext4"
 disk_list = ["nvme0n1"]
 EOT
 
+#changement de droit de answer.toml
+chmod 644 /var/www/html/proxmox/answer.toml
+
 ########################################
 #       LANCEMENT AUTOMATIQUE DE       #
 #  FICHIER DE CONF PROXMOX A DISTANCE  #
@@ -362,3 +365,4 @@ echo "/usr/bin/wc ix" >> /etc/apparmor.d/usr.sbin.dhcpd
 echo "/usr/bin/bash ix" >> /etc/apparmor.d/usr.sbin.dhcpd
 
 echo "}" >> /etc/apparmor.d/usr.sbin.dhcpd
+
