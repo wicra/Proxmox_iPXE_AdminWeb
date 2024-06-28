@@ -15,7 +15,7 @@
 
 apt -y install ipcalc
 apt -y install nmap
-
+apt -y install rsyslog
 
 # Installation du service DHCP
 apt -y install isc-dhcp-server

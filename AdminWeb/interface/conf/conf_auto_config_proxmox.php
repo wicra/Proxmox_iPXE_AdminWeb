@@ -1,15 +1,25 @@
 <?php
 // Chemin vers le fichier shell existant
-$script_file_path = '../../conf_proxmox/configenNFS_v3.sh';
+include("include/link.php");
 
-// Fonction pour remplacer les valeurs dans le fichier shell avec des guillemets
-function replace_script_value($content, $key, $value) {
-    return preg_replace("/$key=\"(.*)\"/", "$key=\"$value\"", $content);
+// Fonction pour remplacer les valeurs dans le fichier shell en se basant sur le nom de la variable
+function replace_script_value_by_name($content, $key, $value) {
+    // Modèle pour rechercher et remplacer la valeur d'une variable
+    $pattern = "/(?<=^$key=\")[^\"]*/ms";
+    return preg_replace($pattern, $value, $content);
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Fonction pour extraire la valeur d'une variable dans le fichier shell
+function extract_value_by_name($content, $key) {
+    // Modèle pour extraire la valeur d'une variable
+    $pattern = "/^$key=\"([^\"]*)\"/ms";
+    preg_match($pattern, $content, $matches);
+    return isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['form_type']) && $_POST['form_type'] == 'shell_config') {
     // Lire le contenu du fichier shell
-    $script_content = file_get_contents($script_file_path);
+    $script_content = file_get_contents($auto_config_proxmox);
 
     // Collecter et assainir les données du formulaire
     $username = htmlspecialchars($_POST['username']);
@@ -18,61 +28,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $proxyport = htmlspecialchars($_POST['proxyport']);
     $vmname = htmlspecialchars($_POST['vmname']);
     $vmpool = htmlspecialchars($_POST['vmpool']);
-    $vmsize = htmlspecialchars($_POST['vmsize']);
-    $vmnetwork = htmlspecialchars($_POST['vmnetwork']);
-    $vmnode = htmlspecialchars($_POST['vmnode']);
+    $ipstockage = htmlspecialchars($_POST['ipstockage']);
 
     // Remplacer les valeurs dans le contenu du fichier shell
-    $script_content = replace_script_value($script_content, 'username', $username);
-    $script_content = replace_script_value($script_content, 'password', $password);
-    $script_content = replace_script_value($script_content, 'proxysys', $proxysys);
-    $script_content = replace_script_value($script_content, 'proxyport', $proxyport);
-    $script_content = replace_script_value($script_content, 'vmname', $vmname);
-    $script_content = replace_script_value($script_content, 'vmpool', $vmpool);
-    $script_content = replace_script_value($script_content, 'vmsize', $vmsize);
-    $script_content = replace_script_value($script_content, 'vmnetwork', $vmnetwork);
-    $script_content = replace_script_value($script_content, 'vmnode', $vmnode);
+    $script_content = replace_script_value_by_name($script_content, 'username', $username);
+    $script_content = replace_script_value_by_name($script_content, 'password', $password);
+    $script_content = replace_script_value_by_name($script_content, 'proxysys', $proxysys);
+    $script_content = replace_script_value_by_name($script_content, 'proxyport', $proxyport);
+    $script_content = replace_script_value_by_name($script_content, 'vname', $vmname); // Remplacer vname par le nom de la variable réelle
+    $script_content = replace_script_value_by_name($script_content, 'DisqueChargement', $vmpool); // Assumant que vmpool correspond à DisqueChargement
+    $script_content = replace_script_value_by_name($script_content, 'ipstockage', $ipstockage); // Ajout pour ipstockage
 
     // Sauvegarder les modifications dans le fichier shell
-    file_put_contents($script_file_path, $script_content);
+    file_put_contents($auto_config_proxmox, $script_content);
 
     echo "Le script de configuration a été mis à jour avec succès.";
 } else {
     // Lire les valeurs actuelles du fichier shell pour pré-remplir le formulaire
-    $script_content = file_get_contents($script_file_path);
+    $script_content = file_get_contents($auto_config_proxmox);
 
     // Extraire les valeurs actuelles du fichier shell pour pré-remplir le formulaire
-    preg_match('/username=\"(.*)\"/', $script_content, $matches);
-    $username = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
+    $username = extract_value_by_name($script_content, 'username');
+    $password = extract_value_by_name($script_content, 'password');
+    $proxysys = extract_value_by_name($script_content, 'proxysys');
+    $proxyport = extract_value_by_name($script_content, 'proxyport');
+    $vmname = extract_value_by_name($script_content, 'vname'); // Remplacer vname par le nom de la variable réelle
+    $vmpool = extract_value_by_name($script_content, 'DisqueChargement'); // Assumant que vmpool correspond à DisqueChargement
+    $ipstockage = extract_value_by_name($script_content, 'ipstockage'); // Ajout pour ipstockage
 
-    preg_match('/password=\"(.*)\"/', $script_content, $matches);
-    $password = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
-
-    preg_match('/proxysys=\"(.*)\"/', $script_content, $matches);
-    $proxysys = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
-
-    preg_match('/proxyport=\"(.*)\"/', $script_content, $matches);
-    $proxyport = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
-
-    preg_match('/vmname=\"(.*)\"/', $script_content, $matches);
-    $vmname = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
-
-    preg_match('/vmpool=\"(.*)\"/', $script_content, $matches);
-    $vmpool = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
-
-    preg_match('/vmsize=\"(.*)\"/', $script_content, $matches);
-    $vmsize = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
-
-    preg_match('/vmnetwork=\"(.*)\"/', $script_content, $matches);
-    $vmnetwork = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
-
-    preg_match('/vmnode=\"(.*)\"/', $script_content, $matches);
-    $vmnode = isset($matches[1]) ? htmlspecialchars($matches[1]) : '';
-
-    // Afficher le formulaire avec des styles intégrés
+    // Afficher le formulaire de configuration du script shell
     echo <<<HTML
-
-<form method="post"  class="container-formulaire">
+<form method="post" class="container-formulaire">
+    <input type="hidden" name="form_type" value="shell_config">
     <div class="section-formulaire">
         <div class="row-formulaire">
             <label>Nom d'utilisateur :</label>
@@ -101,24 +88,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label>Piscine de VM :</label>
             <input class="input_form_configen" type="text" name="vmpool" value="$vmpool" required>
         </div>
-    </div>
-
-    <div class="section-formulaire">
         <div class="row-formulaire">
-            <label>Taille de la VM :</label>
-            <input class="input_form_configen" type="text" name="vmsize" value="$vmsize" required>
-        </div>
-        <div class="row-formulaire">
-            <label>Réseau VM :</label>
-            <input class="input_form_configen" type="text" name="vmnetwork" value="$vmnetwork" required>
-        </div>
-        <div class="row-formulaire">
-            <label>Nœud VM :</label>
-            <input class="input_form_configen" type="text" name="vmnode" value="$vmnode" required>
+            <label>IP de stockage :</label>
+            <input class="input_form_configen" type="text" name="ipstockage" value="$ipstockage" required>
         </div>
     </div>
 
     <input class="button_form_configen" type="submit" value="Mettre à jour le script Shell">
 </form>
-HTML;}
+HTML;
+}
 ?>
