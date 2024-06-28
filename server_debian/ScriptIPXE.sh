@@ -315,37 +315,33 @@ root_ssh_keys = [
     "$SSH_KEY"
 ]
 
-
 [network]
 source = "from-dhcp"
-
 
 [disk-setup]
 filesystem = "ext4"
 disk_list = ["nvme0n1"]
 EOT
 
-
-
-
 ########################################
 #       LANCEMENT AUTOMATIQUE DE       #
 #  FICHIER DE CONF PROXMOX A DISTANCE  #
 ########################################
 
-
 #dossier conteneur de repertoir de sauvegarde des client ipxe
 mkdir /root/contener_clients_demon
 
-
 #Création de script d'ajout de nouvelle client ipxe
 echo "#!/bin/bash" > /root/new_client_demon.sh
-echo "touch /root/contener_clients_demon/$1" >> /root/new_client_demon.sh
-
+echo 'touch /root/contener_clients_demon/$1' >> /root/new_client_demon.sh
+echo "CONDITION=ps aux | grep /root/demon_ssh.sh | wc -l" >> /root/new_client_demon.sh
+echo 'if $CONDITION = 1 ;' >> /root/new_client_demon.sh
+echo "bash /root/demon_ssh.sh" >> /root/new_client_demon.sh
+echo "fi" >> /root/new_client_demon.sh
 
 #le rendre executable
 chmod +x /root/new_client_demon.sh
-
+chmod +x /root/demon_ssh.sh
 
 #Donner les droits a dhcp d'executer les commande dans le fichier new_client_demon.sh
 sed -i "s/^}//" /etc/apparmor.d/usr.sbin.dhcpd

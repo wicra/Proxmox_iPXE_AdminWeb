@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # Chemin vers le dossier contenant les fichiers nommés avec des adresses IP
-IP_DIR="client_ip"
+IP_DIR="/root/contener_clients_demon"
 SSH_USER="root"
 SCRIPT="/var/www/html/proxmox/configenNFS_v1.sh"
 
@@ -17,9 +17,10 @@ while true; do
     
     # Vérifie si le dossier est vide
     if [ -z "$(ls -A $IP_DIR)" ]; then
-        echo "Le dossier est vide. Attente de 1 minute avant de réessayer..."
-        sleep 60
-        continue
+        echo "Le dossier est vide"
+        exit 1
+        # sleep 60
+        # continue
     fi
     
     # Lire chaque fichier (chaque adresse IP) dans le dossier
