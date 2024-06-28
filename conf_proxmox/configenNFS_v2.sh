@@ -27,30 +27,35 @@
 #*                                                                                   *
 #*************************************************************************************
 
-# #création d'un utilisateur (pour linux afin d'éviter l'autologin avec root)
-# read -p "Nom d'utilisateur : " username
-# read -s -p "Taper un mot de passe : " password
-# echo
-# read -s -p "Retaper le mot de passe : " password2
+#création d'un utilisateur (pour linux afin d'éviter l'autologin avec root)
+#read -p "Nom d'utilisateur : " username
+#read -s -p "Taper un mot de passe : " password
+#echo
+#read -s -p "Retaper le mot de passe : " password2
 
-# while [ "$password" != "$password2" ];
-# do
-#     echo 
-#     echo "Les saisies diffèrent veuillez recommencer"
-#     read -s -p "Tapez un mot de passe : " password
-#     echo
-#     read -s -p "Retapez le mot de passe : " password2
-# done
-
-# useradd -m $username
-# echo -e "$password\n$password" | passwd  $username >/dev/null 2>&1
+#while [ "$password" != "$password2" ];
+#do
+#    echo 
+#    echo "Les saisies diffèrent veuillez recommencer"
+#    read -s -p "Tapez un mot de passe : " password
+#    echo
+#    read -s -p "Retapez le mot de passe : " password2
+#done
+username="modele"
+password="Password"
+useradd -m $username
+echo -e "$password\n$password" | passwd  $username >/dev/null 2>&1
 echo
-read -p "Adresse ip du serveur proxy : " proxysys
-read -p "Numéro de port du proxy : " proxyport
+#read -p "Adresse ip du serveur proxy : " proxysys
+proxysys="172.16.1.254"
+#read -p "Numéro de port du proxy : " proxyport
+proxyport="3128"
 
-read -p "Quel est le nom de la machine virtuelle ?" vmname
+#read -p "Quel est le nom de la machine virtuelle ?" vmname
+vname="a316v3"
 
-read -p "Adresse du serveur de stockage : " ipstockage
+#read -p "Adresse du serveur de stockage : " ipstockage
+ipstockage="10.10.62.210"
 
 #Section création de répertoire & de fichier
 
@@ -60,7 +65,10 @@ mkdir /home/$username/PROJECTEST
 chown $username:$username /home/$username/PROJECTEST
 mkdir /mnt/stockage
 chown $username:$username /mnt/stockage
-
+#autorisation ssh
+mkdir /home/$username/.ssh
+chown $username:$username /home/$username/.ssh
+cp /mnt/stockage/authorized_keys /home/$username/.ssh
 
 #Modifier un paramètre dans le fichier /etc/systemd/logind.conf
 # Remplacer "#NAutoVTs=6"  par : "NAutoVTs=1"
@@ -100,14 +108,10 @@ apt -y install sshfs ntfs-3g chntpw vim nfs-common
 
 
 mount $ipstockage:/images /mnt/stockage
-
-#autorisation ssh
-mkdir /root/.ssh
-cp /mnt/stockage/authorized_keys /root/.ssh
-
 echo "liste des disques disponibles sur le serveur de stockage"
 ls -l /mnt/stockage
-read -p "Quel est le nom du disque à charger ?" DisqueChargement
+#read -p "Quel est le nom du disque à charger ?" DisqueChargement
+DisqueChargement="vm-205-disk-0.raw"
 
 #création du script connexion2spice.sh dans le home de l'utilisateur
 echo '#!/bin/bash' > /home/$username/connexion2spice.sh
@@ -175,9 +179,9 @@ echo "sudo qm set 205 --delete scsi0" >> /home/$username/MontageDisk.sh
 echo "#Creation du partage via NFS" >> /home/$username/MontageDisk.sh
 echo "sudo mount $ipstockage:/images /mnt/stockage/" >> /home/$username/MontageDisk.sh 
 echo "#Importation du disque format .raw vers la machine cible" >> /home/$username/MontageDisk.sh
-echo "sudo qm disk import 205 /mnt/stockage/\$1 local --format raw">> /home/$username/MontageDisk.sh >> /home/$username/MontageDisk.sh
+echo "sudo qm disk import 205 /mnt/stockage/\$1 local-lvm --format raw">> /home/$username/MontageDisk.sh >> /home/$username/MontageDisk.sh
 echo "#Connecte le disque sur Proxmox" >> /home/$username/MontageDisk.sh
-echo "sudo qm set 205 --scsi0 local:205/vm-205-disk-0.raw" >> /home/$username/MontageDisk.sh
+echo "sudo qm set 205 --scsi0 local-lvm:vm-205-disk-0" >> /home/$username/MontageDisk.sh
 echo "sudo qm set 205 -boot order='scsi0;net0'" >> /home/$username/MontageDisk.sh
 echo "#démontage du disque" >> /home/$username/MontageDisk.sh
 echo "sudo umount /mnt/stockage/" >> /home/$username/MontageDisk.sh
@@ -264,5 +268,8 @@ sed -ri "s/iface vmbr0 inet static/iface vmbr0 inet dhcp/g" /etc/network/interfa
 sed -ri "s/address.*//g" /etc/network/interfaces
 sed -ri "s/getway.*//g" /etc/network/interfaces
 
+
+#Wake on lan
+/sbin/ethtool -s $ifname wol g
 
 reboot now
